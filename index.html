@@ -458,21 +458,22 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
         </div>
       </div>
 
-      <!-- Right: chatbox -->
-      <div class="sage-chat" id="sageChatBox" style="min-height:320px;display:flex;flex-direction:column;">
+      <!-- Right: animated demo chat -->
+      <div class="sage-chat" id="sageChatBox" style="min-height:380px;display:flex;flex-direction:column;">
         <div class="sc-hdr">
           <div class="sc-av">⬡</div>
           <div><div class="sc-n">SAGE AI — Therapeutic Core v2.1</div><div class="sc-s">Neural language model · CBT + DBT trained</div></div>
-          <div id="sageStatus" style="margin-left:auto;font-family:var(--mono);font-size:.52rem;color:var(--bio);letter-spacing:.06em;">● ONLINE</div>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+            <div style="font-family:var(--mono);font-size:.52rem;color:var(--bio);letter-spacing:.06em;">● LIVE DEMO</div>
+          </div>
         </div>
-        <div class="sc-msgs" id="scMsgs" style="flex:1;max-height:260px;overflow-y:auto;"></div>
-        <div id="scTyping" class="typing-i" style="display:none;"><span></span><span></span><span></span></div>
-        <div style="display:flex;gap:6px;margin-top:10px;border-top:1px solid rgba(255,255,255,.04);padding-top:10px;">
-          <input id="scInput" type="text" placeholder="Talk to Sage…" autocomplete="off"
-            style="flex:1;background:rgba(0,255,157,.03);border:1px solid rgba(0,255,157,.1);border-radius:3px;outline:none;font-family:var(--mono);font-size:.72rem;color:var(--text);padding:9px 13px;transition:border-color .2s;"
-            onfocus="this.style.borderColor='rgba(0,255,157,.3)'" onblur="this.style.borderColor='rgba(0,255,157,.1)'"
-            onkeydown="if(event.key==='Enter')sendToSage()"/>
-          <button onclick="sendToSage()" style="height:38px;padding:0 16px;background:var(--bio);border:none;border-radius:3px;font-family:var(--mono);font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;color:#000;cursor:pointer;font-weight:600;transition:all .2s;" onmouseover="this.style.boxShadow='0 0 14px rgba(0,255,157,.4)'" onmouseout="this.style.boxShadow='none'">Send</button>
+        <div class="sc-msgs" id="demoMsgs" style="flex:1;max-height:300px;overflow-y:auto;"></div>
+        <div id="demoTyping" class="typing-i" style="display:none;"><span></span><span></span><span></span></div>
+        <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,.04);padding-top:10px;">
+          <div style="display:flex;gap:6px;opacity:0.45;pointer-events:none;">
+            <div style="flex:1;background:rgba(0,255,157,.03);border:1px solid rgba(0,255,157,.1);border-radius:3px;font-family:var(--mono);font-size:.72rem;color:var(--text-3);padding:9px 13px;">Join waitlist to talk to Sage →</div>
+            <div style="height:38px;padding:0 16px;background:var(--bio);border:none;border-radius:3px;font-family:var(--mono);font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;color:#000;font-weight:600;display:flex;align-items:center;">Send</div>
+          </div>
         </div>
       </div>
 
@@ -1194,12 +1195,101 @@ async function sendToSage() {
   }
 }
 
-// Boot chatbox
-window.addEventListener('load', () => {
-  loadHistory();
-  addClearBtn();
-  if (sageHistory.length === 0) initSageChat();
-});
+// ── SAGE ANIMATED DEMO ───────────────────────────────────────────
+const demoScript = [
+  { role: 'sage', text: `Hey. What's going on for you today?`, delay: 800 },
+  { role: 'user', text: `honestly not great. been feeling really anxious and can't sleep`, delay: 2200 },
+  { role: 'typing', delay: 1000 },
+  { role: 'sage', text: `That combination — the anxiety and the sleep — they're feeding each other. How long has it been like this?`, delay: 1800 },
+  { role: 'user', text: `like 2 weeks. ever since my exams started`, delay: 2000 },
+  { role: 'typing', delay: 1200 },
+  { role: 'sage', text: `Two weeks is a long time to run on empty. Your nervous system's been in overdrive — cortisol spiking, GABA dropping. That tight-chest, racing-thoughts feeling makes complete sense right now.`, delay: 2400 },
+  { role: 'user', text: `yeah exactly that. how did you know`, delay: 1800 },
+  { role: 'typing', delay: 1400 },
+  { role: 'sage', text: `The way you described it — I could read your nervous system between the lines. Can I ask — when you lie in bed at night, is it that you can't fall asleep, or you wake up at 3am with your mind already running?`, delay: 2600 },
+  { role: 'user', text: `3am exactly. every night`, delay: 1600 },
+  { role: 'typing', delay: 1300 },
+  { role: 'sage', text: `That's a cortisol surge — your body's literally releasing stress hormones at 3am like an alarm clock. It's not you being anxious. It's biology. And we can work with that.`, delay: 2200 },
+  { role: 'neuro', text: `↑ Cortisol detected · GABA low · Initiating regulation protocol`, delay: 600 },
+];
+
+let demoIndex = 0;
+let demoTimeout;
+let demoStarted = false;
+
+function addDemoMsg(role, text) {
+  const msgs = document.getElementById('demoMsgs');
+  const typing = document.getElementById('demoTyping');
+
+  if (role === 'typing') {
+    typing.style.display = 'flex';
+    msgs.scrollTop = msgs.scrollHeight;
+    return;
+  }
+
+  typing.style.display = 'none';
+
+  if (role === 'neuro') {
+    const el = document.createElement('div');
+    el.style.cssText = 'font-family:var(--mono);font-size:.58rem;color:var(--neural);letter-spacing:.07em;padding:5px 10px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.12);border-radius:3px;margin:4px 0;opacity:0;transition:opacity .4s;';
+    el.textContent = text;
+    msgs.appendChild(el);
+    setTimeout(() => el.style.opacity = '1', 50);
+    msgs.scrollTop = msgs.scrollHeight;
+    return;
+  }
+
+  const el = document.createElement('div');
+  el.className = 'sm ' + (role === 'sage' ? 'sm-ai' : 'sm-u');
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(6px)';
+  el.style.transition = 'opacity .35s ease, transform .35s ease';
+
+  if (role === 'sage') {
+    el.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + text;
+  } else {
+    el.textContent = text;
+  }
+
+  msgs.appendChild(el);
+  setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 30);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function runDemo() {
+  if (demoIndex >= demoScript.length) {
+    // Loop after pause
+    demoTimeout = setTimeout(() => {
+      document.getElementById('demoMsgs').innerHTML = '';
+      document.getElementById('demoTyping').style.display = 'none';
+      demoIndex = 0;
+      runDemo();
+    }, 5000);
+    return;
+  }
+
+  const step = demoScript[demoIndex];
+  demoIndex++;
+
+  demoTimeout = setTimeout(() => {
+    addDemoMsg(step.role, step.text);
+    runDemo();
+  }, step.delay);
+}
+
+// Start demo when section scrolls into view
+const demoObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !demoStarted) {
+      demoStarted = true;
+      setTimeout(runDemo, 600);
+    }
+  });
+}, { threshold: 0.3 });
+
+const demoSection = document.getElementById('sage-demo');
+if (demoSection) demoObserver.observe(demoSection);
+// ─────────────────────────────────────────────────────────────────
 // ─────────────────────────────────────────────────────────────────
 
 // Real Netlify form submission
