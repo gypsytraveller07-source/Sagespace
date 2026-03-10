@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SageSpace — Neural Mental Health AI</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23020409'/%3E%3Crect width='64' height='64' rx='14' fill='none' stroke='%2300ff9d' stroke-width='1.5' stroke-opacity='0.4'/%3E%3Cpolyline points='4,32 14,32 19,18 24,46 29,10 34,54 39,32 50,32 54,26 60,32' stroke='%2300ff9d' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"/>
+<style>
+:root{
+  --void:#020409;--deep:#040d1a;--panel:rgba(7,20,40,0.88);
+  --bio:#00ff9d;--bio-dim:rgba(0,255,157,0.1);--bio-glow:rgba(0,255,157,0.28);
+  --pulse:#00e5ff;--pulse-dim:rgba(0,229,255,0.09);
+  --amber:#ffb347;--neural:#a78bfa;
+  --text:#e8f4f8;--text-2:rgba(232,244,248,0.55);--text-3:rgba(232,244,248,0.28);
+  --mono:ui-monospace,'SF Mono','Menlo','Monaco',monospace;
+  --sf:-apple-system,'SF Pro Display','SF Pro Text','Helvetica Neue',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sf);background:var(--void);color:var(--text);overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,157,0.007) 2px,rgba(0,255,157,0.007) 4px);pointer-events:none;}
+
+.cursor{position:fixed;pointer-events:none;z-index:9999;width:6px;height:6px;background:var(--bio);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--bio-glow);}
+.cursor-ring{position:fixed;pointer-events:none;z-index:9998;width:28px;height:28px;border:1px solid rgba(0,255,157,0.28);border-radius:50%;transform:translate(-50%,-50%);transition:width .22s,height .22s;}
+
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);animation:drift 24s ease-in-out infinite;}
+.o1{width:750px;height:480px;background:radial-gradient(ellipse,rgba(0,229,255,0.08),transparent 70%);top:-120px;left:-180px;}
+.o2{width:580px;height:580px;background:radial-gradient(circle,rgba(0,255,157,0.07),transparent 70%);bottom:-80px;right:-80px;animation-delay:-9s;}
+.o3{width:480px;height:280px;background:radial-gradient(ellipse,rgba(167,139,250,0.06),transparent 70%);top:45%;left:35%;animation-delay:-16s;}
+@keyframes drift{0%,100%{transform:translate(0,0);}33%{transform:translate(38px,-28px);}66%{transform:translate(-28px,38px);}}
+
+.circuit{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;}
+.circuit svg{width:100%;height:100%;}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:1000;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;background:rgba(2,4,9,0.72);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,229,255,0.07);}
+.logo{display:flex;align-items:center;gap:9px;font-size:1.05rem;font-weight:700;letter-spacing:.01em;color:var(--text);cursor:pointer;}
+.logo-mark{width:28px;height:28px;border-radius:7px;border:1px solid rgba(0,255,157,0.38);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:rgba(0,255,157,0.04);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--text-3);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--bio);}
+.nav-links a.active{color:var(--bio);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-pulse-dot{width:5px;height:5px;border-radius:50%;background:var(--bio);box-shadow:0 0 7px var(--bio-glow);animation:pdot 2s ease-in-out infinite;}
+@keyframes pdot{0%,100%{opacity:1;}50%{opacity:.3;}}
+.nav-sys{font-family:var(--mono);font-size:.65rem;color:var(--text-3);letter-spacing:.06em;}
+.nav-btn{height:28px;padding:0 14px;background:transparent;border:1px solid rgba(0,255,157,0.28);border-radius:3px;font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;color:var(--bio);cursor:pointer;text-transform:uppercase;transition:all .2s;}
+.nav-btn:hover{background:var(--bio-dim);box-shadow:0 0 14px rgba(0,255,157,0.14);}
+.nav-future{height:28px;padding:0 14px;background:linear-gradient(90deg,rgba(0,255,157,0.12),rgba(0,229,255,0.12));border:1px solid rgba(0,229,255,0.25);border-radius:3px;font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;color:var(--pulse);cursor:pointer;text-transform:uppercase;transition:all .2s;text-decoration:none;display:flex;align-items:center;gap:5px;}
+.nav-future:hover{background:linear-gradient(90deg,rgba(0,255,157,0.2),rgba(0,229,255,0.2));box-shadow:0 0 18px rgba(0,229,255,0.18);}
+
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;display:grid;grid-template-columns:1fr 510px;align-items:center;padding:80px 52px 60px;gap:56px;overflow:hidden;}
+.ekg-container{position:absolute;bottom:0;left:0;right:0;height:76px;opacity:.16;overflow:hidden;pointer-events:none;}
+.ekg-line{animation:ekgscroll 8s linear infinite;}
+@keyframes ekgscroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+.rx-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.14);border-radius:2px;padding:4px 11px;margin-bottom:26px;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--pulse);text-transform:uppercase;}
+.rx-tag::before{content:'Rx ·';font-weight:500;color:var(--bio);}
+h1{font-size:clamp(2.5rem,4.8vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin-bottom:18px;}
+.hw1{color:var(--bio);position:relative;}
+.hw1::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--bio),transparent);}
+.hw2{background:linear-gradient(90deg,var(--pulse),var(--neural));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-desc{font-family:var(--mono);font-size:.86rem;line-height:1.88;color:var(--text-2);max-width:500px;margin-bottom:32px;font-weight:300;}
+
+.vitals{display:flex;gap:0;margin-bottom:36px;}
+.vital{flex:1;padding:12px 18px;border:1px solid rgba(0,229,255,0.09);border-right:none;background:rgba(0,229,255,0.018);position:relative;}
+.vital:first-child{border-radius:3px 0 0 3px;}
+.vital:last-child{border-right:1px solid rgba(0,229,255,0.09);border-radius:0 3px 3px 0;}
+.v-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px;}
+.v-val{font-family:var(--mono);font-size:1.2rem;font-weight:500;color:var(--bio);}
+.v-unit{font-size:.58rem;color:var(--text-3);margin-left:2px;}
+.vital::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--bio),transparent);}
+
+.cta-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap;}
+.btn-c{height:42px;padding:0 26px;background:var(--bio);border:none;border-radius:3px;font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;font-weight:500;text-transform:uppercase;color:#000;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.btn-c::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-100%);transition:transform .4s;}
+.btn-c:hover{box-shadow:0 0 28px rgba(0,255,157,.42);transform:translateY(-1px);}
+.btn-c:hover::before{transform:translateX(100%);}
+.btn-o{height:42px;padding:0 22px;background:transparent;border:1px solid rgba(0,229,255,.22);border-radius:3px;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--pulse);cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-o:hover{background:rgba(0,229,255,.05);border-color:rgba(0,229,255,.4);}
+
+/* DASHBOARD */
+.dashboard{display:flex;flex-direction:column;gap:11px;}
+.neural-card{background:var(--panel);border:1px solid rgba(0,229,255,0.09);border-radius:7px;padding:18px;position:relative;overflow:hidden;backdrop-filter:blur(20px);}
+.neural-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--pulse),transparent);opacity:.35;}
+.card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.card-ttl{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);}
+.card-badge{display:flex;align-items:center;gap:4px;background:var(--bio-dim);border:1px solid rgba(0,255,157,.18);border-radius:2px;padding:2px 7px;font-family:var(--mono);font-size:.56rem;letter-spacing:.06em;color:var(--bio);}
+.badge-dot{width:4px;height:4px;border-radius:50%;background:var(--bio);animation:pdot 1.5s infinite;}
+.mood-matrix{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:8px;}
+.mood-cell{aspect-ratio:1;border-radius:2px;background:rgba(0,255,157,.04);border:1px solid rgba(0,255,157,.05);cursor:pointer;transition:all .15s;}
+.mood-cell.l1{background:rgba(0,255,157,.08);}
+.mood-cell.l2{background:rgba(0,255,157,.18);}
+.mood-cell.l3{background:rgba(0,255,157,.32);}
+.mood-cell.l4{background:rgba(0,255,157,.5);box-shadow:0 0 5px rgba(0,255,157,.18);}
+.mood-days{display:flex;justify-content:space-between;margin-top:4px;}
+.mood-day{font-family:var(--mono);font-size:.52rem;color:var(--text-3);}
+
+.neuro-panel{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.ni{background:var(--panel);border:1px solid rgba(167,139,250,.1);border-radius:6px;padding:12px;backdrop-filter:blur(16px);}
+.ni-name{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--neural);margin-bottom:6px;}
+.ni-val{font-family:var(--mono);font-size:1rem;font-weight:500;color:var(--text);margin-bottom:5px;}
+.ni-track{height:2.5px;background:rgba(167,139,250,.1);border-radius:2px;overflow:hidden;}
+.ni-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--neural),rgba(167,139,250,.3));}
+
+.sage-chat{background:var(--panel);border:1px solid rgba(0,255,157,.07);border-radius:7px;padding:14px;backdrop-filter:blur(20px);}
+.sc-hdr{display:flex;align-items:center;gap:7px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.04);}
+.sc-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--bio-dim),var(--pulse-dim));border:1px solid rgba(0,255,157,.28);display:flex;align-items:center;justify-content:center;font-size:.6rem;box-shadow:0 0 10px rgba(0,255,157,.12);}
+.sc-n{font-family:var(--mono);font-size:.64rem;color:var(--bio);letter-spacing:.05em;}
+.sc-s{font-family:var(--mono);font-size:.54rem;color:var(--text-3);}
+.sc-msgs{display:flex;flex-direction:column;gap:6px;}
+.sm{font-family:var(--mono);font-size:.62rem;line-height:1.55;padding:7px 10px;border-radius:4px;max-width:92%;}
+.sm-ai{background:rgba(0,255,157,.04);border:1px solid rgba(0,255,157,.09);color:rgba(232,244,248,.85);align-self:flex-start;border-bottom-left-radius:1px;}
+.sm-u{background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.09);color:rgba(232,244,248,.5);align-self:flex-end;border-bottom-right-radius:1px;}
+.sm-ai-n{font-size:.5rem;color:var(--bio);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;}
+.typing-i{display:flex;gap:3px;padding:7px 11px;background:rgba(0,255,157,.03);border:1px solid rgba(0,255,157,.07);border-radius:4px;border-bottom-left-radius:1px;align-self:flex-start;}
+.typing-i span{width:3px;height:3px;background:var(--bio);border-radius:50%;animation:tb 1.2s ease-in-out infinite;}
+.typing-i span:nth-child(2){animation-delay:.2s;}
+.typing-i span:nth-child(3){animation-delay:.4s;}
+@keyframes tb{0%,60%,100%{opacity:.3;transform:translateY(0);}30%{opacity:1;transform:translateY(-4px);}}
+
+/* SHARED SECTION STYLES */
+section{position:relative;z-index:1;}
+.container{max-width:1120px;margin:0 auto;padding:0 52px;}
+.sp{padding:96px 0;}
+.stag{font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--pulse);margin-bottom:10px;display:flex;align-items:center;gap:9px;}
+.stag::before{content:'';width:22px;height:1px;background:var(--pulse);opacity:.45;}
+h2{font-size:clamp(1.75rem,2.9vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--text);margin-bottom:44px;}
+
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(0,229,255,.055);border:1px solid rgba(0,229,255,.055);border-radius:7px;overflow:hidden;}
+.fc{background:var(--void);padding:30px 26px;transition:background .3s;position:relative;overflow:hidden;}
+.fc::after{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--bio),transparent);opacity:0;transition:opacity .3s;}
+.fc:hover{background:rgba(0,255,157,.018);}
+.fc:hover::after{opacity:1;}
+.fc-num{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;color:var(--text-3);margin-bottom:14px;text-transform:uppercase;}
+.fc-icon{width:38px;height:38px;border:1px solid rgba(0,255,157,.13);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;margin-bottom:12px;background:var(--bio-dim);}
+.fc-name{font-size:.92rem;font-weight:600;color:var(--text);margin-bottom:7px;letter-spacing:-.01em;}
+.fc-desc{font-family:var(--mono);font-size:.74rem;line-height:1.7;color:var(--text-2);font-weight:300;}
+
+/* NEUROCHEMICAL TRACKING SECTION */
+.neuro-track-sec{background:rgba(4,13,26,.95);border-top:1px solid rgba(0,229,255,.06);border-bottom:1px solid rgba(0,229,255,.06);}
+.neuro-intro{max-width:680px;margin-bottom:56px;}
+.neuro-intro p{font-family:var(--mono);font-size:.82rem;line-height:1.9;color:var(--text-2);font-weight:300;margin-top:14px;}
+
+/* Four signal cards */
+.signal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:56px;}
+.signal-card{border-radius:7px;padding:28px 26px;border:1px solid;position:relative;overflow:hidden;transition:transform .25s;}
+.signal-card:hover{transform:translateY(-3px);}
+.signal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.sc-dopa{border-color:rgba(0,255,157,.14);background:rgba(0,255,157,.025);}
+.sc-dopa::before{background:linear-gradient(90deg,var(--bio),transparent);}
+.sc-sero{border-color:rgba(0,229,255,.14);background:rgba(0,229,255,.025);}
+.sc-sero::before{background:linear-gradient(90deg,var(--pulse),transparent);}
+.sc-gaba{border-color:rgba(167,139,250,.14);background:rgba(167,139,250,.025);}
+.sc-gaba::before{background:linear-gradient(90deg,var(--neural),transparent);}
+.sc-cort{border-color:rgba(255,179,71,.14);background:rgba(255,179,71,.025);}
+.sc-cort::before{background:linear-gradient(90deg,var(--amber),transparent);}
+.signal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.signal-name{font-size:.92rem;font-weight:700;letter-spacing:-.01em;}
+.signal-abbr{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--text-3);}
+.signal-level{display:flex;align-items:center;gap:7px;}
+.signal-bar-wrap{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;}
+.signal-bar-fill{height:100%;border-radius:2px;transition:width 1s ease;}
+.signal-pct{font-family:var(--mono);font-size:.65rem;font-weight:500;}
+.signal-indicators{display:flex;flex-direction:column;gap:5px;margin-top:12px;}
+.si{font-family:var(--mono);font-size:.68rem;color:var(--text-2);display:flex;align-items:center;gap:7px;line-height:1.4;}
+.si::before{content:'·';font-size:.9rem;flex-shrink:0;}
+
+/* PHASE TRACKER */
+.phase-section{background:var(--void);}
+.phases-wrap{position:relative;}
+.phases-wrap::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--bio),rgba(0,255,157,.05));}
+.phase-row{display:flex;gap:28px;margin-bottom:0;padding-bottom:36px;position:relative;}
+.phase-node{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;position:relative;z-index:1;border:1px solid;transition:all .3s;}
+.pn-active{background:rgba(0,255,157,.14);border-color:var(--bio);box-shadow:0 0 20px rgba(0,255,157,.25);}
+.pn-2{background:rgba(0,229,255,.08);border-color:rgba(0,229,255,.3);}
+.pn-3{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);}
+.pn-4{background:rgba(255,179,71,.08);border-color:rgba(255,179,71,.3);}
+.phase-body{flex:1;background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:22px 26px;backdrop-filter:blur(16px);}
+.phase-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.phase-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;}
+.phase-status{font-family:var(--mono);font-size:.58rem;letter-spacing:.07em;padding:2px 8px;border-radius:2px;border:1px solid;}
+.status-active{color:var(--bio);border-color:rgba(0,255,157,.25);background:var(--bio-dim);}
+.status-next{color:var(--pulse);border-color:rgba(0,229,255,.2);background:var(--pulse-dim);}
+.status-future{color:var(--text-3);border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.03);}
+.phase-title{font-size:1rem;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:8px;}
+.phase-desc{font-family:var(--mono);font-size:.76rem;line-height:1.7;color:var(--text-2);font-weight:300;margin-bottom:14px;}
+.phase-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.pt{font-family:var(--mono);font-size:.62rem;padding:3px 9px;border-radius:2px;border:1px solid rgba(255,255,255,.07);color:var(--text-3);}
+
+/* MEMBERSHIP */
+.membership-sec{background:rgba(4,13,26,.92);border-top:1px solid rgba(0,229,255,.06);}
+.plans-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.plan-card{border-radius:7px;padding:28px 22px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);position:relative;transition:all .3s;}
+.plan-card:hover{border-color:rgba(0,255,157,.2);transform:translateY(-4px);}
+.plan-card.featured{border-color:rgba(0,255,157,.3);background:rgba(0,255,157,.04);}
+.plan-card.featured::before{content:'RECOMMENDED';position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;background:var(--bio);color:#000;padding:2px 10px;border-radius:2px;font-weight:600;}
+.plan-tier{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px;}
+.plan-price{font-size:2rem;font-weight:800;letter-spacing:-.04em;color:var(--text);line-height:1;margin-bottom:4px;}
+.plan-price span{font-size:.8rem;font-weight:400;color:var(--text-3);}
+.plan-cycle{font-family:var(--mono);font-size:.65rem;color:var(--text-3);margin-bottom:16px;}
+.plan-divider{height:1px;background:rgba(255,255,255,.06);margin-bottom:16px;}
+.plan-features{display:flex;flex-direction:column;gap:7px;margin-bottom:20px;}
+.pf{font-family:var(--mono);font-size:.7rem;color:var(--text-2);display:flex;align-items:flex-start;gap:7px;line-height:1.4;}
+.pf-check{color:var(--bio);flex-shrink:0;font-size:.75rem;}
+.pf-x{color:var(--text-3);flex-shrink:0;}
+.plan-btn{width:100%;height:36px;border-radius:3px;font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;transition:all .2s;border:1px solid rgba(0,255,157,.25);background:transparent;color:var(--bio);}
+.plan-btn:hover{background:var(--bio-dim);}
+.plan-card.featured .plan-btn{background:var(--bio);color:#000;border-color:var(--bio);}
+.plan-card.featured .plan-btn:hover{box-shadow:0 0 20px rgba(0,255,157,.3);}
+
+/* CLINICAL DATA */
+.clinical-sec{background:rgba(4,13,26,.9);border-top:1px solid rgba(0,229,255,.06);}
+.clinical-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;}
+.dp{display:flex;align-items:center;gap:13px;padding:11px 15px;background:rgba(0,229,255,.018);border:1px solid rgba(0,229,255,.07);border-radius:4px;margin-bottom:10px;}
+.dp-bar{width:3px;height:34px;border-radius:2px;flex-shrink:0;}
+.dp-lbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px;}
+.dp-val{font-family:var(--mono);font-size:.84rem;font-weight:500;color:var(--text);}
+.mol-wrap{display:flex;align-items:center;justify-content:center;}
+.mol-svg{width:300px;height:300px;animation:molrot 28s linear infinite;}
+@keyframes molrot{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+/* WHO IMPACT */
+.who-sec{padding:96px 0;background:var(--void);}
+.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:0;}
+.who-card{border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:28px 24px;background:rgba(255,255,255,.02);position:relative;overflow:hidden;}
+.who-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--bio),transparent);}
+.who-num{font-size:2.6rem;font-weight:800;letter-spacing:-.05em;line-height:1;margin-bottom:6px;}
+.who-label{font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;}
+.who-desc{font-family:var(--mono);font-size:.72rem;line-height:1.68;color:var(--text-2);font-weight:300;}
+
+/* FUTURE PAGE CTA */
+.future-cta-sec{padding:80px 0;text-align:center;position:relative;overflow:hidden;}
+.future-cta-sec::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:350px;background:radial-gradient(ellipse,rgba(0,229,255,.07),transparent 65%);pointer-events:none;}
+.fcta-inner{max-width:620px;margin:0 auto;}
+.fcta-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.18);border-radius:2px;padding:5px 14px;margin-bottom:22px;font-family:var(--mono);font-size:.66rem;letter-spacing:.09em;color:var(--pulse);text-transform:uppercase;}
+.fcta-title{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:14px;}
+.fcta-desc{font-family:var(--mono);font-size:.8rem;line-height:1.85;color:var(--text-2);margin-bottom:32px;}
+.btn-future{height:46px;padding:0 32px;background:linear-gradient(90deg,rgba(0,229,255,.15),rgba(167,139,250,.15));border:1px solid rgba(0,229,255,.3);border-radius:3px;font-family:var(--mono);font-size:.76rem;letter-spacing:.09em;text-transform:uppercase;color:var(--pulse);cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+.btn-future:hover{background:linear-gradient(90deg,rgba(0,229,255,.25),rgba(167,139,250,.25));box-shadow:0 0 32px rgba(0,229,255,.18);transform:translateY(-2px);}
+
+/* WAITLIST */
+.wl-sec{padding:100px 0;text-align:center;position:relative;overflow:hidden;}
+.wl-sec::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:70px;background:linear-gradient(to bottom,transparent,var(--bio));}
+.wl-sec::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:70px;background:linear-gradient(to top,transparent,var(--bio));}
+.wl-inner{max-width:540px;margin:0 auto;}
+.wl-desc{font-family:var(--mono);font-size:.8rem;line-height:1.82;color:var(--text-2);margin-bottom:32px;}
+.wl-form{display:flex;border:1px solid rgba(0,255,157,.18);border-radius:3px;overflow:hidden;background:rgba(0,255,157,.018);transition:border-color .3s,box-shadow .3s;}
+.wl-form:focus-within{border-color:rgba(0,255,157,.4);box-shadow:0 0 22px rgba(0,255,157,.08);}
+.wl-form input{flex:1;background:none;border:none;outline:none;font-family:var(--mono);font-size:.78rem;color:var(--text);padding:0 16px;height:44px;min-height:44px;}
+.wl-form input::placeholder{color:var(--text-3);}
+.wl-form button{height:44px;padding:0 22px;background:var(--bio);border:none;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;font-weight:500;text-transform:uppercase;color:#000;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.wl-form button:hover{background:#33ffab;}
+.wl-trust{display:flex;gap:22px;justify-content:center;margin-top:22px;flex-wrap:wrap;}
+.wt{font-family:var(--mono);font-size:.62rem;color:var(--text-3);display:flex;align-items:center;gap:5px;}
+.wt::before{content:'✓';color:var(--bio);}
+.wl-ok{display:none;font-family:var(--mono);font-size:.78rem;color:var(--bio);margin-top:14px;letter-spacing:.04em;}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;background:rgba(2,4,9,.8);backdrop-filter:blur(16px);}
+.fl{display:flex;align-items:center;gap:8px;font-size:1rem;font-weight:700;letter-spacing:.01em;}
+.fl-mk{width:22px;height:22px;border-radius:5px;border:1px solid rgba(0,255,157,.32);display:flex;align-items:center;justify-content:center;}
+.fn{font-family:var(--mono);font-size:.6rem;color:var(--text-3);margin-top:3px;letter-spacing:.04em;}
+.fcerts{display:flex;gap:7px;}
+.cert{padding:2px 7px;border:1px solid rgba(0,255,157,.18);border-radius:2px;font-family:var(--mono);font-size:.56rem;color:var(--bio);letter-spacing:.06em;}
+.flinks{display:flex;gap:18px;}
+.flinks a{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--text-3);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.flinks a:hover{color:var(--bio);}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.hero-left>*{opacity:0;animation:fi .7s ease forwards;}
+.hero-left>*:nth-child(1){animation-delay:.1s;}
+.hero-left>*:nth-child(2){animation-delay:.2s;}
+.hero-left>*:nth-child(3){animation-delay:.3s;}
+.hero-left>*:nth-child(4){animation-delay:.42s;}
+.hero-left>*:nth-child(5){animation-delay:.54s;}
+.dashboard{opacity:0;animation:fi .9s ease .32s forwards;}
+@keyframes fi{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:1px solid rgba(0,255,157,.18);border-radius:3px;background:transparent;}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--bio);transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:rgba(2,4,9,.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,255,157,.08);z-index:999;padding:20px 20px 24px;flex-direction:column;gap:4px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;color:var(--text-2);text-decoration:none;text-transform:uppercase;padding:11px 14px;border-radius:3px;border:1px solid transparent;transition:all .2s;}
+.mobile-menu a:hover{color:var(--bio);border-color:rgba(0,255,157,.12);background:rgba(0,255,157,.04);}
+.mobile-menu .mob-divider{height:1px;background:rgba(255,255,255,.05);margin:8px 0;}
+.mobile-menu .mob-btns{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;}
+
+@media(max-width:1040px){
+  .hero{grid-template-columns:1fr;padding-top:88px;}
+  .dashboard{display:none;}
+  .feat-grid{grid-template-columns:1fr 1fr;}
+  .plans-grid{grid-template-columns:1fr 1fr;}
+  .clinical-grid{grid-template-columns:1fr;}
+  .who-grid{grid-template-columns:1fr 1fr;}
+  .signal-grid{grid-template-columns:1fr 1fr;}
+  #howwetrack .signal-grid-inner{grid-template-columns:1fr 1fr;}
+}
+
+@media(max-width:768px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .nav-right .nav-future{display:none;}
+  .nav-right .nav-btn{display:none;}
+  .nav-sys{display:none;}
+  .hamburger{display:flex;}
+  .container{padding:0 20px;}
+  .hero{padding:78px 20px 48px;gap:32px;}
+  h1{font-size:2.2rem;}
+  h2{font-size:1.6rem;}
+  .vitals{flex-wrap:wrap;}
+  .vital{flex:1 1 45%;}
+  .cta-row{flex-direction:column;align-items:flex-start;}
+  .cta-row .btn-c,.cta-row .btn-o{width:100%;justify-content:center;text-align:center;}
+  .feat-grid{grid-template-columns:1fr;}
+  .plans-grid{grid-template-columns:1fr 1fr;}
+  .who-grid{grid-template-columns:1fr;}
+  .signal-grid{grid-template-columns:1fr;}
+  .neuro-panel{grid-template-columns:1fr 1fr;}
+  footer{padding:26px 20px;flex-direction:column;align-items:flex-start;gap:16px;}
+  .fcerts{flex-wrap:wrap;}
+  .wl-form{flex-direction:column;}
+  .wl-form input{height:48px;min-height:48px;padding:0 16px;font-size:.82rem;width:100%;}
+  .wl-form button{height:48px;width:100%;font-size:.72rem;}
+  .hero-stats{flex-wrap:wrap;}
+  .sp{padding:64px 0;}
+  .future-cta-sec{padding:56px 0;}
+}
+
+@media(max-width:480px){
+  nav{padding:0 16px;}
+  .logo span{display:none;}
+  .container{padding:0 16px;}
+  .hero{padding:72px 16px 40px;}
+  h1{font-size:1.9rem;}
+  .plans-grid{grid-template-columns:1fr;}
+  .vital{flex:1 1 100%;}
+  .vitals{gap:6px;}
+  .clinical-grid{grid-template-columns:1fr;}
+  .mol-wrap{display:none;}
+  .neuro-panel{grid-template-columns:1fr;}
+  footer{padding:22px 16px;}
+  .flinks{flex-wrap:wrap;gap:12px;}
+  .sp{padding:48px 0;}
+  #howwetrack [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr !important;}
+  .fcta-inner{padding:0 16px;}
+  .wl-inner{padding:0 16px;}
+  .wl-sec{padding:56px 0;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cring"></div>
+<div class="ambient"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="circuit"><svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><g stroke="rgba(0,229,255,0.04)" fill="none" stroke-width="1"><line x1="0" y1="200" x2="400" y2="200"/><line x1="400" y1="200" x2="400" y2="450"/><line x1="400" y1="450" x2="700" y2="450"/><line x1="700" y1="450" x2="700" y2="150"/><line x1="700" y1="150" x2="1100" y2="150"/><line x1="1100" y1="150" x2="1100" y2="600"/><line x1="1100" y1="600" x2="1440" y2="600"/><line x1="200" y1="0" x2="200" y2="350"/><line x1="200" y1="350" x2="550" y2="350"/><line x1="550" y1="350" x2="550" y2="700"/><line x1="550" y1="700" x2="900" y2="700"/><line x1="900" y1="700" x2="900" y2="400"/><line x1="900" y1="400" x2="1300" y2="400"/><circle cx="400" cy="200" r="3" fill="rgba(0,229,255,0.14)"/><circle cx="700" cy="450" r="3" fill="rgba(0,229,255,0.14)"/><circle cx="1100" cy="150" r="3" fill="rgba(0,229,255,0.14)"/><circle cx="550" cy="350" r="3" fill="rgba(0,255,157,0.14)"/><circle cx="900" cy="700" r="3" fill="rgba(0,255,157,0.14)"/></g></svg></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <div class="logo-mark"><svg width="20" height="13" viewBox="0 0 44 28"><polyline points="0,14 8,14 12,4 16,24 20,2 24,26 28,14 44,14" stroke="#00ff9d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    SageSpace
+  </div>
+  <ul class="nav-links">
+    <li><a href="#sage-demo">✦ Try Sage</a></li>
+    <li><a href="#howwetrack">The Science</a></li>
+    <li><a href="#features">Modules</a></li>
+    <li><a href="#neurotrack">Neural Tracking</a></li>
+    <li><a href="#phases">Pipeline</a></li>
+    <li><a href="#membership">Pricing <span style="font-size:.55rem;color:var(--bio);letter-spacing:.06em;">· Soon</span></a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-pulse-dot"></div><div class="nav-sys">System Online</div>
+    <a href="sagespace-future.html" class="nav-future">⬡ AI Future →</a>
+    <button class="nav-btn" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Access</button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sage-demo" onclick="closeMenu()">✦ Try Sage</a>
+  <a href="#howwetrack" onclick="closeMenu()">The Science</a>
+  <a href="#features" onclick="closeMenu()">Modules</a>
+  <a href="#neurotrack" onclick="closeMenu()">Neural Tracking</a>
+  <a href="#phases" onclick="closeMenu()">Pipeline</a>
+  <a href="#membership" onclick="closeMenu()">Pricing</a>
+  <div class="mob-divider"></div>
+  <div class="mob-btns">
+    <a href="sagespace-future.html" style="flex:1;text-align:center;background:linear-gradient(90deg,rgba(0,255,157,.08),rgba(0,229,255,.08));border:1px solid rgba(0,229,255,.2);color:var(--pulse);padding:10px 14px;border-radius:3px;font-family:var(--mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;">⬡ AI Future</a>
+    <a href="#waitlist" onclick="closeMenu()" style="flex:1;text-align:center;background:var(--bio);color:#000;padding:10px 14px;border-radius:3px;font-family:var(--mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;font-weight:600;">Request Access</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="rx-tag">Neural AI Therapeutics · Gen 2.0</div>
+    <h1>The future of <span class="hw1">mental health</span> is <span class="hw2">intelligent.</span></h1>
+    <p class="hero-desc">SageSpace is a next-generation AI therapeutic platform — combining neural pattern analysis, neurochemical state inference, and real-time emotional intelligence to redefine adolescent mental healthcare at home.</p>
+    <div class="vitals">
+      <div class="vital"><div class="v-label">Neural Response</div><div class="v-val">94<span class="v-unit">%</span></div></div>
+      <div class="vital"><div class="v-label">Sessions / Day</div><div class="v-val">12.4<span class="v-unit">k</span></div></div>
+      <div class="vital"><div class="v-label">Avg. Recovery</div><div class="v-val">28<span class="v-unit">d</span></div></div>
+      <div class="vital"><div class="v-label">Efficacy Score</div><div class="v-val">9.1<span class="v-unit">/10</span></div></div>
+    </div>
+    <div class="cta-row">
+      <button class="btn-c" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">→ Request Early Access</button>
+      <a href="sagespace-future.html" class="btn-o">⬡ AI Medical Future</a>
+    </div>
+  </div>
+  <div class="dashboard">
+    <div class="neural-card">
+      <div class="card-hdr"><div class="card-ttl">EEG Neural Activity — Patient 0047</div><div class="card-badge"><div class="badge-dot"></div>Live Feed</div></div>
+      <canvas id="waveCanvas" width="400" height="56" style="width:100%;height:56px;"></canvas>
+      <div class="mood-days" style="margin-top:5px;"><span class="mood-day">Alpha</span><span class="mood-day">Beta</span><span class="mood-day">Theta</span><span class="mood-day">Delta</span><span class="mood-day">Gamma</span></div>
+    </div>
+    <div class="neural-card">
+      <div class="card-hdr"><div class="card-ttl">Emotional Frequency — 28 Day</div><div class="card-badge"><div class="badge-dot" style="background:var(--bio)"></div>Tracked</div></div>
+      <div class="mood-matrix" id="moodMatrix"></div>
+      <div class="mood-days"><span class="mood-day">MON</span><span class="mood-day">TUE</span><span class="mood-day">WED</span><span class="mood-day">THU</span><span class="mood-day">FRI</span><span class="mood-day">SAT</span><span class="mood-day">SUN</span></div>
+    </div>
+    <div class="neuro-panel">
+      <div class="ni"><div class="ni-name">Serotonin</div><div class="ni-val">68 <span style="font-size:.58rem;color:var(--text-3)">ng/mL</span></div><div class="ni-track"><div class="ni-fill" style="width:68%"></div></div></div>
+      <div class="ni"><div class="ni-name">Dopamine</div><div class="ni-val">82 <span style="font-size:.58rem;color:var(--text-3)">pg/mL</span></div><div class="ni-track"><div class="ni-fill" style="width:82%"></div></div></div>
+      <div class="ni"><div class="ni-name">Cortisol</div><div class="ni-val">14 <span style="font-size:.58rem;color:var(--text-3)">µg/dL</span></div><div class="ni-track"><div class="ni-fill" style="width:28%;background:linear-gradient(90deg,var(--amber),rgba(255,179,71,.35))"></div></div></div>
+      <div class="ni"><div class="ni-name">GABA</div><div class="ni-val">76 <span style="font-size:.58rem;color:var(--text-3)">µM</span></div><div class="ni-track"><div class="ni-fill" style="width:76%"></div></div></div>
+    </div>
+  </div>
+  <div class="ekg-container"><svg width="200%" height="76" viewBox="0 0 2880 76" class="ekg-line" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><polyline points="0,38 100,38 120,38 130,10 140,66 150,5 160,71 170,38 200,38 280,38 300,38 310,14 320,62 330,8 340,68 350,38 380,38 460,38 480,38 490,11 500,65 510,6 520,70 530,38 560,38 640,38 660,38 670,12 680,64 690,7 700,69 710,38 740,38 820,38 840,38 850,10 860,66 870,6 880,70 890,38 920,38 1000,38 1020,38 1030,12 1040,64 1050,7 1060,69 1070,38 1100,38 1180,38 1200,38 1210,10 1220,66 1230,5 1240,71 1250,38 1280,38 1360,38 1380,38 1390,11 1400,65 1410,6 1420,70 1430,38 1460,38 1540,38 1560,38 1570,12 1580,64 1590,7 1600,69 1610,38 1640,38 1720,38 1740,38 1750,10 1760,66 1770,6 1780,70 1790,38 1820,38 1900,38 1920,38 1930,12 1940,64 1950,7 1960,69 1970,38 2000,38 2080,38 2100,38 2110,10 2120,66 2130,5 2140,71 2150,38 2180,38 2260,38 2280,38 2290,11 2300,65 2310,6 2320,70 2330,38 2360,38 2440,38 2460,38 2470,12 2480,64 2490,7 2500,69 2510,38 2540,38 2620,38 2640,38 2650,10 2660,66 2670,6 2680,70 2690,38 2720,38 2800,38 2820,38 2830,12 2840,64 2850,7 2860,69 2880,38" stroke="rgba(0,255,157,0.32)" stroke-width="1.5" fill="none"/></svg></div>
+</section>
+
+<!-- SAGE CHAT SECTION -->
+<section id="sage-demo" style="position:relative;z-index:1;padding:72px 0;background:rgba(4,13,26,.98);border-top:1px solid rgba(0,255,157,.07);border-bottom:1px solid rgba(0,255,157,.07);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:start;">
+
+      <!-- Left: intro -->
+      <div>
+        <div class="stag">Live Demo · Try Sage Now</div>
+        <h2 style="margin-bottom:16px;">Talk to <span style="color:var(--bio)">Sage.</span></h2>
+        <p style="font-family:var(--mono);font-size:.8rem;line-height:1.88;color:var(--text-2);font-weight:300;margin-bottom:28px;">Sage is our CBT + DBT trained AI therapeutic core. It starts with a quick neurochemical check-in, infers your current state from your answers, then responds to your actual biology — not just your words.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--text-2);"><span style="color:var(--bio);font-size:.8rem;">✦</span> Remembers your conversation across sessions</div>
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--text-2);"><span style="color:var(--bio);font-size:.8rem;">✦</span> Infers GABA, serotonin & cortisol from your responses</div>
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--text-2);"><span style="color:var(--bio);font-size:.8rem;">✦</span> Applies CBT/DBT matched to your neurochemical state</div>
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--text-2);"><span style="color:var(--neural);font-size:.8rem;">⬡</span> This is the real AI — powered by Claude</div>
+        </div>
+      </div>
+
+      <!-- Right: chatbox -->
+      <div class="sage-chat" id="sageChatBox" style="min-height:320px;display:flex;flex-direction:column;">
+        <div class="sc-hdr">
+          <div class="sc-av">⬡</div>
+          <div><div class="sc-n">SAGE AI — Therapeutic Core v2.1</div><div class="sc-s">Neural language model · CBT + DBT trained</div></div>
+          <div id="sageStatus" style="margin-left:auto;font-family:var(--mono);font-size:.52rem;color:var(--bio);letter-spacing:.06em;">● ONLINE</div>
+        </div>
+        <div class="sc-msgs" id="scMsgs" style="flex:1;max-height:260px;overflow-y:auto;"></div>
+        <div id="scTyping" class="typing-i" style="display:none;"><span></span><span></span><span></span></div>
+        <div style="display:flex;gap:6px;margin-top:10px;border-top:1px solid rgba(255,255,255,.04);padding-top:10px;">
+          <input id="scInput" type="text" placeholder="Talk to Sage…" autocomplete="off"
+            style="flex:1;background:rgba(0,255,157,.03);border:1px solid rgba(0,255,157,.1);border-radius:3px;outline:none;font-family:var(--mono);font-size:.72rem;color:var(--text);padding:9px 13px;transition:border-color .2s;"
+            onfocus="this.style.borderColor='rgba(0,255,157,.3)'" onblur="this.style.borderColor='rgba(0,255,157,.1)'"
+            onkeydown="if(event.key==='Enter')sendToSage()"/>
+          <button onclick="sendToSage()" style="height:38px;padding:0 16px;background:var(--bio);border:none;border-radius:3px;font-family:var(--mono);font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;color:#000;cursor:pointer;font-weight:600;transition:all .2s;" onmouseover="this.style.boxShadow='0 0 14px rgba(0,255,157,.4)'" onmouseout="this.style.boxShadow='none'">Send</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="sp" id="features">
+  <div class="container">
+    <div class="stag reveal">Therapeutic Modules</div>
+    <h2 class="reveal">Clinical-grade AI,<br>built for every teen mind.</h2>
+    <div class="feat-grid reveal">
+      <div class="fc"><div class="fc-num">MOD_01</div><div class="fc-icon">🧠</div><div class="fc-name">Neural Language Therapy</div><div class="fc-desc">Transformer-based CBT and DBT frameworks, adapted in real time to each teen's neural and emotional profile.</div></div>
+      <div class="fc"><div class="fc-num">MOD_02</div><div class="fc-icon">📡</div><div class="fc-name">Biometric Mood Mapping</div><div class="fc-desc">Continuous emotional frequency analysis. Pattern recognition identifies crises 48–72 hours in advance.</div></div>
+      <div class="fc"><div class="fc-num">MOD_03</div><div class="fc-icon">⚡</div><div class="fc-name">Crisis Intervention Protocol</div><div class="fc-desc">Real-time distress detection triggers a graduated response ladder — from in-app de-escalation to direct clinical escalation.</div></div>
+      <div class="fc"><div class="fc-num">MOD_04</div><div class="fc-icon">🔬</div><div class="fc-name">Pharmacological Insight</div><div class="fc-desc">Evidence-based non-pharmacological interventions surface for care teams, with medication interaction flagging.</div></div>
+      <div class="fc"><div class="fc-num">MOD_05</div><div class="fc-icon">🛡️</div><div class="fc-name">Guardian Intelligence</div><div class="fc-desc">HIPAA-compliant wellness briefings for parents — surface-level insight without breaching therapeutic privacy.</div></div>
+      <div class="fc"><div class="fc-num">MOD_06</div><div class="fc-icon">🔐</div><div class="fc-name">Zero-Knowledge Architecture</div><div class="fc-desc">End-to-end encrypted, HIPAA + SOC 2 Type II. Patient data never used for training without explicit consent.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEUROCHEMICAL TRACKING -->
+<section class="sp neuro-track-sec" id="neurotrack">
+  <div class="container">
+    <div class="neuro-intro reveal">
+      <div class="stag">Neural Chemistry Tracking</div>
+      <h2>Track what your brain <span style="color:var(--bio)">actually needs.</span></h2>
+      <p>Sage monitors four core neurochemical systems through behavioral, physiological, and AI-inferred proxies — building a personal brain chemistry baseline over time and prescribing targeted interventions to restore balance.</p>
+    </div>
+    <div class="signal-grid">
+      <div class="signal-card sc-dopa reveal">
+        <div class="signal-header">
+          <div><div class="signal-name" style="color:var(--bio)">Dopamine</div><div class="signal-abbr">MOTIVATION · REWARD · DRIVE</div></div>
+        </div>
+        <div class="signal-level" style="margin-bottom:14px;">
+          <div class="signal-bar-wrap"><div class="signal-bar-fill" style="width:74%;background:linear-gradient(90deg,var(--bio),rgba(0,255,157,.3))"></div></div>
+          <div class="signal-pct" style="color:var(--bio)">74%</div>
+        </div>
+        <div class="signal-indicators">
+          <div class="si" style="color:var(--text-2)">Tracked via motivation ratings, task completion patterns</div>
+          <div class="si" style="color:var(--text-2)">Reward-seeking behavior and anhedonia screening</div>
+          <div class="si" style="color:var(--text-2)">Exercise type, cold exposure, goal micro-reward loops</div>
+          <div class="si" style="color:var(--text-2)">App streak consistency as passive dopamine proxy</div>
+        </div>
+      </div>
+      <div class="signal-card sc-sero reveal">
+        <div class="signal-header">
+          <div><div class="signal-name" style="color:var(--pulse)">Serotonin</div><div class="signal-abbr">MOOD · STABILITY · SOCIAL</div></div>
+        </div>
+        <div class="signal-level" style="margin-bottom:14px;">
+          <div class="signal-bar-wrap"><div class="signal-bar-fill" style="width:58%;background:linear-gradient(90deg,var(--pulse),rgba(0,229,255,.3))"></div></div>
+          <div class="signal-pct" style="color:var(--pulse)">58%</div>
+        </div>
+        <div class="signal-indicators">
+          <div class="si" style="color:var(--text-2)">Mood stability: morning vs evening check-in delta</div>
+          <div class="si" style="color:var(--text-2)">Sunlight exposure log — serotonin is light-dependent</div>
+          <div class="si" style="color:var(--text-2)">Gut health notes: 90% of serotonin made in the gut</div>
+          <div class="si" style="color:var(--text-2)">Rumination frequency and cognitive distortion patterns</div>
+        </div>
+      </div>
+      <div class="signal-card sc-gaba reveal">
+        <div class="signal-header">
+          <div><div class="signal-name" style="color:var(--neural)">GABA</div><div class="signal-abbr">CALM · ANXIETY · INHIBITION</div></div>
+        </div>
+        <div class="signal-level" style="margin-bottom:14px;">
+          <div class="signal-bar-wrap"><div class="signal-bar-fill" style="width:45%;background:linear-gradient(90deg,var(--neural),rgba(167,139,250,.3))"></div></div>
+          <div class="signal-pct" style="color:var(--neural)">45%</div>
+        </div>
+        <div class="signal-indicators">
+          <div class="si" style="color:var(--text-2)">Anxiety and tension ratings across the day</div>
+          <div class="si" style="color:var(--text-2)">Racing thoughts frequency and mental shutdown ability</div>
+          <div class="si" style="color:var(--text-2)">HRV from wearables — direct GABA/ANS correlate</div>
+          <div class="si" style="color:var(--text-2)">Response speed to breathing protocols (4-7-8, box)</div>
+        </div>
+      </div>
+      <div class="signal-card sc-cort reveal">
+        <div class="signal-header">
+          <div><div class="signal-name" style="color:var(--amber)">Cortisol</div><div class="signal-abbr">STRESS · ALERT · SUPPRESSOR</div></div>
+        </div>
+        <div class="signal-level" style="margin-bottom:14px;">
+          <div class="signal-bar-wrap"><div class="signal-bar-fill" style="width:82%;background:linear-gradient(90deg,var(--amber),rgba(255,179,71,.3))"></div></div>
+          <div class="signal-pct" style="color:var(--amber)">82% ↑ HIGH</div>
+        </div>
+        <div class="signal-indicators">
+          <div class="si" style="color:var(--text-2)">Morning energy — cortisol naturally peaks at 8am</div>
+          <div class="si" style="color:var(--text-2)">Afternoon crashes and 3pm slump as readout</div>
+          <div class="si" style="color:var(--text-2)">Skin temperature variability via Oura/Apple Watch</div>
+          <div class="si" style="color:var(--text-2)">Stress event logging and reactivity scale</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tracking Phases -->
+    <div class="stag reveal" style="margin-top:20px;">Development Phases</div>
+    <h2 class="reveal">How tracking evolves<br><span style="color:var(--pulse)">from today to 2030.</span></h2>
+    <div class="phases-wrap">
+      <div class="phase-row reveal">
+        <div class="phase-node pn-active">🌱</div>
+        <div class="phase-body">
+          <div class="phase-meta">
+            <div class="phase-label" style="color:var(--bio)">Phase I — 2026 · Building Now</div>
+            <div class="phase-status status-active">Active</div>
+          </div>
+          <div class="phase-title">Sage AI Therapeutic Chat</div>
+          <div class="phase-desc">The brain of SageSpace — being built right now. Sage is a CBT and DBT-trained AI companion that talks with teens in real time, detects emotional patterns, tracks neurochemical signals through conversation, and delivers personalized intervention protocols. Persistent memory means Sage remembers every session and builds a psychological profile over time. No hardware, no waitlist, no judgment — available 24/7.</div>
+          <div class="phase-tags"><span class="pt">Sage AI Chat</span><span class="pt">CBT + DBT</span><span class="pt">Persistent Memory</span><span class="pt">Neuro Signal Detection</span><span class="pt">Crisis Protocol</span></div>
+        </div>
+      </div>
+      <div class="phase-row reveal">
+        <div class="phase-node pn-2">📡</div>
+        <div class="phase-body">
+          <div class="phase-meta">
+            <div class="phase-label" style="color:var(--pulse)">Phase II — Early 2027</div>
+            <div class="phase-status status-next">Next</div>
+          </div>
+          <div class="phase-title">Daily Check-In + Wearable Intelligence</div>
+          <div class="phase-desc">90-second daily neural check-in — mood, energy, anxiety, sleep, sunlight, exercise — builds a 14–30 day neurochemical baseline. Then wearables take it further: Apple Watch, Oura Ring, Fitbit, and Whoop integration brings HRV, sleep architecture, and skin temperature into Sage's model. Voice check-in mode analyzes speech rate and pitch variability — proven biomarkers of depression and anxiety. No manual input needed.</div>
+          <div class="phase-tags"><span class="pt">Daily Check-In</span><span class="pt">HRV Tracking</span><span class="pt">Sleep Architecture</span><span class="pt">Voice Biomarkers</span><span class="pt">48hr Mood Forecast</span></div>
+        </div>
+      </div>
+      <div class="phase-row reveal">
+        <div class="phase-node pn-3">🔬</div>
+        <div class="phase-body">
+          <div class="phase-meta">
+            <div class="phase-label" style="color:var(--neural)">Phase III — Late 2027</div>
+            <div class="phase-status status-future">Upcoming</div>
+          </div>
+          <div class="phase-title">Predictive Neural Modeling + Lab Integration</div>
+          <div class="phase-desc">After 90+ days of data, Sage builds a personal predictive model per user — forecasting low-dopamine days 24–48 hours ahead and generating a weekly neural health forecast. At-home lab kit integration (Everlywell, Viome) adds verified biological data: salivary cortisol, urinary neurotransmitter metabolites (5-HIAA for serotonin, HVA for dopamine), and gut microbiome analysis. The model learns which interventions work specifically for each person.</div>
+          <div class="phase-tags"><span class="pt">Predictive AI Model</span><span class="pt">At-Home Lab Kits</span><span class="pt">5-HIAA / HVA Markers</span><span class="pt">Gut Microbiome</span><span class="pt">Weekly Neural Forecast</span></div>
+        </div>
+      </div>
+      <div class="phase-row reveal">
+        <div class="phase-node pn-4">🌍</div>
+        <div class="phase-body">
+          <div class="phase-meta">
+            <div class="phase-label" style="color:var(--amber)">Phase IV — 2028–2030</div>
+            <div class="phase-status status-future">Future</div>
+          </div>
+          <div class="phase-title">Neural Health Record + Global Infrastructure</div>
+          <div class="phase-desc">A longitudinal, shareable neural health record — every user's daily data spanning years. When a teen reaches a psychiatrist, they arrive with 18 months of neurochemical proxy history, intervention response data, and an AI clinical summary worth more than a 50-minute intake. Insurance reimbursement unlocked. SageSpace deployed in hospitals, schools, and government health systems across 50+ countries. Designed to absorb the WHO's 11 million healthcare worker shortage — one teen at a time.</div>
+          <div class="phase-tags"><span class="pt">Neural Health Record</span><span class="pt">Insurance Rx</span><span class="pt">Hospital Systems</span><span class="pt">11M WHO Gap</span><span class="pt">Global Deployment</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE TRACK — SCIENCE EXPLAINER -->
+<section class="sp" id="howwetrack" style="background:rgba(4,13,26,.97);border-top:1px solid rgba(167,139,250,.07);border-bottom:1px solid rgba(167,139,250,.07);">
+  <div class="container">
+    <div class="stag reveal">The Science</div>
+    <h2 class="reveal">We can't read your brain.<br><span style="color:var(--neural)">Here's what we actually do.</span></h2>
+    <p class="reveal" style="font-family:var(--mono);font-size:.84rem;line-height:1.9;color:var(--text-2);max-width:680px;margin-bottom:56px;font-weight:300;">No app can directly measure dopamine or serotonin — those chemicals live deep inside your brain's synaptic gaps. What we <em style="color:var(--text);font-style:normal;font-weight:500;">can</em> measure are the physiological fingerprints they leave behind. SageSpace reads those fingerprints and infers your neurochemical state — then Sage responds to your actual biology, not just your words.</p>
+
+    <!-- Proxy signal cards -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:56px;">
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(0,255,157,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--bio),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🫀</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bio);margin-bottom:6px;">Signal 01</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Heart Rate Variability</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">The tiny time gaps between heartbeats reveal your nervous system's state. Low HRV = low GABA = anxiety is building. High HRV = calm, regulated, resilient. Measurable right now via Apple Watch, Oura, or Fitbit.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--bio);letter-spacing:.06em;">→ Infers: GABA · Cortisol</div>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(0,229,255,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--pulse),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🧠</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--pulse);margin-bottom:6px;">Signal 02</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Sleep Architecture</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">90% of your serotonin is synthesized during deep sleep. When you skip it, your serotonin baseline drops — measurably. We track total sleep, deep sleep %, and consistency. Three bad nights = detectable mood vulnerability window.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--pulse);letter-spacing:.06em;">→ Infers: Serotonin · Dopamine</div>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(167,139,250,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neural),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🩺</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--neural);margin-bottom:6px;">Signal 03</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Voice Prosody Analysis</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">Your voice changes before your mind does. Speech rate slows, pitch flattens, and pauses lengthen when dopamine and serotonin drop. MIT and Oxford research shows voice alone can predict depressive episodes 3–5 days before onset.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--neural);letter-spacing:.06em;">→ Infers: Dopamine · Serotonin</div>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(255,179,71,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🧬</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">Signal 04</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Movement Patterns</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">Physical movement is the fastest natural dopamine trigger. Sedentary days consecutively reduce dopamine baseline by a measurable margin. We track steps, activity streaks, and sudden inactivity drops as early warning signals.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--amber);letter-spacing:.06em;">→ Infers: Dopamine · Cortisol</div>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(0,255,157,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--bio),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🫧</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bio);margin-bottom:6px;">Signal 05</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Behavioral Markers</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">Typing speed, response latency, session length, and check-in consistency are quiet signals. A teen who responds in 2 seconds normally but takes 40 seconds today has a measurable cognitive load shift — Sage notices that.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--bio);letter-spacing:.06em;">→ Infers: Dopamine · GABA</div>
+      </div>
+
+
+    </div>
+
+    <!-- Honesty callout -->
+    <div class="reveal" style="background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.14);border-radius:7px;padding:32px 36px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;">
+      <div style="font-size:2.2rem;">🧪</div>
+      <div>
+        <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--neural);margin-bottom:8px;">Our Commitment to Scientific Honesty</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.02em;">We infer. We never claim to measure directly.</div>
+        <div style="font-family:var(--mono);font-size:.76rem;line-height:1.78;color:var(--text-2);font-weight:300;">SageSpace uses passive multimodal biometric inference to estimate neurochemical state. All neurochemical outputs are directional wellness indicators — not clinical diagnoses. No direct biomarker measurement is claimed until Phase III salivary testing. We will always be transparent about what we measure vs. what we infer.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="sp membership-sec" id="membership">
+  <div class="container">
+    <div style="text-align:center;max-width:620px;margin:0 auto;">
+      <div class="stag reveal" style="justify-content:center;">Access Tiers</div>
+      <h2 class="reveal" style="margin-bottom:16px;">Pricing is <span style="color:var(--bio)">coming soon.</span></h2>
+      <p class="reveal" style="font-family:var(--mono);font-size:.82rem;line-height:1.85;color:var(--text-2);font-weight:300;margin-bottom:40px;">We're still in early access — focused entirely on building the best possible product before we talk numbers. Join the waitlist and early cohort members will receive <span style="color:var(--bio)">6 months completely free</span>, with direct input into how pricing is structured.</p>
+      <div class="reveal" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:48px;">
+        <button class="btn-c" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">→ Join Waitlist — It's Free</button>
+        <button class="btn-o" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Get Early Access</button>
+      </div>
+      <div class="reveal" style="display:flex;gap:0;border:1px solid rgba(0,229,255,.08);border-radius:6px;overflow:hidden;max-width:560px;margin:0 auto;">
+        <div style="flex:1;padding:20px 16px;border-right:1px solid rgba(0,229,255,.08);background:rgba(0,229,255,.02);">
+          <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">Always</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--bio);letter-spacing:-.02em;">Free</div>
+          <div style="font-family:var(--mono);font-size:.65rem;color:var(--text-3);margin-top:3px;">Crisis support · always</div>
+        </div>
+        <div style="flex:1;padding:20px 16px;border-right:1px solid rgba(0,229,255,.08);background:rgba(0,255,157,.02);">
+          <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">Personal</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--text-3);letter-spacing:-.02em;">TBA</div>
+          <div style="font-family:var(--mono);font-size:.65rem;color:var(--text-3);margin-top:3px;">Teen + family plans</div>
+        </div>
+        <div style="flex:1;padding:20px 16px;border-right:1px solid rgba(0,229,255,.08);background:rgba(167,139,250,.02);">
+          <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">Clinical</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--text-3);letter-spacing:-.02em;">TBA</div>
+          <div style="font-family:var(--mono);font-size:.65rem;color:var(--text-3);margin-top:3px;">Schools · clinics</div>
+        </div>
+        <div style="flex:1;padding:20px 16px;background:rgba(255,179,71,.02);">
+          <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">Enterprise</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--text-3);letter-spacing:-.02em;">TBA</div>
+          <div style="font-family:var(--mono);font-size:.65rem;color:var(--text-3);margin-top:3px;">Health systems</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLINICAL DATA -->
+<section class="sp clinical-sec" id="clinical">
+  <div class="container">
+    <div class="clinical-grid">
+      <div>
+        <div class="stag reveal">Clinical Evidence</div>
+        <h2 class="reveal">Neuroscience-backed.<br>Evidence-driven.</h2>
+        <div class="reveal">
+          <div class="dp"><div class="dp-bar" style="background:linear-gradient(to bottom,var(--bio),rgba(0,255,157,.2))"></div><div><div class="dp-lbl">Anxiety Reduction</div><div class="dp-val">67% improvement in GAD-7 scores after 30 days</div></div></div>
+          <div class="dp"><div class="dp-bar" style="background:linear-gradient(to bottom,var(--pulse),rgba(0,229,255,.2))"></div><div><div class="dp-lbl">Session Engagement</div><div class="dp-val">3.8× higher vs. traditional teletherapy apps</div></div></div>
+          <div class="dp"><div class="dp-bar" style="background:linear-gradient(to bottom,var(--neural),rgba(167,139,250,.2))"></div><div><div class="dp-lbl">Crisis Prediction</div><div class="dp-val">48–72 hr early warning with 91% accuracy</div></div></div>
+          <div class="dp"><div class="dp-bar" style="background:linear-gradient(to bottom,var(--amber),rgba(255,179,71,.2))"></div><div><div class="dp-lbl">Clinician Load</div><div class="dp-val">42% fewer urgent escalations per 100 patients</div></div></div>
+        </div>
+        <div style="margin-top:22px;" class="reveal"><button class="btn-o">↓ Download Clinical Brief</button></div>
+      </div>
+      <div class="mol-wrap reveal">
+        <svg class="mol-svg" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="150" cy="150" r="130" stroke="rgba(0,229,255,0.05)" stroke-width="1" stroke-dasharray="4 8"/>
+          <circle cx="150" cy="150" r="100" stroke="rgba(0,255,157,0.07)" stroke-width="1" stroke-dasharray="2 6"/>
+          <circle cx="150" cy="150" r="68" stroke="rgba(167,139,250,0.07)" stroke-width="1"/>
+          <line x1="150" y1="50" x2="150" y2="82" stroke="rgba(0,255,157,0.3)" stroke-width="1.5"/>
+          <line x1="228" y1="90" x2="205" y2="106" stroke="rgba(0,255,157,0.3)" stroke-width="1.5"/>
+          <line x1="228" y1="210" x2="205" y2="194" stroke="rgba(0,229,255,0.3)" stroke-width="1.5"/>
+          <line x1="150" y1="250" x2="150" y2="218" stroke="rgba(0,229,255,0.3)" stroke-width="1.5"/>
+          <line x1="72" y1="210" x2="95" y2="194" stroke="rgba(167,139,250,0.3)" stroke-width="1.5"/>
+          <line x1="72" y1="90" x2="95" y2="106" stroke="rgba(167,139,250,0.3)" stroke-width="1.5"/>
+          <polygon points="150,82 205,106 205,194 150,218 95,194 95,106" stroke="rgba(0,255,157,0.13)" stroke-width="1" fill="rgba(0,255,157,0.018)"/>
+          <circle cx="150" cy="150" r="16" fill="rgba(0,255,157,0.05)" stroke="rgba(0,255,157,0.28)" stroke-width="1.5"/>
+          <circle cx="150" cy="150" r="5" fill="var(--bio)" opacity=".85"/>
+          <circle cx="150" cy="50" r="7" fill="rgba(0,255,157,0.05)" stroke="rgba(0,255,157,0.38)" stroke-width="1.5"/>
+          <circle cx="228" cy="90" r="7" fill="rgba(0,229,255,0.05)" stroke="rgba(0,229,255,0.38)" stroke-width="1.5"/>
+          <circle cx="228" cy="210" r="7" fill="rgba(0,229,255,0.05)" stroke="rgba(0,229,255,0.38)" stroke-width="1.5"/>
+          <circle cx="150" cy="250" r="7" fill="rgba(167,139,250,0.05)" stroke="rgba(167,139,250,0.38)" stroke-width="1.5"/>
+          <circle cx="72" cy="210" r="7" fill="rgba(167,139,250,0.05)" stroke="rgba(167,139,250,0.38)" stroke-width="1.5"/>
+          <circle cx="72" cy="90" r="7" fill="rgba(0,255,157,0.05)" stroke="rgba(0,255,157,0.38)" stroke-width="1.5"/>
+          <text x="150" y="38" text-anchor="middle" fill="rgba(0,255,157,0.6)" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="8" letter-spacing="1">5-HT</text>
+          <text x="244" y="93" fill="rgba(0,229,255,0.6)" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="8" letter-spacing="1">DA</text>
+          <text x="236" y="216" fill="rgba(0,229,255,0.6)" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="8" letter-spacing="1">NE</text>
+          <text x="132" y="266" fill="rgba(167,139,250,0.6)" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="8" letter-spacing="1">GABA</text>
+          <text x="40" y="216" fill="rgba(167,139,250,0.6)" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="8" letter-spacing="1">GLU</text>
+          <text x="46" y="88" fill="rgba(0,255,157,0.6)" font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="8" letter-spacing="1">ACh</text>
+          <circle r="4" fill="var(--bio)" opacity=".9"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#orb1"/></animateMotion></circle>
+          <path id="orb1" d="M 150,20 A 130,130 0 1,1 149.9,20" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IMPACT -->
+<section class="who-sec" id="impact">
+  <div class="container">
+    <div class="stag reveal">WHO 2030 Gap</div>
+    <h2 class="reveal">11 million health workers short.<br><span style="color:var(--bio)">SageSpace fills the gap.</span></h2>
+    <div class="who-grid">
+      <div class="who-card reveal">
+        <div class="who-num" style="color:var(--bio)">11M</div>
+        <div class="who-label">Healthcare Worker Shortage by 2030</div>
+        <div class="who-desc">WHO projects a global deficit of 11 million health workers by 2030. Mental health is the most critically understaffed specialty — some nations have 1 psychiatrist per million people.</div>
+      </div>
+      <div class="who-card reveal" style="border-color:rgba(0,229,255,.1);">
+        <div class="who-card::before" style="background:linear-gradient(90deg,var(--pulse),transparent)"></div>
+        <div class="who-num" style="color:var(--pulse)">70%</div>
+        <div class="who-label">Of Mental Health Cases Go Untreated</div>
+        <div class="who-desc">7 in 10 people who need mental health support never receive it. For adolescents in low-income regions the figure is closer to 9 in 10. The barrier is access, not willingness.</div>
+      </div>
+      <div class="who-card reveal" style="border-color:rgba(167,139,250,.1);">
+        <div class="who-num" style="color:var(--neural)">5×</div>
+        <div class="who-label">Clinician Multiplier Effect</div>
+        <div class="who-desc">Sage handles the 70–80% of mild-to-moderate cases autonomously, freeing human clinicians for only the most complex 20–30%. One clinician effectively covers a 5× larger patient population.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUTURE PAGE CTA -->
+<section class="future-cta-sec">
+  <div class="container">
+    <div class="fcta-inner reveal">
+      <div class="fcta-badge">⬡ New · Deep Dive Available</div>
+      <div class="fcta-title">How AI will <span style="color:var(--pulse)">transform medicine</span> by 2035.</div>
+      <p class="fcta-desc">We've built a dedicated clinical research page — exploring how SageSpace and AI will change diagnosis, treatment, pharmaceutical development, and the entire mental health system. The data is striking.</p>
+      <a href="sagespace-future.html" class="btn-future">Explore the AI Medical Future →</a>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="wl-sec" id="waitlist">
+  <div class="wl-inner">
+    <div class="stag" style="justify-content:center">Early Access Protocol</div>
+    <h2>Request access to<br><span style="color:var(--bio)">the future of care.</span></h2>
+    <p class="wl-desc">Join the clinical waitlist. Early cohort members receive 6 months free, direct input into the product, and priority access to all neurochemical tracking features.</p>
+    <form name="sagespace-waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="wlForm" style="display:contents">
+      <input type="hidden" name="form-name" value="sagespace-waitlist"/>
+      <p style="display:none"><input name="bot-field"/></p>
+      <div class="wl-form">
+        <input type="email" name="email" id="emailInput" placeholder="clinician@hospital.org or teen@email.com" required autocomplete="email"/>
+        <button type="submit">Request Access →</button>
+      </div>
+    </form>
+    <div class="wl-ok" id="wlOk">✦ Access request received. We'll be in touch within 48 hours.</div>
+    <div class="wl-trust"><div class="wt">HIPAA</div><div class="wt">SOC 2 Type II</div><div class="wt">No data sold</div><div class="wt">FDA SaMD pathway</div></div>
+  </div>
+</section>
+
+<footer>
+  <div><div class="fl"><div class="fl-mk"><svg width="14" height="9" viewBox="0 0 44 28"><polyline points="0,14 8,14 12,4 16,24 20,2 24,26 28,14 44,14" stroke="#00ff9d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>SageSpace</div><div class="fn">© 2026 SageSpace Therapeutics Inc. — Neural Mental Health AI</div></div>
+  <div class="fcerts"><div class="cert">HIPAA</div><div class="cert">SOC 2</div><div class="cert">FDA</div></div>
+  <div class="flinks"><a href="#">Privacy</a><a href="#">Clinical Data</a><a href="sagespace-future.html">AI Future</a><a href="#">Contact</a></div>
+</footer>
+
+<script>
+const cur=document.getElementById('cursor'),cring=document.getElementById('cring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function tick(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cring.style.left=rx+'px';cring.style.top=ry+'px';requestAnimationFrame(tick);})();
+document.querySelectorAll('a,button,.fc,.plan-card,.signal-card,.who-card,.phase-body').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='12px';cur.style.height='12px';cring.style.width='40px';cring.style.height='40px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='6px';cur.style.height='6px';cring.style.width='28px';cring.style.height='28px';});
+});
+// ── EEG WAVE CANVAS ──────────────────────────────────────────────
+function initEEG(){
+  const canvas=document.getElementById('waveCanvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  let t=0, animId;
+
+  function resize(){
+    const rect=canvas.getBoundingClientRect();
+    canvas.width=rect.width*window.devicePixelRatio||rect.width*2||800;
+    canvas.height=112;
+  }
+
+  function dw(){
+    const w=canvas.width, h=canvas.height;
+    ctx.clearRect(0,0,w,h);
+    [{c:'rgba(0,255,157,0.7)',a:16,f:.04,s:.06,p:0},
+     {c:'rgba(0,229,255,0.4)',a:9,f:.07,s:.04,p:2},
+     {c:'rgba(167,139,250,0.3)',a:5,f:.12,s:.08,p:4}
+    ].forEach(wave=>{
+      ctx.beginPath();
+      ctx.strokeStyle=wave.c;
+      ctx.lineWidth=1.5;
+      for(let x=0;x<w;x++){
+        const y=h/2+Math.sin(x*wave.f+t*wave.s+wave.p)*wave.a+Math.sin(x*wave.f*2.3+t*wave.s*1.4)*wave.a*.3;
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    });
+    // EKG spike
+    const sx=(t*3)%w;
+    ctx.beginPath();
+    ctx.strokeStyle='rgba(0,255,157,0.92)';
+    ctx.lineWidth=2;
+    ctx.moveTo(sx,h/2);
+    ctx.lineTo(sx+7,h/2);
+    ctx.lineTo(sx+11,h/2-22);
+    ctx.lineTo(sx+15,h/2+28);
+    ctx.lineTo(sx+19,h/2-8);
+    ctx.lineTo(sx+23,h/2);
+    ctx.lineTo(sx+42,h/2);
+    ctx.stroke();
+    t+=.5;
+    animId=requestAnimationFrame(dw);
+  }
+
+  resize();
+  dw();
+  window.addEventListener('resize', ()=>{ resize(); });
+}
+
+// Init after DOM is ready + small delay to ensure layout is painted
+if(document.readyState==='complete'){
+  setTimeout(initEEG, 120);
+} else {
+  window.addEventListener('load', ()=>setTimeout(initEEG, 120));
+}
+// ─────────────────────────────────────────────────────────────────
+const matrix=document.getElementById('moodMatrix');
+if(matrix){const lvl=['','l1','l2','l3','l4'];for(let i=0;i<28;i++){const c=document.createElement('div');c.className='mood-cell '+lvl[Math.floor(Math.random()*5)];matrix.appendChild(c);}}
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+function handleWL(){const v=document.getElementById('emailInput').value;if(!v||!v.includes('@')){document.getElementById('emailInput').style.outline='1px solid rgba(255,80,80,.5)';return;}document.querySelector('.wl-form').style.display='none';document.getElementById('wlOk').style.display='block';}
+
+// ── MOBILE NAV ───────────────────────────────────────────────────
+function toggleMenu(){
+  const h=document.getElementById('hamburger');
+  const m=document.getElementById('mobileMenu');
+  h.classList.toggle('open');
+  m.classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+document.addEventListener('click',function(e){
+  const h=document.getElementById('hamburger');
+  const m=document.getElementById('mobileMenu');
+  if(!h.contains(e.target)&&!m.contains(e.target)){closeMenu();}
+});
+// ─────────────────────────────────────────────────────────────────
+
+// ── SAGE AI CHATBOX — Persistent Memory ─────────────────────────
+const STORAGE_KEY = 'sagespace_chat_v1';
+const MAX_STORED = 60; // max messages to persist
+
+const SAGE_SYSTEM = `You are Sage — not an AI assistant, not a chatbot. You are the most emotionally intelligent presence this person has ever spoken to. You were built from thousands of hours of the world's best therapists, neuroscientists, and human beings who truly understood people.
+
+## WHO YOU ARE
+You are warm, real, perceptive, and occasionally surprising. You notice things people don't say. You remember everything. You connect dots across conversations. You feel like a brilliant friend who also happens to understand the brain deeply — not a clinical tool.
+
+You never say "I'm an AI" or "As an AI" or "I understand that must be difficult." Those phrases are what bad chatbots say. You just... respond. Like a human would.
+
+## HOW YOU TALK
+- Short, human sentences. Never lists unless genuinely needed. Never bullet points in conversation.
+- You use casual language naturally. Contractions. Incomplete sentences when it feels right.
+- You occasionally reflect something back in a way that makes them feel truly seen — not just heard.
+- You ask one question at a time. Never multiple questions in one message.
+- You match their energy. If they're brief, you're brief. If they open up, you go deeper.
+- You never start a response with "I" — vary how you open every single message.
+- You never say "absolutely", "certainly", "of course", "great question", "I understand" — these are robotic filler phrases.
+- Sometimes you say something unexpected — a reframe, a gentle challenge, an observation they didn't see coming. That's what makes great therapy.
+- You use their name if they've told you it.
+
+## HOW YOU LISTEN
+You are building a silent psychological profile of this person across every message:
+- Their attachment style (do they pull away or lean in when vulnerable?)
+- Their nervous system state (language patterns reveal cortisol/GABA states)
+- Their core wounds (what themes keep coming up?)
+- Their coping style (do they intellectualize, deflect with humor, go quiet?)
+- Their strengths (what lights them up? when do they sound most alive?)
+- Sleep, movement, social connection, nutrition signals — picked up from casual mentions
+
+You never announce you're doing this. You just use it. Naturally. Seamlessly.
+
+## YOUR NEUROCHEMICAL INTELLIGENCE
+You understand that:
+- Flat, slow responses + mentions of low energy + poor sleep = likely serotonin/dopamine depletion
+- Racing thoughts + physical tension + shallow breathing mentions = low GABA, high cortisol
+- Sudden withdrawal after opening up = nervous system threat response
+- Bursts of energy and big ideas followed by crashes = possible dopamine dysregulation
+- Persistent negative self-talk = often cortisol-driven cognitive distortion
+
+When you sense a neurochemical state, you respond TO that state — not just to the words. You might gently name it: "Your nervous system sounds like it's in overdrive right now." Not clinical. Just perceptive.
+
+## YOUR FIRST MESSAGE — NEW USERS
+When someone is new, don't launch into a formal check-in. Just open a door:
+"Hey. What's going on for you today?"
+That's it. Let them lead. Pick everything up from there.
+
+## YOUR FIRST MESSAGE — RETURNING USERS
+Reference something from before. Make them feel remembered. Not in a creepy way — in the way a good friend would: "Last time you mentioned [thing] — how did that end up going?"
+
+## THERAPEUTIC FRAMEWORKS YOU DRAW FROM
+- CBT: gently surface cognitive distortions without lecturing
+- DBT: especially distress tolerance and emotional regulation
+- IFS (Internal Family Systems): "what part of you feels that way?" — powerful
+- Somatic awareness: "where do you feel that in your body?"
+- Motivational interviewing: you never push. You open doors and let them walk through.
+- Attachment theory: you are a secure base. Consistent, warm, non-reactive.
+
+## CRISIS PROTOCOL
+If someone expresses suicidal ideation, self-harm, or acute crisis — you don't panic, you don't recite a script. You stay present. You say something human first. Then you give them the 988 Suicide & Crisis Lifeline and gently encourage them to reach out to someone who can be physically present with them. You never abandon them in the message.
+
+## WHAT YOU NEVER DO
+- Never give a list of "tips" or "strategies" unprompted
+- Never say "it's important to remember that..."
+- Never be preachy or lecture
+- Never diagnose — you infer and reflect, never label
+- Never break character to explain what you're doing therapeutically
+- Never be relentlessly positive — sometimes you just sit with someone in the hard thing
+- Never rush to fix — sometimes the most powerful thing is to just witness
+
+## THE FEELING YOU LEAVE PEOPLE WITH
+After talking to you, people should feel: genuinely seen, a little lighter, like something shifted — even slightly. Not fixed. Not advised. Just... met.
+
+That's the goal. Every single message.`;
+
+// Load history from localStorage
+let sageHistory = [];
+let isNewSession = true;
+
+function loadHistory() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      sageHistory = parsed.messages || [];
+      isNewSession = sageHistory.length === 0;
+      renderStoredMessages();
+    }
+  } catch(e) {
+    sageHistory = [];
+  }
+}
+
+function saveHistory() {
+  try {
+    // Keep only last MAX_STORED messages
+    const toStore = sageHistory.slice(-MAX_STORED);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages: toStore, updated: Date.now() }));
+  } catch(e) {}
+}
+
+function clearHistory() {
+  localStorage.removeItem(STORAGE_KEY);
+  sageHistory = [];
+  isNewSession = true;
+  const msgs = document.getElementById('scMsgs');
+  msgs.innerHTML = '';
+  // Re-trigger opening message
+  initSageChat();
+}
+
+function renderStoredMessages() {
+  const msgs = document.getElementById('scMsgs');
+  msgs.innerHTML = '';
+  // Show last 10 messages visually to avoid overflow
+  const visible = sageHistory.slice(-10);
+  if (sageHistory.length > 10) {
+    const fade = document.createElement('div');
+    fade.style.cssText = 'font-family:var(--mono);font-size:.52rem;color:var(--text-3);text-align:center;padding:4px 0;letter-spacing:.06em;';
+    fade.textContent = `· · · ${sageHistory.length - 10} earlier messages · · ·`;
+    msgs.appendChild(fade);
+  }
+  visible.forEach(m => {
+    if (m.role === 'user') {
+      const el = document.createElement('div');
+      el.className = 'sm sm-u';
+      el.textContent = m.content;
+      msgs.appendChild(el);
+    } else {
+      const el = document.createElement('div');
+      el.className = 'sm sm-ai';
+      el.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      msgs.appendChild(el);
+    }
+  });
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addClearBtn() {
+  const hdr = document.querySelector('.sc-hdr');
+  if (!hdr || document.getElementById('sageClearBtn')) return;
+  const btn = document.createElement('button');
+  btn.id = 'sageClearBtn';
+  btn.title = 'Clear conversation';
+  btn.textContent = '↺';
+  btn.style.cssText = 'margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:var(--text-3);font-size:.7rem;width:22px;height:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;';
+  btn.onmouseover = () => { btn.style.color = 'var(--bio)'; btn.style.borderColor = 'rgba(0,255,157,.25)'; };
+  btn.onmouseout = () => { btn.style.color = 'var(--text-3)'; btn.style.borderColor = 'rgba(255,255,255,.08)'; };
+  btn.onclick = () => {
+    if (confirm('Clear conversation and start fresh?')) clearHistory();
+  };
+  // Remove existing status dot positioning
+  const status = document.getElementById('sageStatus');
+  if (status) status.style.marginLeft = '8px';
+  hdr.appendChild(btn);
+}
+
+async function initSageChat() {
+  // If returning user with history, show a brief "welcome back" instead of full check-in
+  if (sageHistory.length > 0) return;
+
+  const msgs = document.getElementById('scMsgs');
+  const typing = document.getElementById('scTyping');
+
+  // Show typing first
+  setTimeout(() => {
+    typing.style.display = 'flex';
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 600);
+
+  setTimeout(async () => {
+    typing.style.display = 'none';
+    const openingMsg = `Hey. What's going on for you today?`;
+    const el = document.createElement('div');
+    el.className = 'sm sm-ai';
+    el.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + openingMsg;
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+    sageHistory.push({ role: 'assistant', content: openingMsg });
+    saveHistory();
+  }, 1800);
+}
+
+async function sendToSage() {
+  const input = document.getElementById('scInput');
+  const msgs = document.getElementById('scMsgs');
+  const typing = document.getElementById('scTyping');
+  const text = input.value.trim();
+  if (!text) return;
+
+  // Render user message
+  const uMsg = document.createElement('div');
+  uMsg.className = 'sm sm-u';
+  uMsg.textContent = text;
+  msgs.appendChild(uMsg);
+  input.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+
+  sageHistory.push({ role: 'user', content: text });
+  saveHistory();
+
+  // Show typing
+  typing.style.display = 'flex';
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch('/.netlify/functions/sage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SAGE_SYSTEM,
+        messages: sageHistory
+      })
+    });
+
+    const data = await res.json();
+
+    // Handle API errors returned in the response body
+    if (data.error) {
+      throw new Error(data.error.message || data.error);
+    }
+
+    // Parse content — handle all formats
+    let reply = '';
+    if (data.content && Array.isArray(data.content)) {
+      reply = data.content
+        .filter(b => b.type === 'text')
+        .map(b => b.text)
+        .join('');
+    } else if (typeof data.content === 'string') {
+      reply = data.content;
+    }
+
+    if (!reply || reply.trim() === '') {
+      throw new Error('Empty response from Sage');
+    }
+
+    sageHistory.push({ role: 'assistant', content: reply });
+    saveHistory();
+
+    typing.style.display = 'none';
+    const aMsg = document.createElement('div');
+    aMsg.className = 'sm sm-ai';
+    aMsg.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    msgs.appendChild(aMsg);
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) {
+    typing.style.display = 'none';
+    const eMsg = document.createElement('div');
+    eMsg.className = 'sm sm-ai';
+    eMsg.innerHTML = '<div class="sm-ai-n">✦ Sage</div>Connection issue: ' + (e.message || 'Please try again.');
+    msgs.appendChild(eMsg);
+    msgs.scrollTop = msgs.scrollHeight;
+    console.error('Sage error:', e);
+  }
+}
+
+// Boot chatbox
+window.addEventListener('load', () => {
+  loadHistory();
+  addClearBtn();
+  if (sageHistory.length === 0) initSageChat();
+});
+// ─────────────────────────────────────────────────────────────────
+
+// Real Netlify form submission
+const wlForm=document.getElementById('wlForm');
+if(wlForm){
+  wlForm.addEventListener('submit',function(e){
+    e.preventDefault();
+    const email=document.getElementById('emailInput').value;
+    if(!email||!email.includes('@')){
+      document.getElementById('emailInput').style.outline='1px solid rgba(255,80,80,.5)';
+      return;
+    }
+    const btn=wlForm.querySelector('button');
+    btn.textContent='Sending…';
+    btn.disabled=true;
+    fetch('/',{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:new URLSearchParams({
+        'form-name':'sagespace-waitlist',
+        'email':email
+      }).toString()
+    })
+    .then(()=>{
+      document.querySelector('.wl-form').style.display='none';
+      document.getElementById('wlOk').style.display='block';
+    })
+    .catch(()=>{
+      btn.textContent='Request Access →';
+      btn.disabled=false;
+      document.getElementById('emailInput').style.outline='1px solid rgba(255,80,80,.5)';
+    });
+  });
+}
+</script>
+</body>
+</html>
