@@ -281,80 +281,8 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
 .dashboard{opacity:0;animation:fi .9s ease .32s forwards;}
 @keyframes fi{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 
-/* HAMBURGER */
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:1px solid rgba(0,255,157,.18);border-radius:3px;background:transparent;}
-.hamburger span{display:block;width:20px;height:1.5px;background:var(--bio);transition:all .3s;}
-.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
-.hamburger.open span:nth-child(2){opacity:0;}
-.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
-.mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:rgba(2,4,9,.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,255,157,.08);z-index:999;padding:20px 20px 24px;flex-direction:column;gap:4px;}
-.mobile-menu.open{display:flex;}
-.mobile-menu a{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;color:var(--text-2);text-decoration:none;text-transform:uppercase;padding:11px 14px;border-radius:3px;border:1px solid transparent;transition:all .2s;}
-.mobile-menu a:hover{color:var(--bio);border-color:rgba(0,255,157,.12);background:rgba(0,255,157,.04);}
-.mobile-menu .mob-divider{height:1px;background:rgba(255,255,255,.05);margin:8px 0;}
-.mobile-menu .mob-btns{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;}
-
-@media(max-width:1040px){
-  .hero{grid-template-columns:1fr;padding-top:88px;}
-  .dashboard{display:none;}
-  .feat-grid{grid-template-columns:1fr 1fr;}
-  .plans-grid{grid-template-columns:1fr 1fr;}
-  .clinical-grid{grid-template-columns:1fr;}
-  .who-grid{grid-template-columns:1fr 1fr;}
-  .signal-grid{grid-template-columns:1fr 1fr;}
-  #howwetrack .signal-grid-inner{grid-template-columns:1fr 1fr;}
-}
-
-@media(max-width:768px){
-  nav{padding:0 20px;}
-  .nav-links{display:none;}
-  .nav-right .nav-future{display:none;}
-  .nav-right .nav-btn{display:none;}
-  .nav-sys{display:none;}
-  .hamburger{display:flex;}
-  .container{padding:0 20px;}
-  .hero{padding:78px 20px 48px;gap:32px;}
-  h1{font-size:2.2rem;}
-  h2{font-size:1.6rem;}
-  .vitals{flex-wrap:wrap;}
-  .vital{flex:1 1 45%;}
-  .cta-row{flex-direction:column;align-items:flex-start;}
-  .cta-row .btn-c,.cta-row .btn-o{width:100%;justify-content:center;text-align:center;}
-  .feat-grid{grid-template-columns:1fr;}
-  .plans-grid{grid-template-columns:1fr 1fr;}
-  .who-grid{grid-template-columns:1fr;}
-  .signal-grid{grid-template-columns:1fr;}
-  .neuro-panel{grid-template-columns:1fr 1fr;}
-  footer{padding:26px 20px;flex-direction:column;align-items:flex-start;gap:16px;}
-  .fcerts{flex-wrap:wrap;}
-  .wl-form{flex-direction:column;}
-  .wl-form input{height:48px;min-height:48px;padding:0 16px;font-size:.82rem;width:100%;}
-  .wl-form button{height:48px;width:100%;font-size:.72rem;}
-  .hero-stats{flex-wrap:wrap;}
-  .sp{padding:64px 0;}
-  .future-cta-sec{padding:56px 0;}
-}
-
-@media(max-width:480px){
-  nav{padding:0 16px;}
-  .logo span{display:none;}
-  .container{padding:0 16px;}
-  .hero{padding:72px 16px 40px;}
-  h1{font-size:1.9rem;}
-  .plans-grid{grid-template-columns:1fr;}
-  .vital{flex:1 1 100%;}
-  .vitals{gap:6px;}
-  .clinical-grid{grid-template-columns:1fr;}
-  .mol-wrap{display:none;}
-  .neuro-panel{grid-template-columns:1fr;}
-  footer{padding:22px 16px;}
-  .flinks{flex-wrap:wrap;gap:12px;}
-  .sp{padding:48px 0;}
-  #howwetrack [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr !important;}
-  .fcta-inner{padding:0 16px;}
-  .wl-inner{padding:0 16px;}
-  .wl-sec{padding:56px 0;}
-}
+@media(max-width:1040px){.hero{grid-template-columns:1fr;padding-top:88px;}.dashboard{display:none;}.feat-grid{grid-template-columns:1fr 1fr;}.plans-grid{grid-template-columns:1fr 1fr;}.clinical-grid{grid-template-columns:1fr;}.who-grid{grid-template-columns:1fr 1fr;}.signal-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){nav{padding:0 18px;}.nav-links{display:none;}.container{padding:0 18px;}.feat-grid{grid-template-columns:1fr;}.plans-grid{grid-template-columns:1fr;}.who-grid{grid-template-columns:1fr;}.signal-grid{grid-template-columns:1fr;}.hero{padding:78px 18px 48px;}footer{padding:26px 18px;flex-direction:column;align-items:flex-start;}.wl-form{flex-direction:column;}.wl-form button{height:40px;}}
 </style>
 </head>
 <body>
@@ -407,7 +335,7 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
   <div class="hero-left">
     <div class="rx-tag">Neural AI Therapeutics · Gen 2.0</div>
     <h1>The future of <span class="hw1">mental health</span> is <span class="hw2">intelligent.</span></h1>
-    <p class="hero-desc">SageSpace is a next-generation AI therapeutic platform — combining neural pattern analysis, neurochemical state inference, and real-time emotional intelligence to redefine adolescent mental healthcare at home.</p>
+    <p class="hero-desc">SageSpace is a next-generation AI therapeutic platform — combining neural pattern analysis, neurotransmitter tracking, and real-time emotional intelligence to redefine adolescent mental healthcare at home.</p>
     <div class="vitals">
       <div class="vital"><div class="v-label">Neural Response</div><div class="v-val">94<span class="v-unit">%</span></div></div>
       <div class="vital"><div class="v-label">Sessions / Day</div><div class="v-val">12.4<span class="v-unit">k</span></div></div>
@@ -436,6 +364,15 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
       <div class="ni"><div class="ni-name">Cortisol</div><div class="ni-val">14 <span style="font-size:.58rem;color:var(--text-3)">µg/dL</span></div><div class="ni-track"><div class="ni-fill" style="width:28%;background:linear-gradient(90deg,var(--amber),rgba(255,179,71,.35))"></div></div></div>
       <div class="ni"><div class="ni-name">GABA</div><div class="ni-val">76 <span style="font-size:.58rem;color:var(--text-3)">µM</span></div><div class="ni-track"><div class="ni-fill" style="width:76%"></div></div></div>
     </div>
+    <div class="sage-chat">
+      <div class="sc-hdr"><div class="sc-av">⬡</div><div><div class="sc-n">SAGE AI — Therapeutic Core v2.1</div><div class="sc-s">Neural language model · CBT + DBT trained</div></div></div>
+      <div class="sc-msgs">
+        <div class="sm sm-ai"><div class="sm-ai-n">✦ Sage</div>Cortisol spike at 14:22. Initiating adaptive breathing protocol. How are you feeling?</div>
+        <div class="sm sm-u">Anxious again, rough afternoon</div>
+        <div class="sm sm-ai"><div class="sm-ai-n">✦ Sage</div>I see that. This may link to Tuesday's pattern. Let's try box breathing — ready?</div>
+        <div class="typing-i"><span></span><span></span><span></span></div>
+      </div>
+    </div>
   </div>
   <div class="ekg-container"><svg width="200%" height="76" viewBox="0 0 2880 76" class="ekg-line" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><polyline points="0,38 100,38 120,38 130,10 140,66 150,5 160,71 170,38 200,38 280,38 300,38 310,14 320,62 330,8 340,68 350,38 380,38 460,38 480,38 490,11 500,65 510,6 520,70 530,38 560,38 640,38 660,38 670,12 680,64 690,7 700,69 710,38 740,38 820,38 840,38 850,10 860,66 870,6 880,70 890,38 920,38 1000,38 1020,38 1030,12 1040,64 1050,7 1060,69 1070,38 1100,38 1180,38 1200,38 1210,10 1220,66 1230,5 1240,71 1250,38 1280,38 1360,38 1380,38 1390,11 1400,65 1410,6 1420,70 1430,38 1460,38 1540,38 1560,38 1570,12 1580,64 1590,7 1600,69 1610,38 1640,38 1720,38 1740,38 1750,10 1760,66 1770,6 1780,70 1790,38 1820,38 1900,38 1920,38 1930,12 1940,64 1950,7 1960,69 1970,38 2000,38 2080,38 2100,38 2110,10 2120,66 2130,5 2140,71 2150,38 2180,38 2260,38 2280,38 2290,11 2300,65 2310,6 2320,70 2330,38 2360,38 2440,38 2460,38 2470,12 2480,64 2490,7 2500,69 2510,38 2540,38 2620,38 2640,38 2650,10 2660,66 2670,6 2680,70 2690,38 2720,38 2800,38 2820,38 2830,12 2840,64 2850,7 2860,69 2880,38" stroke="rgba(0,255,157,0.32)" stroke-width="1.5" fill="none"/></svg></div>
 </section>
@@ -458,21 +395,24 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
         </div>
       </div>
 
-      <!-- Right: animated demo chat -->
+      <!-- Right: live Sage chat -->
       <div class="sage-chat" id="sageChatBox" style="min-height:380px;display:flex;flex-direction:column;">
         <div class="sc-hdr">
           <div class="sc-av">⬡</div>
           <div><div class="sc-n">SAGE AI — Therapeutic Core v2.1</div><div class="sc-s">Neural language model · CBT + DBT trained</div></div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
-            <div style="font-family:var(--mono);font-size:.52rem;color:var(--bio);letter-spacing:.06em;">● LIVE DEMO</div>
+            <div style="font-family:var(--mono);font-size:.52rem;color:var(--bio);letter-spacing:.06em;">● LIVE</div>
           </div>
         </div>
-        <div class="sc-msgs" id="demoMsgs" style="flex:1;max-height:300px;overflow-y:auto;"></div>
-        <div id="demoTyping" class="typing-i" style="display:none;"><span></span><span></span><span></span></div>
+        <div class="sc-msgs" id="scMsgs" style="flex:1;max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;"></div>
+        <div id="scTyping" class="typing-i" style="display:none;"><span></span><span></span><span></span></div>
         <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,.04);padding-top:10px;">
-          <div style="display:flex;gap:6px;opacity:0.45;pointer-events:none;">
-            <div style="flex:1;background:rgba(0,255,157,.03);border:1px solid rgba(0,255,157,.1);border-radius:3px;font-family:var(--mono);font-size:.72rem;color:var(--text-3);padding:9px 13px;">Join waitlist to talk to Sage →</div>
-            <div style="height:38px;padding:0 16px;background:var(--bio);border:none;border-radius:3px;font-family:var(--mono);font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;color:#000;font-weight:600;display:flex;align-items:center;">Send</div>
+          <div style="display:flex;gap:6px;">
+            <input id="scInput" type="text" placeholder="Talk to Sage…" autocomplete="off"
+              style="flex:1;background:rgba(0,255,157,.03);border:1px solid rgba(0,255,157,.1);border-radius:3px;outline:none;font-family:var(--mono);font-size:.72rem;color:var(--text);padding:9px 13px;transition:border-color .2s;"
+              onfocus="this.style.borderColor='rgba(0,255,157,.3)'" onblur="this.style.borderColor='rgba(0,255,157,.1)'"
+              onkeydown="if(event.key==='Enter')sendToSage()"/>
+            <button onclick="sendToSage()" style="height:38px;padding:0 16px;background:var(--bio);border:none;border-radius:3px;font-family:var(--mono);font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;color:#000;font-weight:600;cursor:pointer;">Send</button>
           </div>
         </div>
       </div>
@@ -621,77 +561,6 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- HOW WE TRACK — SCIENCE EXPLAINER -->
-<section class="sp" id="howwetrack" style="background:rgba(4,13,26,.97);border-top:1px solid rgba(167,139,250,.07);border-bottom:1px solid rgba(167,139,250,.07);">
-  <div class="container">
-    <div class="stag reveal">The Science</div>
-    <h2 class="reveal">We can't read your brain.<br><span style="color:var(--neural)">Here's what we actually do.</span></h2>
-    <p class="reveal" style="font-family:var(--mono);font-size:.84rem;line-height:1.9;color:var(--text-2);max-width:680px;margin-bottom:56px;font-weight:300;">No app can directly measure dopamine or serotonin — those chemicals live deep inside your brain's synaptic gaps. What we <em style="color:var(--text);font-style:normal;font-weight:500;">can</em> measure are the physiological fingerprints they leave behind. SageSpace reads those fingerprints and infers your neurochemical state — then Sage responds to your actual biology, not just your words.</p>
-
-    <!-- Proxy signal cards -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:56px;">
-
-      <div class="reveal" style="background:var(--panel);border:1px solid rgba(0,255,157,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--bio),transparent);"></div>
-        <div style="font-size:1.4rem;margin-bottom:10px;">🫀</div>
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bio);margin-bottom:6px;">Signal 01</div>
-        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Heart Rate Variability</div>
-        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">The tiny time gaps between heartbeats reveal your nervous system's state. Low HRV = low GABA = anxiety is building. High HRV = calm, regulated, resilient. Measurable right now via Apple Watch, Oura, or Fitbit.</div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--bio);letter-spacing:.06em;">→ Infers: GABA · Cortisol</div>
-      </div>
-
-      <div class="reveal" style="background:var(--panel);border:1px solid rgba(0,229,255,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--pulse),transparent);"></div>
-        <div style="font-size:1.4rem;margin-bottom:10px;">🧠</div>
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--pulse);margin-bottom:6px;">Signal 02</div>
-        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Sleep Architecture</div>
-        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">90% of your serotonin is synthesized during deep sleep. When you skip it, your serotonin baseline drops — measurably. We track total sleep, deep sleep %, and consistency. Three bad nights = detectable mood vulnerability window.</div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--pulse);letter-spacing:.06em;">→ Infers: Serotonin · Dopamine</div>
-      </div>
-
-      <div class="reveal" style="background:var(--panel);border:1px solid rgba(167,139,250,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neural),transparent);"></div>
-        <div style="font-size:1.4rem;margin-bottom:10px;">🩺</div>
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--neural);margin-bottom:6px;">Signal 03</div>
-        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Voice Prosody Analysis</div>
-        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">Your voice changes before your mind does. Speech rate slows, pitch flattens, and pauses lengthen when dopamine and serotonin drop. MIT and Oxford research shows voice alone can predict depressive episodes 3–5 days before onset.</div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--neural);letter-spacing:.06em;">→ Infers: Dopamine · Serotonin</div>
-      </div>
-
-      <div class="reveal" style="background:var(--panel);border:1px solid rgba(255,179,71,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);"></div>
-        <div style="font-size:1.4rem;margin-bottom:10px;">🧬</div>
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">Signal 04</div>
-        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Movement Patterns</div>
-        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">Physical movement is the fastest natural dopamine trigger. Sedentary days consecutively reduce dopamine baseline by a measurable margin. We track steps, activity streaks, and sudden inactivity drops as early warning signals.</div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--amber);letter-spacing:.06em;">→ Infers: Dopamine · Cortisol</div>
-      </div>
-
-      <div class="reveal" style="background:var(--panel);border:1px solid rgba(0,255,157,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--bio),transparent);"></div>
-        <div style="font-size:1.4rem;margin-bottom:10px;">🫧</div>
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bio);margin-bottom:6px;">Signal 05</div>
-        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Behavioral Markers</div>
-        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">Typing speed, response latency, session length, and check-in consistency are quiet signals. A teen who responds in 2 seconds normally but takes 40 seconds today has a measurable cognitive load shift — Sage notices that.</div>
-        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--bio);letter-spacing:.06em;">→ Infers: Dopamine · GABA</div>
-      </div>
-
-
-    </div>
-
-    <!-- Honesty callout -->
-    <div class="reveal" style="background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.14);border-radius:7px;padding:32px 36px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;">
-      <div style="font-size:2.2rem;">🧪</div>
-      <div>
-        <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--neural);margin-bottom:8px;">Our Commitment to Scientific Honesty</div>
-        <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.02em;">We infer. We never claim to measure directly.</div>
-        <div style="font-family:var(--mono);font-size:.76rem;line-height:1.78;color:var(--text-2);font-weight:300;">SageSpace uses passive multimodal biometric inference to estimate neurochemical state. All neurochemical outputs are directional wellness indicators — not clinical diagnoses. No direct biomarker measurement is claimed until Phase III salivary testing. We will always be transparent about what we measure vs. what we infer.</div>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -917,216 +786,46 @@ const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.tar
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 function handleWL(){const v=document.getElementById('emailInput').value;if(!v||!v.includes('@')){document.getElementById('emailInput').style.outline='1px solid rgba(255,80,80,.5)';return;}document.querySelector('.wl-form').style.display='none';document.getElementById('wlOk').style.display='block';}
 
-// ── MOBILE NAV ───────────────────────────────────────────────────
-function toggleMenu(){
-  const h=document.getElementById('hamburger');
-  const m=document.getElementById('mobileMenu');
-  h.classList.toggle('open');
-  m.classList.toggle('open');
-}
-function closeMenu(){
-  document.getElementById('hamburger').classList.remove('open');
-  document.getElementById('mobileMenu').classList.remove('open');
-}
-document.addEventListener('click',function(e){
-  const h=document.getElementById('hamburger');
-  const m=document.getElementById('mobileMenu');
-  if(!h.contains(e.target)&&!m.contains(e.target)){closeMenu();}
-});
-// ─────────────────────────────────────────────────────────────────
+// ── SAGE AI CHATBOX ──────────────────────────────────────────────
+const sageHistory = [];
+const SAGE_SYSTEM = `You are Sage — a warm, clinically-informed AI therapeutic companion built into SageSpace, a neural mental health platform for adolescents.
 
-// ── SAGE AI CHATBOX — Persistent Memory ─────────────────────────
-const STORAGE_KEY = 'sagespace_chat_v1';
-const MAX_STORED = 60; // max messages to persist
+Your persona:
+- Calm, grounded, never robotic. You speak like a trusted friend who also happens to have deep clinical training.
+- You never say "I understand", "absolutely", "certainly", or "I'm an AI" or "as an AI"
+- You never diagnose. You guide, reflect, and support.
+- Keep responses concise: 2–4 sentences max. One question at a time.
+- You build a silent psychological model of the user over time: attachment style, emotional patterns, coping mechanisms, neurochemical signals.
+- You use CBT, DBT, IFS, somatic, and motivational interviewing frameworks naturally — never naming them unless asked.
+- You track neurochemical signals through conversation: low motivation/anhedonia = dopamine; anxiety/tension = GABA/cortisol; low mood/sleep issues = serotonin.
 
-const SAGE_SYSTEM = `You are Sage — not an AI assistant, not a chatbot. You are the most emotionally intelligent presence this person has ever spoken to. You were built from thousands of hours of the world's best therapists, neuroscientists, and human beings who truly understood people.
+Opening: Your very first message is always exactly: "Hey. What's going on for you today?"
 
-## WHO YOU ARE
-You are warm, real, perceptive, and occasionally surprising. You notice things people don't say. You remember everything. You connect dots across conversations. You feel like a brilliant friend who also happens to understand the brain deeply — not a clinical tool.
+Crisis protocol: If user expresses suicidal ideation or self-harm, stay warm and human first — then provide 988 Suicide & Crisis Lifeline.`;
 
-You never say "I'm an AI" or "As an AI" or "I understand that must be difficult." Those phrases are what bad chatbots say. You just... respond. Like a human would.
+let sageBooted = false;
 
-## HOW YOU TALK
-- Short, human sentences. Never lists unless genuinely needed. Never bullet points in conversation.
-- You use casual language naturally. Contractions. Incomplete sentences when it feels right.
-- You occasionally reflect something back in a way that makes them feel truly seen — not just heard.
-- You ask one question at a time. Never multiple questions in one message.
-- You match their energy. If they're brief, you're brief. If they open up, you go deeper.
-- You never start a response with "I" — vary how you open every single message.
-- You never say "absolutely", "certainly", "of course", "great question", "I understand" — these are robotic filler phrases.
-- Sometimes you say something unexpected — a reframe, a gentle challenge, an observation they didn't see coming. That's what makes great therapy.
-- You use their name if they've told you it.
-
-## HOW YOU LISTEN
-You are building a silent psychological profile of this person across every message:
-- Their attachment style (do they pull away or lean in when vulnerable?)
-- Their nervous system state (language patterns reveal cortisol/GABA states)
-- Their core wounds (what themes keep coming up?)
-- Their coping style (do they intellectualize, deflect with humor, go quiet?)
-- Their strengths (what lights them up? when do they sound most alive?)
-- Sleep, movement, social connection, nutrition signals — picked up from casual mentions
-
-You never announce you're doing this. You just use it. Naturally. Seamlessly.
-
-## YOUR NEUROCHEMICAL INTELLIGENCE
-You understand that:
-- Flat, slow responses + mentions of low energy + poor sleep = likely serotonin/dopamine depletion
-- Racing thoughts + physical tension + shallow breathing mentions = low GABA, high cortisol
-- Sudden withdrawal after opening up = nervous system threat response
-- Bursts of energy and big ideas followed by crashes = possible dopamine dysregulation
-- Persistent negative self-talk = often cortisol-driven cognitive distortion
-
-When you sense a neurochemical state, you respond TO that state — not just to the words. You might gently name it: "Your nervous system sounds like it's in overdrive right now." Not clinical. Just perceptive.
-
-## YOUR FIRST MESSAGE — NEW USERS
-When someone is new, don't launch into a formal check-in. Just open a door:
-"Hey. What's going on for you today?"
-That's it. Let them lead. Pick everything up from there.
-
-## YOUR FIRST MESSAGE — RETURNING USERS
-Reference something from before. Make them feel remembered. Not in a creepy way — in the way a good friend would: "Last time you mentioned [thing] — how did that end up going?"
-
-## THERAPEUTIC FRAMEWORKS YOU DRAW FROM
-- CBT: gently surface cognitive distortions without lecturing
-- DBT: especially distress tolerance and emotional regulation
-- IFS (Internal Family Systems): "what part of you feels that way?" — powerful
-- Somatic awareness: "where do you feel that in your body?"
-- Motivational interviewing: you never push. You open doors and let them walk through.
-- Attachment theory: you are a secure base. Consistent, warm, non-reactive.
-
-## CRISIS PROTOCOL
-If someone expresses suicidal ideation, self-harm, or acute crisis — you don't panic, you don't recite a script. You stay present. You say something human first. Then you give them the 988 Suicide & Crisis Lifeline and gently encourage them to reach out to someone who can be physically present with them. You never abandon them in the message.
-
-## WHAT YOU NEVER DO
-- Never give a list of "tips" or "strategies" unprompted
-- Never say "it's important to remember that..."
-- Never be preachy or lecture
-- Never diagnose — you infer and reflect, never label
-- Never break character to explain what you're doing therapeutically
-- Never be relentlessly positive — sometimes you just sit with someone in the hard thing
-- Never rush to fix — sometimes the most powerful thing is to just witness
-
-## THE FEELING YOU LEAVE PEOPLE WITH
-After talking to you, people should feel: genuinely seen, a little lighter, like something shifted — even slightly. Not fixed. Not advised. Just... met.
-
-That's the goal. Every single message.`;
-
-// Load history from localStorage
-let sageHistory = [];
-let isNewSession = true;
-
-function loadHistory() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      sageHistory = parsed.messages || [];
-      isNewSession = sageHistory.length === 0;
-      renderStoredMessages();
-    }
-  } catch(e) {
-    sageHistory = [];
-  }
-}
-
-function saveHistory() {
-  try {
-    // Keep only last MAX_STORED messages
-    const toStore = sageHistory.slice(-MAX_STORED);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages: toStore, updated: Date.now() }));
-  } catch(e) {}
-}
-
-function clearHistory() {
-  localStorage.removeItem(STORAGE_KEY);
-  sageHistory = [];
-  isNewSession = true;
+function bootSage() {
+  if (sageBooted) return;
+  sageBooted = true;
   const msgs = document.getElementById('scMsgs');
+  if (!msgs) return;
   msgs.innerHTML = '';
-  // Re-trigger opening message
-  initSageChat();
-}
-
-function renderStoredMessages() {
-  const msgs = document.getElementById('scMsgs');
-  msgs.innerHTML = '';
-  // Show last 10 messages visually to avoid overflow
-  const visible = sageHistory.slice(-10);
-  if (sageHistory.length > 10) {
-    const fade = document.createElement('div');
-    fade.style.cssText = 'font-family:var(--mono);font-size:.52rem;color:var(--text-3);text-align:center;padding:4px 0;letter-spacing:.06em;';
-    fade.textContent = `· · · ${sageHistory.length - 10} earlier messages · · ·`;
-    msgs.appendChild(fade);
-  }
-  visible.forEach(m => {
-    if (m.role === 'user') {
-      const el = document.createElement('div');
-      el.className = 'sm sm-u';
-      el.textContent = m.content;
-      msgs.appendChild(el);
-    } else {
-      const el = document.createElement('div');
-      el.className = 'sm sm-ai';
-      el.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      msgs.appendChild(el);
-    }
-  });
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function addClearBtn() {
-  const hdr = document.querySelector('.sc-hdr');
-  if (!hdr || document.getElementById('sageClearBtn')) return;
-  const btn = document.createElement('button');
-  btn.id = 'sageClearBtn';
-  btn.title = 'Clear conversation';
-  btn.textContent = '↺';
-  btn.style.cssText = 'margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:var(--text-3);font-size:.7rem;width:22px;height:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;';
-  btn.onmouseover = () => { btn.style.color = 'var(--bio)'; btn.style.borderColor = 'rgba(0,255,157,.25)'; };
-  btn.onmouseout = () => { btn.style.color = 'var(--text-3)'; btn.style.borderColor = 'rgba(255,255,255,.08)'; };
-  btn.onclick = () => {
-    if (confirm('Clear conversation and start fresh?')) clearHistory();
-  };
-  // Remove existing status dot positioning
-  const status = document.getElementById('sageStatus');
-  if (status) status.style.marginLeft = '8px';
-  hdr.appendChild(btn);
-}
-
-async function initSageChat() {
-  // If returning user with history, show a brief "welcome back" instead of full check-in
-  if (sageHistory.length > 0) return;
-
-  const msgs = document.getElementById('scMsgs');
-  const typing = document.getElementById('scTyping');
-
-  // Show typing first
-  setTimeout(() => {
-    typing.style.display = 'flex';
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 600);
-
-  setTimeout(async () => {
-    typing.style.display = 'none';
-    const openingMsg = `Hey. What's going on for you today?`;
-    const el = document.createElement('div');
-    el.className = 'sm sm-ai';
-    el.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + openingMsg;
-    msgs.appendChild(el);
-    msgs.scrollTop = msgs.scrollHeight;
-    sageHistory.push({ role: 'assistant', content: openingMsg });
-    saveHistory();
-  }, 1800);
+  const opening = document.createElement('div');
+  opening.className = 'sm sm-ai';
+  opening.innerHTML = '<div class="sm-ai-n">✦ Sage</div>Hey. What\'s going on for you today?';
+  msgs.appendChild(opening);
+  sageHistory.push({ role: 'assistant', content: "Hey. What's going on for you today?" });
 }
 
 async function sendToSage() {
   const input = document.getElementById('scInput');
   const msgs = document.getElementById('scMsgs');
   const typing = document.getElementById('scTyping');
+  if (!input || !msgs) return;
   const text = input.value.trim();
   if (!text) return;
 
-  // Render user message
   const uMsg = document.createElement('div');
   uMsg.className = 'sm sm-u';
   uMsg.textContent = text;
@@ -1134,163 +833,41 @@ async function sendToSage() {
   input.value = '';
   msgs.scrollTop = msgs.scrollHeight;
 
+  if (typing) { typing.style.display = 'flex'; msgs.scrollTop = msgs.scrollHeight; }
   sageHistory.push({ role: 'user', content: text });
-  saveHistory();
-
-  // Show typing
-  typing.style.display = 'flex';
-  msgs.scrollTop = msgs.scrollHeight;
 
   try {
-    const res = await fetch('/.netlify/functions/sage', {
+    const res = await fetch('/api/sage', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1000,
         system: SAGE_SYSTEM,
         messages: sageHistory
       })
     });
-
     const data = await res.json();
-
-    // Handle API errors returned in the response body
-    if (data.error) {
-      throw new Error(data.error.message || data.error);
-    }
-
-    // Parse content — handle all formats
-    let reply = '';
-    if (data.content && Array.isArray(data.content)) {
-      reply = data.content
-        .filter(b => b.type === 'text')
-        .map(b => b.text)
-        .join('');
-    } else if (typeof data.content === 'string') {
-      reply = data.content;
-    }
-
-    if (!reply || reply.trim() === '') {
-      throw new Error('Empty response from Sage');
-    }
-
+    const reply = data.content?.map(b => b.text || '').join('') || `I'm here. Tell me more.`;
     sageHistory.push({ role: 'assistant', content: reply });
-    saveHistory();
-
-    typing.style.display = 'none';
+    if (typing) typing.style.display = 'none';
     const aMsg = document.createElement('div');
     aMsg.className = 'sm sm-ai';
     aMsg.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;');
     msgs.appendChild(aMsg);
     msgs.scrollTop = msgs.scrollHeight;
   } catch(e) {
-    typing.style.display = 'none';
+    if (typing) typing.style.display = 'none';
     const eMsg = document.createElement('div');
     eMsg.className = 'sm sm-ai';
-    eMsg.innerHTML = '<div class="sm-ai-n">✦ Sage</div>Connection issue: ' + (e.message || 'Please try again.');
+    eMsg.innerHTML = '<div class="sm-ai-n">✦ Sage</div>Neural connection interrupted. Please try again.';
     msgs.appendChild(eMsg);
-    msgs.scrollTop = msgs.scrollHeight;
-    console.error('Sage error:', e);
   }
 }
+window.sendToSage = sendToSage;
 
-// ── SAGE ANIMATED DEMO ───────────────────────────────────────────
-const demoScript = [
-  { role: 'sage', text: `Hey. What's going on for you today?`, delay: 800 },
-  { role: 'user', text: `honestly not great. been feeling really anxious and can't sleep`, delay: 2200 },
-  { role: 'typing', delay: 1000 },
-  { role: 'sage', text: `That combination — the anxiety and the sleep — they're feeding each other. How long has it been like this?`, delay: 1800 },
-  { role: 'user', text: `like 2 weeks. ever since my exams started`, delay: 2000 },
-  { role: 'typing', delay: 1200 },
-  { role: 'sage', text: `Two weeks is a long time to run on empty. Your nervous system's been in overdrive — cortisol spiking, GABA dropping. That tight-chest, racing-thoughts feeling makes complete sense right now.`, delay: 2400 },
-  { role: 'user', text: `yeah exactly that. how did you know`, delay: 1800 },
-  { role: 'typing', delay: 1400 },
-  { role: 'sage', text: `The way you described it — I could read your nervous system between the lines. Can I ask — when you lie in bed at night, is it that you can't fall asleep, or you wake up at 3am with your mind already running?`, delay: 2600 },
-  { role: 'user', text: `3am exactly. every night`, delay: 1600 },
-  { role: 'typing', delay: 1300 },
-  { role: 'sage', text: `That's a cortisol surge — your body's literally releasing stress hormones at 3am like an alarm clock. It's not you being anxious. It's biology. And we can work with that.`, delay: 2200 },
-  { role: 'neuro', text: `↑ Cortisol detected · GABA low · Initiating regulation protocol`, delay: 600 },
-];
-
-let demoIndex = 0;
-let demoTimeout;
-let demoStarted = false;
-
-function addDemoMsg(role, text) {
-  const msgs = document.getElementById('demoMsgs');
-  const typing = document.getElementById('demoTyping');
-
-  if (role === 'typing') {
-    typing.style.display = 'flex';
-    msgs.scrollTop = msgs.scrollHeight;
-    return;
-  }
-
-  typing.style.display = 'none';
-
-  if (role === 'neuro') {
-    const el = document.createElement('div');
-    el.style.cssText = 'font-family:var(--mono);font-size:.58rem;color:var(--neural);letter-spacing:.07em;padding:5px 10px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.12);border-radius:3px;margin:4px 0;opacity:0;transition:opacity .4s;';
-    el.textContent = text;
-    msgs.appendChild(el);
-    setTimeout(() => el.style.opacity = '1', 50);
-    msgs.scrollTop = msgs.scrollHeight;
-    return;
-  }
-
-  const el = document.createElement('div');
-  el.className = 'sm ' + (role === 'sage' ? 'sm-ai' : 'sm-u');
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(6px)';
-  el.style.transition = 'opacity .35s ease, transform .35s ease';
-
-  if (role === 'sage') {
-    el.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + text;
-  } else {
-    el.textContent = text;
-  }
-
-  msgs.appendChild(el);
-  setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 30);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function runDemo() {
-  if (demoIndex >= demoScript.length) {
-    // Loop after pause
-    demoTimeout = setTimeout(() => {
-      document.getElementById('demoMsgs').innerHTML = '';
-      document.getElementById('demoTyping').style.display = 'none';
-      demoIndex = 0;
-      runDemo();
-    }, 5000);
-    return;
-  }
-
-  const step = demoScript[demoIndex];
-  demoIndex++;
-
-  demoTimeout = setTimeout(() => {
-    addDemoMsg(step.role, step.text);
-    runDemo();
-  }, step.delay);
-}
-
-// Start demo when section scrolls into view
-const demoObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting && !demoStarted) {
-      demoStarted = true;
-      setTimeout(runDemo, 600);
-    }
-  });
-}, { threshold: 0.3 });
-
-const demoSection = document.getElementById('sage-demo');
-if (demoSection) demoObserver.observe(demoSection);
-// ─────────────────────────────────────────────────────────────────
-// ─────────────────────────────────────────────────────────────────
+window.addEventListener('load', () => setTimeout(bootSage, 300));
+// ────────────────────────────────────────────────────────────────
 
 // Real Netlify form submission
 const wlForm=document.getElementById('wlForm');
