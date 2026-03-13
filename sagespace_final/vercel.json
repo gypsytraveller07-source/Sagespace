@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/sage.js": {
+      "maxDuration": 30
+    }
+  }
+}

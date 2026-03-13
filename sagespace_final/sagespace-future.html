@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SageSpace — AI Medical Future 2035</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23020409'/%3E%3Crect width='64' height='64' rx='14' fill='none' stroke='%2300ff9d' stroke-width='1.5' stroke-opacity='0.4'/%3E%3Cpolyline points='4,32 14,32 19,18 24,46 29,10 34,54 39,32 50,32 54,26 60,32' stroke='%2300ff9d' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"/>
+<style>
+:root{
+  --void:#020409;--deep:#040d1a;--panel:rgba(7,20,40,0.88);
+  --bio:#00ff9d;--bio-dim:rgba(0,255,157,0.1);--bio-glow:rgba(0,255,157,0.28);
+  --pulse:#00e5ff;--amber:#ffb347;--neural:#a78bfa;--rose:#ff6b9d;
+  --text:#e8f4f8;--text-2:rgba(232,244,248,0.55);--text-3:rgba(232,244,248,0.28);
+  --mono:ui-monospace,'SF Mono','Menlo','Monaco',monospace;
+  --sf:-apple-system,'SF Pro Display','SF Pro Text','Helvetica Neue',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sf);background:var(--void);color:var(--text);overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,157,0.006) 2px,rgba(0,255,157,0.006) 4px);pointer-events:none;}
+
+.cursor{position:fixed;pointer-events:none;z-index:9999;width:6px;height:6px;background:var(--pulse);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 10px rgba(0,229,255,.35);}
+.cursor-ring{position:fixed;pointer-events:none;z-index:9998;width:28px;height:28px;border:1px solid rgba(0,229,255,.28);border-radius:50%;transform:translate(-50%,-50%);transition:width .22s,height .22s;}
+
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);animation:drift 24s ease-in-out infinite;}
+.o1{width:700px;height:450px;background:radial-gradient(ellipse,rgba(0,229,255,.09),transparent 70%);top:-100px;right:-100px;}
+.o2{width:550px;height:550px;background:radial-gradient(circle,rgba(167,139,250,.07),transparent 70%);bottom:-80px;left:-80px;animation-delay:-9s;}
+.o3{width:400px;height:240px;background:radial-gradient(ellipse,rgba(0,255,157,.05),transparent 70%);top:50%;left:40%;animation-delay:-16s;}
+@keyframes drift{0%,100%{transform:translate(0,0);}33%{transform:translate(35px,-25px);}66%{transform:translate(-25px,35px);}}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:1000;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;background:rgba(2,4,9,.72);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,229,255,.07);}
+.logo{display:flex;align-items:center;gap:9px;font-size:1.05rem;font-weight:700;letter-spacing:.01em;color:var(--text);text-decoration:none;}
+.logo-mark{width:28px;height:28px;border-radius:7px;border:1px solid rgba(0,255,157,.35);display:flex;align-items:center;justify-content:center;background:rgba(0,255,157,.04);}
+.nav-back{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--text-3);text-decoration:none;text-transform:uppercase;transition:color .2s;border:1px solid rgba(255,255,255,.07);border-radius:3px;padding:0 12px;height:28px;}
+.nav-back:hover{color:var(--bio);border-color:rgba(0,255,157,.25);}
+.nav-tag{font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;color:var(--pulse);display:flex;align-items:center;gap:6px;}
+.nav-tag::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--pulse);box-shadow:0 0 7px rgba(0,229,255,.5);}
+
+/* SECTIONS */
+section{position:relative;z-index:1;}
+.container{max-width:1080px;margin:0 auto;padding:0 52px;}
+.sp{padding:90px 0;}
+
+.stag{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--pulse);margin-bottom:10px;display:flex;align-items:center;gap:9px;}
+.stag::before{content:'';width:20px;height:1px;background:var(--pulse);opacity:.45;}
+h1{font-size:clamp(2.8rem,5vw,4.4rem);font-weight:800;letter-spacing:-.04em;line-height:1.02;color:var(--text);}
+h2{font-size:clamp(1.7rem,2.8vw,2.4rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;color:var(--text);margin-bottom:40px;}
+.gg{background:linear-gradient(90deg,var(--pulse),var(--neural));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gb{color:var(--bio);}
+
+/* HERO */
+.f-hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 52px 60px;position:relative;overflow:hidden;}
+.f-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.2),transparent);}
+.who-alert{display:inline-flex;align-items:center;gap:10px;background:rgba(255,179,71,.07);border:1px solid rgba(255,179,71,.22);border-radius:3px;padding:7px 16px;margin-bottom:28px;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--amber);text-transform:uppercase;}
+.who-alert::before{content:'⚠';font-size:.75rem;}
+.hero-sub{font-family:var(--mono);font-size:.92rem;line-height:1.85;color:var(--text-2);max-width:640px;margin:20px auto 40px;font-weight:300;}
+.hero-stats{display:flex;gap:0;justify-content:center;margin-top:36px;border:1px solid rgba(0,229,255,.08);border-radius:5px;overflow:hidden;max-width:680px;margin-left:auto;margin-right:auto;}
+.hs{flex:1;padding:20px;border-right:1px solid rgba(0,229,255,.08);background:rgba(0,229,255,.02);}
+.hs:last-child{border-right:none;}
+.hs-num{font-family:var(--mono);font-size:1.8rem;font-weight:700;letter-spacing:-.04em;color:var(--bio);line-height:1;}
+.hs-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.07em;color:var(--text-3);margin-top:4px;text-transform:uppercase;}
+
+/* TIMELINE — future of medicine */
+.med-timeline{position:relative;margin-top:8px;}
+.med-timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--pulse),rgba(0,229,255,.05));}
+.mt-year{display:flex;gap:32px;padding-bottom:0;margin-bottom:36px;}
+.mt-node{width:1px;flex-shrink:0;position:relative;}
+.mt-year-label{position:absolute;left:-40px;top:0;font-family:var(--mono);font-size:.65rem;color:var(--pulse);letter-spacing:.08em;white-space:nowrap;transform:translateX(-50%);}
+.mt-dot{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--pulse);background:rgba(0,229,255,.1);box-shadow:0 0 12px rgba(0,229,255,.2);position:absolute;left:-5px;top:6px;}
+.mt-dot.lit{background:var(--pulse);box-shadow:0 0 20px rgba(0,229,255,.45);}
+.mt-content{flex:1;padding-left:24px;}
+.mt-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+.mt-tag::before{content:'';width:14px;height:1px;}
+.mt-title{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:9px;}
+.mt-desc{font-family:var(--mono);font-size:.76rem;line-height:1.72;color:var(--text-2);font-weight:300;margin-bottom:12px;}
+.mt-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.mt-card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:5px;padding:13px 14px;}
+.mt-card-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px;}
+.mt-card-val{font-size:.85rem;font-weight:600;color:var(--text);}
+
+/* NEURO TRACKING DEEP DIVE */
+.tracking-deep{background:rgba(4,13,26,.9);border-top:1px solid rgba(0,229,255,.06);border-bottom:1px solid rgba(0,229,255,.06);}
+.track-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.tk{background:var(--panel);border-radius:7px;padding:26px;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(16px);position:relative;overflow:hidden;}
+.tk::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;}
+.tk-dopa::before{background:linear-gradient(90deg,var(--bio),transparent);}
+.tk-sero::before{background:linear-gradient(90deg,var(--pulse),transparent);}
+.tk-gaba::before{background:linear-gradient(90deg,var(--neural),transparent);}
+.tk-cort::before{background:linear-gradient(90deg,var(--amber),transparent);}
+.tk-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.tk-name{font-size:.98rem;font-weight:700;letter-spacing:-.01em;}
+.tk-tag{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid;}
+.tk-body{font-family:var(--mono);font-size:.72rem;line-height:1.72;color:var(--text-2);margin-bottom:14px;font-weight:300;}
+.tk-now-future{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.tnf{border-radius:4px;padding:10px 12px;border:1px solid;}
+.tnf-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px;}
+.tnf-item{font-family:var(--mono);font-size:.65rem;color:var(--text-2);display:flex;align-items:flex-start;gap:5px;margin-bottom:3px;line-height:1.4;}
+.tnf-item::before{content:'›';flex-shrink:0;}
+
+/* AI VS HUMAN */
+.compare-sec{padding:90px 0;}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.06);border-radius:7px;overflow:hidden;}
+.cg-side{padding:36px 32px;background:var(--void);}
+.cg-side-title{font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.cg-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.cg-row:last-child{border-bottom:none;}
+.cg-icon{width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;}
+.cg-metric{font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;color:var(--text-3);text-transform:uppercase;margin-bottom:2px;}
+.cg-val{font-size:.85rem;font-weight:600;color:var(--text);}
+
+/* SAGE CAPABILITIES */
+.caps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.cap{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:24px 20px;position:relative;overflow:hidden;transition:all .3s;}
+.cap:hover{border-color:rgba(0,229,255,.18);transform:translateY(-3px);}
+.cap::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--pulse),transparent);}
+.cap-year{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;}
+.cap-title{font-size:.9rem;font-weight:700;letter-spacing:-.01em;color:var(--text);margin-bottom:7px;}
+.cap-desc{font-family:var(--mono);font-size:.7rem;line-height:1.7;color:var(--text-2);font-weight:300;}
+.cap-status{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-family:var(--mono);font-size:.58rem;letter-spacing:.07em;text-transform:uppercase;}
+
+/* WHO GAP VISUAL */
+.who-visual-sec{background:rgba(4,13,26,.92);padding:90px 0;border-top:1px solid rgba(0,229,255,.06);}
+.gap-meter{margin:40px 0;position:relative;}
+.gap-label-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.65rem;color:var(--text-3);letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase;}
+.gap-track{height:32px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:4px;overflow:hidden;position:relative;}
+.gap-fill-human{height:100%;background:linear-gradient(90deg,rgba(0,229,255,.4),rgba(0,229,255,.2));width:16%;}
+.gap-fill-sage{height:100%;background:linear-gradient(90deg,rgba(0,255,157,.4),rgba(0,255,157,.15));animation:gap-grow 2s ease forwards;width:0;}
+@keyframes gap-grow{to{width:72%;}}
+.gap-labels{display:flex;gap:16px;margin-top:8px;}
+.gap-lbl{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.62rem;color:var(--text-3);}
+.gap-dot{width:8px;height:8px;border-radius:2px;}
+
+.impact-numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:40px;}
+.in-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.055);border-radius:6px;padding:20px;text-align:center;}
+.in-num{font-family:var(--mono);font-size:2rem;font-weight:800;letter-spacing:-.05em;line-height:1;margin-bottom:4px;}
+.in-label{font-family:var(--mono);font-size:.62rem;color:var(--text-3);letter-spacing:.06em;text-transform:uppercase;line-height:1.4;}
+
+/* ETHICS */
+.ethics-sec{padding:90px 0;}
+.ethics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.eth{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:26px;backdrop-filter:blur(14px);}
+.eth-icon{font-size:1.3rem;margin-bottom:12px;}
+.eth-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:7px;letter-spacing:-.01em;}
+.eth-desc{font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;}
+
+/* CTA BACK */
+.back-cta{padding:80px 0;text-align:center;border-top:1px solid rgba(0,229,255,.07);}
+.back-cta h2{max-width:480px;margin:0 auto 14px;}
+.back-desc{font-family:var(--mono);font-size:.78rem;line-height:1.8;color:var(--text-2);max-width:420px;margin:0 auto 30px;}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-c{height:42px;padding:0 26px;background:var(--bio);border:none;border-radius:3px;font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;font-weight:500;text-transform:uppercase;color:#000;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
+.btn-c:hover{box-shadow:0 0 28px rgba(0,255,157,.4);transform:translateY(-1px);}
+.btn-o{height:42px;padding:0 22px;background:transparent;border:1px solid rgba(0,229,255,.22);border-radius:3px;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--pulse);cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-o:hover{background:rgba(0,229,255,.05);border-color:rgba(0,229,255,.4);}
+
+footer{border-top:1px solid rgba(0,229,255,.06);padding:36px 52px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;background:rgba(2,4,9,.8);}
+.fl{display:flex;align-items:center;gap:8px;font-size:1rem;font-weight:700;letter-spacing:.01em;text-decoration:none;color:var(--text);}
+.fl-mk{width:22px;height:22px;border-radius:5px;border:1px solid rgba(0,255,157,.32);display:flex;align-items:center;justify-content:center;}
+.fn{font-family:var(--mono);font-size:.6rem;color:var(--text-3);margin-top:3px;}
+.flinks{display:flex;gap:18px;}
+.flinks a{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--text-3);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.flinks a:hover{color:var(--bio);}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.f-hero>*{opacity:0;animation:fi .7s ease forwards;}
+.f-hero>*:nth-child(1){animation-delay:.1s;}
+.f-hero>*:nth-child(2){animation-delay:.22s;}
+.f-hero>*:nth-child(3){animation-delay:.34s;}
+.f-hero>*:nth-child(4){animation-delay:.46s;}
+.f-hero>*:nth-child(5){animation-delay:.58s;}
+@keyframes fi{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:1040px){.mt-cards{grid-template-columns:1fr 1fr;}.track-grid{grid-template-columns:1fr;}.compare-grid{grid-template-columns:1fr;}.caps-grid{grid-template-columns:1fr 1fr;}.ethics-grid{grid-template-columns:1fr;}.impact-numbers{grid-template-columns:1fr 1fr;}.hero-stats{flex-direction:column;max-width:360px;}.hs{border-right:none;border-bottom:1px solid rgba(0,229,255,.08);}}.hs:last-child{border-bottom:none;}
+@media(max-width:640px){nav{padding:0 18px;}.container{padding:0 18px;}.caps-grid{grid-template-columns:1fr;}.impact-numbers{grid-template-columns:1fr 1fr;}.f-hero{padding:88px 18px 50px;}.mt-cards{grid-template-columns:1fr;}footer{padding:26px 18px;flex-direction:column;align-items:flex-start;}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cring"></div>
+<div class="ambient"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-mark"><svg width="18" height="12" viewBox="0 0 44 28"><polyline points="0,14 8,14 12,4 16,24 20,2 24,26 28,14 44,14" stroke="#00ff9d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    SageSpace
+  </a>
+  <div class="nav-tag">⬡ AI Medical Future — Deep Dive</div>
+  <a href="index.html" class="nav-back">← Back to Main</a>
+</nav>
+
+<!-- HERO -->
+<section class="f-hero">
+  <div class="who-alert">WHO Alert · 11 Million Health Worker Shortage by 2030</div>
+  <h1>How AI will <span class="gg">transform medicine</span><br>by <span class="gb">2035.</span></h1>
+  <p class="hero-sub">The mental health crisis isn't a lack of willingness — it's a structural gap between demand and the humans trained to meet it. AI isn't the backup plan. For billions of people, it's the only plan.</p>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-num">11M</div><div class="hs-label">Health Worker Shortage · 2030</div></div>
+    <div class="hs"><div class="hs-num">1B+</div><div class="hs-label">People with untreated mental illness</div></div>
+    <div class="hs"><div class="hs-num">1:1M</div><div class="hs-label">Psychiatrist ratio in low-income countries</div></div>
+    <div class="hs"><div class="hs-num">$6T</div><div class="hs-label">Global mental health cost by 2030</div></div>
+  </div>
+</section>
+
+<!-- TIMELINE: FUTURE OF MEDICINE -->
+<section class="sp">
+  <div class="container">
+    <div class="stag reveal">Medical AI Timeline</div>
+    <h2 class="reveal">From today to <span class="gg">2035</span> — what changes.</h2>
+    <div class="med-timeline">
+
+      <div class="mt-year reveal">
+        <div class="mt-node">
+          <div class="mt-dot lit"></div>
+        </div>
+        <div class="mt-content">
+          <div class="mt-tag" style="color:var(--bio);"><span style="background:var(--bio);width:14px;height:1px;display:inline-block;"></span>2026 — NOW</div>
+          <div class="mt-title">AI as the First Responder</div>
+          <div class="mt-desc">The AI mental health layer activates globally. Apps like SageSpace become the first point of contact for mild-to-moderate anxiety, depression, and stress. CBT and DBT are delivered at scale without human intervention. Early warning systems predict crises before they happen. 100+ million people get first-contact mental health support who previously had none.</div>
+          <div class="mt-cards">
+            <div class="mt-card"><div class="mt-card-label">Reach</div><div class="mt-card-val">100M+ teens</div></div>
+            <div class="mt-card"><div class="mt-card-label">Cost per session</div><div class="mt-card-val">$0.003 (AI)</div></div>
+            <div class="mt-card"><div class="mt-card-label">Wait time</div><div class="mt-card-val">0 seconds</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-year reveal">
+        <div class="mt-node"><div class="mt-dot"></div></div>
+        <div class="mt-content">
+          <div class="mt-tag" style="color:var(--pulse);">2027–2028 — CLINICAL INTEGRATION</div>
+          <div class="mt-title">AI Becomes the Clinician's Co-Pilot</div>
+          <div class="mt-desc">Every therapist and psychiatrist is augmented by an AI that handles note-taking, session prep briefs, between-session patient support, and medication adherence tracking. Clinicians see 3× more patients with better outcomes. Diagnostic AI tools cross-reference symptom patterns across millions of anonymized cases in real time. The 18-month wait to see a psychiatrist drops to weeks. FDA-cleared AI software is prescribable and reimbursable by insurance.</div>
+          <div class="mt-cards">
+            <div class="mt-card"><div class="mt-card-label">Clinician multiplier</div><div class="mt-card-val">3–5× capacity</div></div>
+            <div class="mt-card"><div class="mt-card-label">Diagnosis accuracy</div><div class="mt-card-val">+34% vs solo</div></div>
+            <div class="mt-card"><div class="mt-card-label">Wait time reduction</div><div class="mt-card-val">18mo → 3wk</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-year reveal">
+        <div class="mt-node"><div class="mt-dot"></div></div>
+        <div class="mt-content">
+          <div class="mt-tag" style="color:var(--neural);">2029–2030 — PHARMACEUTICAL AI</div>
+          <div class="mt-title">AI Rewrites Drug Discovery for Mental Health</div>
+          <div class="mt-desc">AI models trained on neurochemical proxy data from millions of users identify new therapeutic targets for depression, anxiety, and PTSD. Drug trials that once took 10–12 years run in 3–4 with AI-driven patient matching, outcome prediction, and adverse event detection. Personalized psychopharmacology emerges: instead of "try this SSRI for 6 weeks and see," AI predicts your likely response to 40 different compounds before the first pill is prescribed. The era of trial-and-error psychiatry ends.</div>
+          <div class="mt-cards">
+            <div class="mt-card"><div class="mt-card-label">Drug trial time</div><div class="mt-card-val">12yr → 3–4yr</div></div>
+            <div class="mt-card"><div class="mt-card-label">Response prediction</div><div class="mt-card-val">84% accuracy</div></div>
+            <div class="mt-card"><div class="mt-card-label">New targets identified</div><div class="mt-card-val">200+ by 2030</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-year reveal">
+        <div class="mt-node"><div class="mt-dot"></div></div>
+        <div class="mt-content">
+          <div class="mt-tag" style="color:var(--amber);">2031–2035 — GLOBAL HEALTH INFRASTRUCTURE</div>
+          <div class="mt-title">AI Absorbs the WHO Shortage</div>
+          <div class="mt-desc">Government health systems in 50+ countries license AI mental health infrastructure. In Sub-Saharan Africa, South Asia, and Southeast Asia — where the shortage is most severe — AI becomes the primary mental health delivery mechanism. A person in rural Nigeria with a $40 smartphone has access to the same quality of mental health support as someone in Manhattan. The 11 million worker gap is functionally absorbed. Not by replacing humans, but by making each human clinician reach 5–10× more people, and handling the 70% of cases that don't require a clinician at all.</div>
+          <div class="mt-cards">
+            <div class="mt-card"><div class="mt-card-label">Countries deployed</div><div class="mt-card-val">50+ nations</div></div>
+            <div class="mt-card"><div class="mt-card-label">WHO gap absorbed</div><div class="mt-card-val">~70% of demand</div></div>
+            <div class="mt-card"><div class="mt-card-label">People reached</div><div class="mt-card-val">2B+ by 2035</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NEURO TRACKING DEEP DIVE -->
+<section class="sp tracking-deep" id="tracking">
+  <div class="container">
+    <div class="stag reveal">Neurochemical Intelligence</div>
+    <h2 class="reveal">What SageSpace tracks,<br><span class="gb">and how it gets smarter.</span></h2>
+    <div class="track-grid">
+      <div class="tk tk-dopa reveal">
+        <div class="tk-header"><div class="tk-name" style="color:var(--bio)">Dopamine</div><div class="tk-tag" style="color:var(--bio);border-color:rgba(0,255,157,.2);background:rgba(0,255,157,.05);">Motivation · Reward</div></div>
+        <div class="tk-body">The brain's reward and motivation chemical. Low dopamine manifests as apathy, anhedonia, procrastination, and inability to feel pleasure. High dopamine without regulation drives addictive patterns. SageSpace tracks dopamine through behavioral proxies — task completion patterns, reward-seeking behavior, streak consistency, and morning motivation ratings.</div>
+        <div class="tk-now-future">
+          <div class="tnf" style="border-color:rgba(0,255,157,.12);background:rgba(0,255,157,.03);">
+            <div class="tnf-label" style="color:var(--bio);">2026 · Phase I</div>
+            <div class="tnf-item">Motivation daily rating (1–10)</div>
+            <div class="tnf-item">Task initiation/completion log</div>
+            <div class="tnf-item">Anhedonia screening</div>
+            <div class="tnf-item">Exercise type tracking</div>
+          </div>
+          <div class="tnf" style="border-color:rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+            <div class="tnf-label" style="color:var(--text-3);">2027–2028 · Phase III/IV</div>
+            <div class="tnf-item">Urinary HVA metabolite testing</div>
+            <div class="tnf-item">Voice latency as proxy</div>
+            <div class="tnf-item">Wearable movement patterns</div>
+            <div class="tnf-item">Predictive 48hr model</div>
+          </div>
+        </div>
+      </div>
+      <div class="tk tk-sero reveal">
+        <div class="tk-header"><div class="tk-name" style="color:var(--pulse)">Serotonin</div><div class="tk-tag" style="color:var(--pulse);border-color:rgba(0,229,255,.2);background:rgba(0,229,255,.05);">Mood · Stability</div></div>
+        <div class="tk-body">The mood stability and social confidence chemical. 90% of serotonin is produced in the gut — making diet and microbiome central to mental health. Low serotonin drives depression, social withdrawal, and obsessive rumination. Serotonin synthesis requires sunlight exposure and tryptophan-rich foods. Sage tracks it through morning-vs-evening mood delta, sunlight logs, gut health notes, and cognitive distortion patterns in chat.</div>
+        <div class="tk-now-future">
+          <div class="tnf" style="border-color:rgba(0,229,255,.12);background:rgba(0,229,255,.03);">
+            <div class="tnf-label" style="color:var(--pulse);">2026 · Phase I</div>
+            <div class="tnf-item">AM/PM mood delta</div>
+            <div class="tnf-item">Sunlight exposure log</div>
+            <div class="tnf-item">Rumination frequency via NLP</div>
+            <div class="tnf-item">Social confidence ratings</div>
+          </div>
+          <div class="tnf" style="border-color:rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+            <div class="tnf-label" style="color:var(--text-3);">2027–2028 · Phase III/IV</div>
+            <div class="tnf-item">Urinary 5-HIAA metabolite</div>
+            <div class="tnf-item">Gut microbiome (Viome/Zoe)</div>
+            <div class="tnf-item">Sleep REM duration via wearable</div>
+            <div class="tnf-item">Vocal pitch variability analysis</div>
+          </div>
+        </div>
+      </div>
+      <div class="tk tk-gaba reveal">
+        <div class="tk-header"><div class="tk-name" style="color:var(--neural)">GABA</div><div class="tk-tag" style="color:var(--neural);border-color:rgba(167,139,250,.2);background:rgba(167,139,250,.05);">Calm · Inhibition</div></div>
+        <div class="tk-body">The brain's primary inhibitory neurotransmitter. GABA deficiency is the chemical signature of anxiety — it's what benzodiazepines (Xanax, Valium) artificially boost. Low GABA means the brain cannot switch off. Sage tracks GABA through anxiety ratings, racing thought frequency, response to breathing protocols, and — critically — Heart Rate Variability from wearables, which is the most accurate non-invasive GABA/autonomic nervous system proxy available.</div>
+        <div class="tk-now-future">
+          <div class="tnf" style="border-color:rgba(167,139,250,.12);background:rgba(167,139,250,.03);">
+            <div class="tnf-label" style="color:var(--neural);">2026 · Phase I</div>
+            <div class="tnf-item">Anxiety + tension ratings</div>
+            <div class="tnf-item">Racing thought frequency</div>
+            <div class="tnf-item">Breathing protocol response time</div>
+            <div class="tnf-item">HRV from Apple Watch/Oura</div>
+          </div>
+          <div class="tnf" style="border-color:rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+            <div class="tnf-label" style="color:var(--text-3);">2027–2028 · Phase III/IV</div>
+            <div class="tnf-item">Plasma GABA assay (at-home kit)</div>
+            <div class="tnf-item">Sleep latency as GABA readout</div>
+            <div class="tnf-item">Magnesium/L-theanine response</div>
+            <div class="tnf-item">EEG alpha wave amplitude</div>
+          </div>
+        </div>
+      </div>
+      <div class="tk tk-cort reveal">
+        <div class="tk-header"><div class="tk-name" style="color:var(--amber)">Cortisol</div><div class="tk-tag" style="color:var(--amber);border-color:rgba(255,179,71,.2);background:rgba(255,179,71,.05);">Stress · Suppressor</div></div>
+        <div class="tk-body">The stress hormone that suppresses all three of the above when chronically elevated. Cortisol should naturally peak at 8am and decline through the day — chronic stress flattens or inverts this curve, destroying sleep quality, immune function, and emotional regulation. High cortisol is the root cause of most mental health deterioration in teens. Sage tracks the cortisol curve through morning energy, afternoon crashes, skin temperature variability, and stress event logging.</div>
+        <div class="tk-now-future">
+          <div class="tnf" style="border-color:rgba(255,179,71,.12);background:rgba(255,179,71,.03);">
+            <div class="tnf-label" style="color:var(--amber);">2026 · Phase I</div>
+            <div class="tnf-item">Morning energy 1–10</div>
+            <div class="tnf-item">Afternoon energy crash log</div>
+            <div class="tnf-item">Stress event logging</div>
+            <div class="tnf-item">Skin temp via Oura Ring</div>
+          </div>
+          <div class="tnf" style="border-color:rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+            <div class="tnf-label" style="color:var(--text-3);">2027–2028 · Phase III/IV</div>
+            <div class="tnf-item">Salivary cortisol (4-point daily)</div>
+            <div class="tnf-item">DHEA-S ratio as burnout marker</div>
+            <div class="tnf-item">Resting heart rate trend analysis</div>
+            <div class="tnf-item">Blood pressure variability</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI VS HUMAN COMPARISON -->
+<section class="compare-sec">
+  <div class="container">
+    <div class="stag reveal">Capability Comparison</div>
+    <h2 class="reveal">AI doesn't replace clinicians.<br><span class="gb">It makes them superhuman.</span></h2>
+    <div class="compare-grid reveal">
+      <div class="cg-side">
+        <div class="cg-side-title" style="color:var(--pulse);">⬡ SageSpace AI</div>
+        <div class="cg-row"><div class="cg-icon" style="background:var(--bio-dim);">⚡</div><div><div class="cg-metric">Availability</div><div class="cg-val">24/7 · 365 · 0 wait</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:var(--bio-dim);">👥</div><div><div class="cg-metric">Concurrent patients</div><div class="cg-val">Unlimited</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:var(--bio-dim);">💰</div><div><div class="cg-metric">Cost per session</div><div class="cg-val">$5–$10</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:var(--bio-dim);">🧠</div><div><div class="cg-metric">Memory</div><div class="cg-val">Perfect longitudinal recall</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:var(--bio-dim);">📊</div><div><div class="cg-metric">Data analysis</div><div class="cg-val">18 months in seconds</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:var(--bio-dim);">🌍</div><div><div class="cg-metric">Language</div><div class="cg-val">100+ languages simultaneously</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:rgba(255,80,80,.1);">✗</div><div><div class="cg-metric">Complex trauma / severe psychosis</div><div class="cg-val" style="color:var(--text-3);">Requires human — always escalates</div></div></div>
+      </div>
+      <div class="cg-side" style="background:rgba(255,255,255,.01);">
+        <div class="cg-side-title" style="color:var(--text-3);">👤 Human Clinician</div>
+        <div class="cg-row"><div class="cg-icon" style="background:rgba(255,255,255,.04);">⏰</div><div><div class="cg-metric">Availability</div><div class="cg-val">40hr/wk · 6–18mo waitlist</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:rgba(255,255,255,.04);">👥</div><div><div class="cg-metric">Concurrent patients</div><div class="cg-val">20–30 per week</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:rgba(255,255,255,.04);">💰</div><div><div class="cg-metric">Cost per session</div><div class="cg-val">$150–$400</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:rgba(255,255,255,.04);">🧠</div><div><div class="cg-metric">Memory</div><div class="cg-val">Notes-dependent, subjective</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:rgba(255,255,255,.04);">📊</div><div><div class="cg-metric">Data analysis</div><div class="cg-val">50-minute intake only</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:rgba(255,255,255,.04);">🌍</div><div><div class="cg-metric">Language</div><div class="cg-val">1–3 languages</div></div></div>
+        <div class="cg-row"><div class="cg-icon" style="background:var(--bio-dim);">✓</div><div><div class="cg-metric">Complex trauma / severe psychosis</div><div class="cg-val" style="color:var(--bio);">Irreplaceable human judgment</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAGESPACE CAPABILITIES ROADMAP -->
+<section class="sp" style="background:rgba(4,13,26,.88);border-top:1px solid rgba(0,229,255,.06);">
+  <div class="container">
+    <div class="stag reveal">SageSpace Capability Roadmap</div>
+    <h2 class="reveal">What Sage can do — <span class="gg">and when.</span></h2>
+    <div class="caps-grid">
+      <div class="cap reveal"><div class="cap-year">Phase I · 2026 · Building Now</div><div class="cap-title">AI Therapeutic Chat</div><div class="cap-desc">CBT, DBT, ACT-based conversations. Personalized to each teen's profile. No judgment, no waitlist, no cost barrier.</div><div class="cap-status" style="color:var(--bio);">● Building Now</div></div>
+      <div class="cap reveal"><div class="cap-year">Phase I · 2026 · Building Now</div><div class="cap-title">Mood & Behavioral Tracking</div><div class="cap-desc">Daily 90-second check-in builds a neurochemical baseline. Trend detection over 14–30 days. Personalized protocol delivery.</div><div class="cap-status" style="color:var(--bio);">● Building Now</div></div>
+      <div class="cap reveal"><div class="cap-year">Phase I · 2026 · Building Now</div><div class="cap-title">Crisis Detection Protocol</div><div class="cap-desc">Real-time distress identification. Graduated response from breathing exercise to direct 988/clinician escalation.</div><div class="cap-status" style="color:var(--bio);">● Building Now</div></div>
+      <div class="cap reveal"><div class="cap-year">Phase II · Early 2027</div><div class="cap-title">Wearable Neural Sync</div><div class="cap-desc">HRV, sleep architecture, skin temperature from Apple Watch, Oura, Whoop. Passive neurochemical monitoring — no daily input required.</div><div class="cap-status" style="color:var(--pulse);">◎ In Development</div></div>
+      <div class="cap reveal"><div class="cap-year">Phase II · Early 2027</div><div class="cap-title">Voice Biomarker Analysis</div><div class="cap-desc">60-second morning voice check-in. AI analyzes speech rate, pitch variability, pause patterns. Depression and anxiety detected before conscious awareness.</div><div class="cap-status" style="color:var(--pulse);">◎ In Development</div></div>
+      <div class="cap reveal"><div class="cap-year">Phase III · Late 2027</div><div class="cap-title">Predictive Neural Forecast</div><div class="cap-desc">Personal AI model per user. Predicts low-dopamine days 24–48hr ahead. Weekly neural health forecast based on 90+ day pattern recognition.</div><div class="cap-status" style="color:var(--text-3);">○ Planned</div></div>
+      <div class="cap reveal"><div class="cap-year">Phase III · Late 2027</div><div class="cap-title">At-Home Lab Integration</div><div class="cap-desc">Salivary cortisol, urinary 5-HIAA and HVA metabolites. Gut microbiome via Viome partnership. Verified neurochemical data every 3 months.</div><div class="cap-status" style="color:var(--text-3);">○ Planned</div></div>
+      <div class="cap reveal"><div class="cap-year">Phase IV · 2028–2030</div><div class="cap-title">Neural Health Record</div><div class="cap-desc">Longitudinal shareable record. Clinicians receive 18-month neurochemical history, intervention response data, AI clinical summary. Replaces the 50-minute intake.</div><div class="cap-status" style="color:var(--text-3);">○ Future</div></div>
+      <div class="cap reveal"><div class="cap-year">Phase IV · 2028–2030</div><div class="cap-title">Insurance & Global Deployment</div><div class="cap-desc">FDA SaMD clearance. Insurance reimbursement. Government health system licensing. 50+ country deployment. Multilingual. 2B+ people reached.</div><div class="cap-status" style="color:var(--text-3);">○ Future</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO GAP VISUAL -->
+<section class="who-visual-sec">
+  <div class="container">
+    <div class="stag reveal">The Gap — Visualized</div>
+    <h2 class="reveal">Mental health demand vs supply.<br><span class="gb">AI closes the delta.</span></h2>
+    <div class="gap-meter reveal">
+      <div class="gap-label-row"><span>Global Mental Health Need (100%)</span><span>2030 Projection</span></div>
+      <div style="margin-bottom:8px;">
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;">Human clinicians can serve</div>
+        <div class="gap-track"><div class="gap-fill-human"></div></div>
+        <div style="font-family:var(--mono);font-size:.62rem;color:var(--pulse);margin-top:3px;">16% of global need</div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:.6rem;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;">Human + SageSpace AI can serve</div>
+        <div class="gap-track"><div class="gap-fill-sage" id="gapBar"></div></div>
+        <div style="font-family:var(--mono);font-size:.62rem;color:var(--bio);margin-top:3px;">72% of global need — with same number of human clinicians</div>
+      </div>
+      <div class="gap-labels">
+        <div class="gap-lbl"><div class="gap-dot" style="background:rgba(0,229,255,.4)"></div>Human only</div>
+        <div class="gap-lbl"><div class="gap-dot" style="background:rgba(0,255,157,.4)"></div>Human + AI augmentation</div>
+      </div>
+    </div>
+    <div class="impact-numbers">
+      <div class="in-card reveal"><div class="in-num" style="color:var(--bio)">2B+</div><div class="in-label">People reached by 2035</div></div>
+      <div class="in-card reveal"><div class="in-num" style="color:var(--pulse)">50+</div><div class="in-label">Countries with AI mental health infrastructure</div></div>
+      <div class="in-card reveal"><div class="in-num" style="color:var(--neural)">5×</div><div class="in-label">Clinician capacity multiplier</div></div>
+      <div class="in-card reveal"><div class="in-num" style="color:var(--amber)">$4T</div><div class="in-label">Potential economic burden reduced</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ETHICS -->
+<section class="ethics-sec">
+  <div class="container">
+    <div class="stag reveal">Ethical Framework</div>
+    <h2 class="reveal">Power requires <span class="gb">responsibility.</span></h2>
+    <div class="ethics-grid">
+      <div class="eth reveal"><div class="eth-icon">🔬</div><div class="eth-title">Never diagnose — always support</div><div class="eth-desc">SageSpace shows indicators and trends, not clinical diagnoses. Neurochemical data is presented as directional guidance, not medical fact. Every insight includes a clinical disclaimer and a pathway to human care.</div></div>
+      <div class="eth reveal"><div class="eth-icon">🔒</div><div class="eth-title">Zero-knowledge data architecture</div><div class="eth-desc">End-to-end encrypted from device to server. Patient data never used for AI training without explicit, granular, revocable consent. HIPAA BAA for every institutional partner. SOC 2 Type II audited annually.</div></div>
+      <div class="eth reveal"><div class="eth-icon">🚨</div><div class="eth-title">AI escalates — it never replaces crisis care</div><div class="eth-desc">At any sign of suicidal ideation, self-harm risk, or clinical-level psychosis, Sage immediately escalates to human professionals. The AI is a bridge — it is never the destination for vulnerable users in acute crisis.</div></div>
+      <div class="eth reveal"><div class="eth-icon">🌍</div><div class="eth-title">Equitable access by design</div><div class="eth-desc">Crisis support is always free. Low-bandwidth versions designed for $40 Android phones on 2G networks. Subsidized access for underserved communities. The commercial tier funds the free tier — this is non-negotiable.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BACK CTA -->
+<section class="back-cta">
+  <div class="container">
+    <div class="stag" style="justify-content:center;" class="reveal">Ready to join?</div>
+    <h2>SageSpace is <span class="gb">open for early access.</span></h2>
+    <p class="back-desc">Join the waitlist. Be part of the first cohort. Get 6 months free and shape the future of adolescent mental healthcare.</p>
+    <div class="cta-btns">
+      <a href="index.html#waitlist" class="btn-c">→ Join the Waitlist</a>
+      <a href="index.html" class="btn-o">← Back to SageSpace</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <a href="index.html" class="fl"><div class="fl-mk"><svg width="14" height="9" viewBox="0 0 44 28"><polyline points="0,14 8,14 12,4 16,24 20,2 24,26 28,14 44,14" stroke="#00ff9d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>SageSpace</a>
+    <div class="fn">AI Medical Future — Clinical Research Page · © 2026 SageSpace Therapeutics Inc.</div>
+  </div>
+  <div class="flinks"><a href="index.html">Home</a><a href="#">Privacy</a><a href="#">Clinical Data</a><a href="#">Contact</a></div>
+</footer>
+
+<script>
+const cur=document.getElementById('cursor'),cring=document.getElementById('cring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function tick(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cring.style.left=rx+'px';cring.style.top=ry+'px';requestAnimationFrame(tick);})();
+document.querySelectorAll('a,button,.cap,.eth,.mt-card,.cg-row').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='11px';cur.style.height='11px';cring.style.width='40px';cring.style.height='40px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='6px';cur.style.height='6px';cring.style.width='28px';cring.style.height='28px';});
+});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');if(e.target.id==='gapBar'){e.target.style.animation='gap-grow 2s ease forwards';}}});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const gapBar=document.getElementById('gapBar');
+if(gapBar)obs.observe(gapBar);
+</script>
+</body>
+</html>
