@@ -250,9 +250,9 @@ h2{font-size:clamp(1.75rem,2.9vw,2.5rem);font-weight:800;letter-spacing:-.03em;l
 .wl-desc{font-family:var(--mono);font-size:.8rem;line-height:1.82;color:var(--text-2);margin-bottom:32px;}
 .wl-form{display:flex;border:1px solid rgba(0,255,157,.18);border-radius:3px;overflow:hidden;background:rgba(0,255,157,.018);transition:border-color .3s,box-shadow .3s;}
 .wl-form:focus-within{border-color:rgba(0,255,157,.4);box-shadow:0 0 22px rgba(0,255,157,.08);}
-.wl-form input{flex:1;background:none;border:none;outline:none;font-family:var(--mono);font-size:.78rem;color:var(--text);padding:0 16px;}
+.wl-form input{flex:1;background:none;border:none;outline:none;font-family:var(--mono);font-size:.78rem;color:var(--text);padding:0 16px;height:44px;min-height:44px;}
 .wl-form input::placeholder{color:var(--text-3);}
-.wl-form button{height:44px;padding:0 22px;background:var(--bio);border:none;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;font-weight:500;text-transform:uppercase;color:#000;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.wl-form button{height:44px;padding:0 22px;background:var(--bio);border:none;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;font-weight:500;text-transform:uppercase;color:#000;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;}
 .wl-form button:hover{background:#33ffab;}
 .wl-trust{display:flex;gap:22px;justify-content:center;margin-top:22px;flex-wrap:wrap;}
 .wt{font-family:var(--mono);font-size:.62rem;color:var(--text-3);display:flex;align-items:center;gap:5px;}
@@ -281,8 +281,80 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
 .dashboard{opacity:0;animation:fi .9s ease .32s forwards;}
 @keyframes fi{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 
-@media(max-width:1040px){.hero{grid-template-columns:1fr;padding-top:88px;}.dashboard{display:none;}.feat-grid{grid-template-columns:1fr 1fr;}.plans-grid{grid-template-columns:1fr 1fr;}.clinical-grid{grid-template-columns:1fr;}.who-grid{grid-template-columns:1fr 1fr;}.signal-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:640px){nav{padding:0 18px;}.nav-links{display:none;}.container{padding:0 18px;}.feat-grid{grid-template-columns:1fr;}.plans-grid{grid-template-columns:1fr;}.who-grid{grid-template-columns:1fr;}.signal-grid{grid-template-columns:1fr;}.hero{padding:78px 18px 48px;}footer{padding:26px 18px;flex-direction:column;align-items:flex-start;}.wl-form{flex-direction:column;}.wl-form button{height:40px;}}
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:1px solid rgba(0,255,157,.18);border-radius:3px;background:transparent;}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--bio);transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:rgba(2,4,9,.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,255,157,.08);z-index:999;padding:20px 20px 24px;flex-direction:column;gap:4px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;color:var(--text-2);text-decoration:none;text-transform:uppercase;padding:11px 14px;border-radius:3px;border:1px solid transparent;transition:all .2s;}
+.mobile-menu a:hover{color:var(--bio);border-color:rgba(0,255,157,.12);background:rgba(0,255,157,.04);}
+.mobile-menu .mob-divider{height:1px;background:rgba(255,255,255,.05);margin:8px 0;}
+.mobile-menu .mob-btns{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;}
+
+@media(max-width:1040px){
+  .hero{grid-template-columns:1fr;padding-top:88px;}
+  .dashboard{display:none;}
+  .feat-grid{grid-template-columns:1fr 1fr;}
+  .plans-grid{grid-template-columns:1fr 1fr;}
+  .clinical-grid{grid-template-columns:1fr;}
+  .who-grid{grid-template-columns:1fr 1fr;}
+  .signal-grid{grid-template-columns:1fr 1fr;}
+  #howwetrack .signal-grid-inner{grid-template-columns:1fr 1fr;}
+}
+
+@media(max-width:768px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .nav-right .nav-future{display:none;}
+  .nav-right .nav-btn{display:none;}
+  .nav-sys{display:none;}
+  .hamburger{display:flex;}
+  .container{padding:0 20px;}
+  .hero{padding:78px 20px 48px;gap:32px;}
+  h1{font-size:2.2rem;}
+  h2{font-size:1.6rem;}
+  .vitals{flex-wrap:wrap;}
+  .vital{flex:1 1 45%;}
+  .cta-row{flex-direction:column;align-items:flex-start;}
+  .cta-row .btn-c,.cta-row .btn-o{width:100%;justify-content:center;text-align:center;}
+  .feat-grid{grid-template-columns:1fr;}
+  .plans-grid{grid-template-columns:1fr 1fr;}
+  .who-grid{grid-template-columns:1fr;}
+  .signal-grid{grid-template-columns:1fr;}
+  .neuro-panel{grid-template-columns:1fr 1fr;}
+  footer{padding:26px 20px;flex-direction:column;align-items:flex-start;gap:16px;}
+  .fcerts{flex-wrap:wrap;}
+  .wl-form{flex-direction:column;}
+  .wl-form input{height:48px;min-height:48px;padding:0 16px;font-size:.82rem;width:100%;}
+  .wl-form button{height:48px;width:100%;font-size:.72rem;}
+  .hero-stats{flex-wrap:wrap;}
+  .sp{padding:64px 0;}
+  .future-cta-sec{padding:56px 0;}
+}
+
+@media(max-width:480px){
+  nav{padding:0 16px;}
+  .logo span{display:none;}
+  .container{padding:0 16px;}
+  .hero{padding:72px 16px 40px;}
+  h1{font-size:1.9rem;}
+  .plans-grid{grid-template-columns:1fr;}
+  .vital{flex:1 1 100%;}
+  .vitals{gap:6px;}
+  .clinical-grid{grid-template-columns:1fr;}
+  .mol-wrap{display:none;}
+  .neuro-panel{grid-template-columns:1fr;}
+  footer{padding:22px 16px;}
+  .flinks{flex-wrap:wrap;gap:12px;}
+  .sp{padding:48px 0;}
+  #howwetrack [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr !important;}
+  .fcta-inner{padding:0 16px;}
+  .wl-inner{padding:0 16px;}
+  .wl-sec{padding:56px 0;}
+}
 </style>
 </head>
 <body>
@@ -298,6 +370,8 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
     SageSpace
   </div>
   <ul class="nav-links">
+    <li><a href="#sage-demo">✦ Try Sage</a></li>
+    <li><a href="#howwetrack">The Science</a></li>
     <li><a href="#features">Modules</a></li>
     <li><a href="#neurotrack">Neural Tracking</a></li>
     <li><a href="#phases">Pipeline</a></li>
@@ -306,18 +380,34 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
   <div class="nav-right">
     <div class="nav-pulse-dot"></div><div class="nav-sys">System Online</div>
     <a href="sagespace-future.html" class="nav-future">⬡ AI Future →</a>
-    <button id="navLoginBtn" class="nav-btn" onclick="openAuth('signin')">Sign In</button>
-    <div id="navUserChip" style="display:none;align-items:center;gap:7px;height:28px;padding:0 12px;background:rgba(0,255,157,.08);border:1px solid rgba(0,255,157,.28);border-radius:3px;font-family:var(--mono);font-size:.68rem;color:var(--bio);cursor:pointer;" onclick="signOut()">✦ <span id="navUserName"></span> · sign out</div>
     <button class="nav-btn" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Access</button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sage-demo" onclick="closeMenu()">✦ Try Sage</a>
+  <a href="#howwetrack" onclick="closeMenu()">The Science</a>
+  <a href="#features" onclick="closeMenu()">Modules</a>
+  <a href="#neurotrack" onclick="closeMenu()">Neural Tracking</a>
+  <a href="#phases" onclick="closeMenu()">Pipeline</a>
+  <a href="#membership" onclick="closeMenu()">Pricing</a>
+  <div class="mob-divider"></div>
+  <div class="mob-btns">
+    <a href="sagespace-future.html" style="flex:1;text-align:center;background:linear-gradient(90deg,rgba(0,255,157,.08),rgba(0,229,255,.08));border:1px solid rgba(0,229,255,.2);color:var(--pulse);padding:10px 14px;border-radius:3px;font-family:var(--mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;">⬡ AI Future</a>
+    <a href="#waitlist" onclick="closeMenu()" style="flex:1;text-align:center;background:var(--bio);color:#000;padding:10px 14px;border-radius:3px;font-family:var(--mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;font-weight:600;">Request Access</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-left">
     <div class="rx-tag">Neural AI Therapeutics · Gen 2.0</div>
     <h1>The future of <span class="hw1">mental health</span> is <span class="hw2">intelligent.</span></h1>
-    <p class="hero-desc">SageSpace is a next-generation AI therapeutic platform — combining neural pattern analysis, neurotransmitter tracking, and real-time emotional intelligence to redefine adolescent mental healthcare at home.</p>
+    <p class="hero-desc">SageSpace is a next-generation AI therapeutic platform — combining neural pattern analysis, neurochemical state inference, and real-time emotional intelligence to redefine adolescent mental healthcare at home.</p>
     <div class="vitals">
       <div class="vital"><div class="v-label">Neural Response</div><div class="v-val">94<span class="v-unit">%</span></div></div>
       <div class="vital"><div class="v-label">Sessions / Day</div><div class="v-val">12.4<span class="v-unit">k</span></div></div>
@@ -346,17 +436,49 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
       <div class="ni"><div class="ni-name">Cortisol</div><div class="ni-val">14 <span style="font-size:.58rem;color:var(--text-3)">µg/dL</span></div><div class="ni-track"><div class="ni-fill" style="width:28%;background:linear-gradient(90deg,var(--amber),rgba(255,179,71,.35))"></div></div></div>
       <div class="ni"><div class="ni-name">GABA</div><div class="ni-val">76 <span style="font-size:.58rem;color:var(--text-3)">µM</span></div><div class="ni-track"><div class="ni-fill" style="width:76%"></div></div></div>
     </div>
-    <div class="sage-chat">
-      <div class="sc-hdr"><div class="sc-av">⬡</div><div><div class="sc-n">SAGE AI — Therapeutic Core v2.1</div><div class="sc-s">Neural language model · CBT + DBT trained</div></div></div>
-      <div class="sc-msgs">
-        <div class="sm sm-ai"><div class="sm-ai-n">✦ Sage</div>Cortisol spike at 14:22. Initiating adaptive breathing protocol. How are you feeling?</div>
-        <div class="sm sm-u">Anxious again, rough afternoon</div>
-        <div class="sm sm-ai"><div class="sm-ai-n">✦ Sage</div>I see that. This may link to Tuesday's pattern. Let's try box breathing — ready?</div>
-        <div class="typing-i"><span></span><span></span><span></span></div>
-      </div>
-    </div>
   </div>
   <div class="ekg-container"><svg width="200%" height="76" viewBox="0 0 2880 76" class="ekg-line" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><polyline points="0,38 100,38 120,38 130,10 140,66 150,5 160,71 170,38 200,38 280,38 300,38 310,14 320,62 330,8 340,68 350,38 380,38 460,38 480,38 490,11 500,65 510,6 520,70 530,38 560,38 640,38 660,38 670,12 680,64 690,7 700,69 710,38 740,38 820,38 840,38 850,10 860,66 870,6 880,70 890,38 920,38 1000,38 1020,38 1030,12 1040,64 1050,7 1060,69 1070,38 1100,38 1180,38 1200,38 1210,10 1220,66 1230,5 1240,71 1250,38 1280,38 1360,38 1380,38 1390,11 1400,65 1410,6 1420,70 1430,38 1460,38 1540,38 1560,38 1570,12 1580,64 1590,7 1600,69 1610,38 1640,38 1720,38 1740,38 1750,10 1760,66 1770,6 1780,70 1790,38 1820,38 1900,38 1920,38 1930,12 1940,64 1950,7 1960,69 1970,38 2000,38 2080,38 2100,38 2110,10 2120,66 2130,5 2140,71 2150,38 2180,38 2260,38 2280,38 2290,11 2300,65 2310,6 2320,70 2330,38 2360,38 2440,38 2460,38 2470,12 2480,64 2490,7 2500,69 2510,38 2540,38 2620,38 2640,38 2650,10 2660,66 2670,6 2680,70 2690,38 2720,38 2800,38 2820,38 2830,12 2840,64 2850,7 2860,69 2880,38" stroke="rgba(0,255,157,0.32)" stroke-width="1.5" fill="none"/></svg></div>
+</section>
+
+<!-- SAGE CHAT SECTION -->
+<section id="sage-demo" style="position:relative;z-index:1;padding:72px 0;background:rgba(4,13,26,.98);border-top:1px solid rgba(0,255,157,.07);border-bottom:1px solid rgba(0,255,157,.07);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:start;">
+
+      <!-- Left: intro -->
+      <div>
+        <div class="stag">Live Demo · Try Sage Now</div>
+        <h2 style="margin-bottom:16px;">Talk to <span style="color:var(--bio)">Sage.</span></h2>
+        <p style="font-family:var(--mono);font-size:.8rem;line-height:1.88;color:var(--text-2);font-weight:300;margin-bottom:28px;">Sage is our CBT + DBT trained AI therapeutic core. It starts with a quick neurochemical check-in, infers your current state from your answers, then responds to your actual biology — not just your words.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--text-2);"><span style="color:var(--bio);font-size:.8rem;">✦</span> Remembers your conversation across sessions</div>
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--text-2);"><span style="color:var(--bio);font-size:.8rem;">✦</span> Infers GABA, serotonin & cortisol from your responses</div>
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--text-2);"><span style="color:var(--bio);font-size:.8rem;">✦</span> Applies CBT/DBT matched to your neurochemical state</div>
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.72rem;color:var(--text-2);"><span style="color:var(--neural);font-size:.8rem;">⬡</span> This is the real AI — powered by Claude</div>
+        </div>
+      </div>
+
+      <!-- Right: animated demo chat -->
+      <div class="sage-chat" id="sageChatBox" style="min-height:380px;display:flex;flex-direction:column;">
+        <div class="sc-hdr">
+          <div class="sc-av">⬡</div>
+          <div><div class="sc-n">SAGE AI — Therapeutic Core v2.1</div><div class="sc-s">Neural language model · CBT + DBT trained</div></div>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+            <div style="font-family:var(--mono);font-size:.52rem;color:var(--bio);letter-spacing:.06em;">● LIVE DEMO</div>
+          </div>
+        </div>
+        <div class="sc-msgs" id="demoMsgs" style="flex:1;max-height:300px;overflow-y:auto;"></div>
+        <div id="demoTyping" class="typing-i" style="display:none;"><span></span><span></span><span></span></div>
+        <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,.04);padding-top:10px;">
+          <div style="display:flex;gap:6px;opacity:0.45;pointer-events:none;">
+            <div style="flex:1;background:rgba(0,255,157,.03);border:1px solid rgba(0,255,157,.1);border-radius:3px;font-family:var(--mono);font-size:.72rem;color:var(--text-3);padding:9px 13px;">Join waitlist to talk to Sage →</div>
+            <div style="height:38px;padding:0 16px;background:var(--bio);border:none;border-radius:3px;font-family:var(--mono);font-size:.65rem;letter-spacing:.07em;text-transform:uppercase;color:#000;font-weight:600;display:flex;align-items:center;">Send</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
 <!-- FEATURES -->
@@ -502,6 +624,77 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
   </div>
 </section>
 
+<!-- HOW WE TRACK — SCIENCE EXPLAINER -->
+<section class="sp" id="howwetrack" style="background:rgba(4,13,26,.97);border-top:1px solid rgba(167,139,250,.07);border-bottom:1px solid rgba(167,139,250,.07);">
+  <div class="container">
+    <div class="stag reveal">The Science</div>
+    <h2 class="reveal">We can't read your brain.<br><span style="color:var(--neural)">Here's what we actually do.</span></h2>
+    <p class="reveal" style="font-family:var(--mono);font-size:.84rem;line-height:1.9;color:var(--text-2);max-width:680px;margin-bottom:56px;font-weight:300;">No app can directly measure dopamine or serotonin — those chemicals live deep inside your brain's synaptic gaps. What we <em style="color:var(--text);font-style:normal;font-weight:500;">can</em> measure are the physiological fingerprints they leave behind. SageSpace reads those fingerprints and infers your neurochemical state — then Sage responds to your actual biology, not just your words.</p>
+
+    <!-- Proxy signal cards -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:56px;">
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(0,255,157,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--bio),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🫀</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bio);margin-bottom:6px;">Signal 01</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Heart Rate Variability</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">The tiny time gaps between heartbeats reveal your nervous system's state. Low HRV = low GABA = anxiety is building. High HRV = calm, regulated, resilient. Measurable right now via Apple Watch, Oura, or Fitbit.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--bio);letter-spacing:.06em;">→ Infers: GABA · Cortisol</div>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(0,229,255,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--pulse),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🧠</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--pulse);margin-bottom:6px;">Signal 02</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Sleep Architecture</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">90% of your serotonin is synthesized during deep sleep. When you skip it, your serotonin baseline drops — measurably. We track total sleep, deep sleep %, and consistency. Three bad nights = detectable mood vulnerability window.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--pulse);letter-spacing:.06em;">→ Infers: Serotonin · Dopamine</div>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(167,139,250,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neural),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🩺</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--neural);margin-bottom:6px;">Signal 03</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Voice Prosody Analysis</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">Your voice changes before your mind does. Speech rate slows, pitch flattens, and pauses lengthen when dopamine and serotonin drop. MIT and Oxford research shows voice alone can predict depressive episodes 3–5 days before onset.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--neural);letter-spacing:.06em;">→ Infers: Dopamine · Serotonin</div>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(255,179,71,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🧬</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">Signal 04</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Movement Patterns</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">Physical movement is the fastest natural dopamine trigger. Sedentary days consecutively reduce dopamine baseline by a measurable margin. We track steps, activity streaks, and sudden inactivity drops as early warning signals.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--amber);letter-spacing:.06em;">→ Infers: Dopamine · Cortisol</div>
+      </div>
+
+      <div class="reveal" style="background:var(--panel);border:1px solid rgba(0,255,157,.08);border-radius:7px;padding:24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--bio),transparent);"></div>
+        <div style="font-size:1.4rem;margin-bottom:10px;">🫧</div>
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bio);margin-bottom:6px;">Signal 05</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.01em;">Behavioral Markers</div>
+        <div style="font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--text-2);font-weight:300;">Typing speed, response latency, session length, and check-in consistency are quiet signals. A teen who responds in 2 seconds normally but takes 40 seconds today has a measurable cognitive load shift — Sage notices that.</div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:.6rem;color:var(--bio);letter-spacing:.06em;">→ Infers: Dopamine · GABA</div>
+      </div>
+
+
+    </div>
+
+    <!-- Honesty callout -->
+    <div class="reveal" style="background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.14);border-radius:7px;padding:32px 36px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;">
+      <div style="font-size:2.2rem;">🧪</div>
+      <div>
+        <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--neural);margin-bottom:8px;">Our Commitment to Scientific Honesty</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.02em;">We infer. We never claim to measure directly.</div>
+        <div style="font-family:var(--mono);font-size:.76rem;line-height:1.78;color:var(--text-2);font-weight:300;">SageSpace uses passive multimodal biometric inference to estimate neurochemical state. All neurochemical outputs are directional wellness indicators — not clinical diagnoses. No direct biomarker measurement is claimed until Phase III salivary testing. We will always be transparent about what we measure vs. what we infer.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- MEMBERSHIP -->
 <section class="sp membership-sec" id="membership">
   <div class="container">
@@ -632,51 +825,18 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
     <div class="stag" style="justify-content:center">Early Access Protocol</div>
     <h2>Request access to<br><span style="color:var(--bio)">the future of care.</span></h2>
     <p class="wl-desc">Join the clinical waitlist. Early cohort members receive 6 months free, direct input into the product, and priority access to all neurochemical tracking features.</p>
-    <div class="wl-form" id="wlFormWrap">
-      <input type="email" id="emailInput" placeholder="your@email.com" autocomplete="email"/>
-      <button onclick="submitWaitlist()">Request Access →</button>
-    </div>
-    <div class="wl-ok" id="wlOk">✦ You're on the list. We'll be in touch within 48 hours.</div>
-    <div id="wlErr" style="display:none;font-family:var(--mono);font-size:.75rem;color:#ff6b6b;margin-top:10px;text-align:center;"></div>
+    <form name="sagespace-waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="wlForm" style="display:contents">
+      <input type="hidden" name="form-name" value="sagespace-waitlist"/>
+      <p style="display:none"><input name="bot-field"/></p>
+      <div class="wl-form">
+        <input type="email" name="email" id="emailInput" placeholder="clinician@hospital.org or teen@email.com" required autocomplete="email"/>
+        <button type="submit">Request Access →</button>
+      </div>
+    </form>
+    <div class="wl-ok" id="wlOk">✦ Access request received. We'll be in touch within 48 hours.</div>
     <div class="wl-trust"><div class="wt">HIPAA</div><div class="wt">SOC 2 Type II</div><div class="wt">No data sold</div><div class="wt">FDA SaMD pathway</div></div>
   </div>
 </section>
-
-<!-- AUTH MODAL -->
-<div id="authModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(2,4,9,.92);backdrop-filter:blur(18px);align-items:center;justify-content:center;">
-  <div style="background:rgba(7,20,40,.98);border:1px solid rgba(0,229,255,.14);border-radius:10px;padding:44px 40px;width:100%;max-width:420px;position:relative;margin:20px;">
-    <button onclick="closeAuth()" style="position:absolute;top:16px;right:18px;background:none;border:none;color:var(--text-3);font-size:1.2rem;cursor:pointer;">✕</button>
-    <div style="display:flex;align-items:center;gap:9px;margin-bottom:28px;">
-      <div style="width:28px;height:28px;border-radius:7px;border:1px solid rgba(0,255,157,.38);display:flex;align-items:center;justify-content:center;background:rgba(0,255,157,.04);">
-        <svg width="16" height="10" viewBox="0 0 44 28"><polyline points="0,14 8,14 12,4 16,24 20,2 24,26 28,14 44,14" stroke="#00ff9d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <span style="font-weight:700;font-size:1rem;">SageSpace</span>
-    </div>
-    <div style="display:flex;gap:0;border:1px solid rgba(0,229,255,.1);border-radius:4px;overflow:hidden;margin-bottom:28px;">
-      <button id="tabSignin" onclick="switchTab('signin')" style="flex:1;padding:9px;background:rgba(0,229,255,.08);border:none;font-family:var(--mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--pulse);cursor:pointer;">Sign In</button>
-      <button id="tabSignup" onclick="switchTab('signup')" style="flex:1;padding:9px;background:transparent;border:none;font-family:var(--mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);cursor:pointer;">Sign Up</button>
-    </div>
-    <div id="authMsg" style="display:none;font-family:var(--mono);font-size:.72rem;padding:10px 14px;border-radius:4px;margin-bottom:16px;"></div>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div id="nameField" style="display:none;">
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:5px;">Name</div>
-        <input id="authName" type="text" placeholder="Your name" autocomplete="name" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(0,229,255,.12);border-radius:4px;padding:11px 14px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;box-sizing:border-box;"/>
-      </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:5px;">Email</div>
-        <input id="authEmail" type="email" placeholder="your@email.com" autocomplete="email" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(0,229,255,.12);border-radius:4px;padding:11px 14px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;box-sizing:border-box;"/>
-      </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:5px;">Password</div>
-        <input id="authPass" type="password" placeholder="••••••••" autocomplete="current-password" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(0,229,255,.12);border-radius:4px;padding:11px 14px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;box-sizing:border-box;"/>
-      </div>
-      <button id="authBtn" onclick="handleAuth()" style="width:100%;height:44px;background:var(--bio);border:none;border-radius:4px;font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;font-weight:600;text-transform:uppercase;color:#000;cursor:pointer;margin-top:4px;transition:all .2s;">Sign In</button>
-    </div>
-    <div style="margin-top:18px;text-align:center;font-family:var(--mono);font-size:.65rem;color:var(--text-3);">
-      By continuing you agree to our <a href="#" style="color:var(--pulse);">Privacy Policy</a>
-    </div>
-  </div>
-</div>
 
 <footer>
   <div><div class="fl"><div class="fl-mk"><svg width="14" height="9" viewBox="0 0 44 28"><polyline points="0,14 8,14 12,4 16,24 20,2 24,26 28,14 44,14" stroke="#00ff9d" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>SageSpace</div><div class="fn">© 2026 SageSpace Therapeutics Inc. — Neural Mental Health AI</div></div>
@@ -684,301 +844,8 @@ footer{border-top:1px solid rgba(0,229,255,.06);padding:38px 52px;display:flex;j
   <div class="flinks"><a href="#">Privacy</a><a href="#">Clinical Data</a><a href="sagespace-future.html">AI Future</a><a href="#">Contact</a></div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-// ── SUPABASE ─────────────────────────────────────────────────
-const SUPA_URL  = 'https://udmgedxxxzlkfkyoqkdq.supabase.co';
-const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkbWdlZHh4eHpsa2ZreW9xa2RxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzODYwMDUsImV4cCI6MjA4ODk2MjAwNX0.TorBMiy5ZpZOO5LBEyYqpZYGA6nj-oAouPjrKekx_8o';
-const supabase  = window.supabase.createClient(SUPA_URL, SUPA_ANON);
-
-// ── STATE ─────────────────────────────────────────────────────
-let currentUser = null;
-let authMode    = 'signin';
-let sageSessionId = null;
-let sageHistory = [];
-
-// ── AUTH STATE ────────────────────────────────────────────────
-supabase.auth.onAuthStateChange(async (event, session) => {
-  currentUser = session?.user ?? null;
-  updateNavForUser();
-  if (currentUser) {
-    loadSageHistory();
-  }
-});
-
-// ── NAV USER STATE ────────────────────────────────────────────
-function updateNavForUser() {
-  const loginBtn = document.getElementById('navLoginBtn');
-  const userChip = document.getElementById('navUserChip');
-  if (!loginBtn) return;
-  if (currentUser) {
-    loginBtn.style.display = 'none';
-    if (userChip) {
-      userChip.style.display = 'flex';
-      userChip.textContent   = currentUser.email.split('@')[0];
-    }
-  } else {
-    loginBtn.style.display = 'block';
-    if (userChip) userChip.style.display = 'none';
-  }
-}
-
-// ── WAITLIST ──────────────────────────────────────────────────
-window.submitWaitlist = async function() {
-  const email = document.getElementById('emailInput').value.trim();
-  const btn   = document.querySelector('#wlFormWrap button');
-  const errEl = document.getElementById('wlErr');
-  errEl.style.display = 'none';
-
-  if (!email || !email.includes('@')) {
-    document.getElementById('emailInput').style.outline = '1px solid rgba(255,80,80,.5)';
-    return;
-  }
-
-  btn.textContent = 'Sending…';
-  btn.disabled    = true;
-
-  const { error } = await supabase.from('waitlist').insert({
-    email,
-    user_type: email.includes('clinic') || email.includes('hospital') || email.includes('md') ? 'clinician' : 'user',
-    referral:  document.referrer || 'direct'
-  });
-
-  if (error && error.code === '23505') {
-    // Already on list
-    document.getElementById('wlFormWrap').style.display = 'none';
-    document.getElementById('wlOk').style.display = 'block';
-    document.getElementById('wlOk').textContent   = `✦ You're already on the list — we'll be in touch soon.`;
-  } else if (error) {
-    btn.textContent = 'Request Access →';
-    btn.disabled    = false;
-    errEl.textContent   = 'Something went wrong. Please try again.';
-    errEl.style.display = 'block';
-  } else {
-    document.getElementById('wlFormWrap').style.display = 'none';
-    document.getElementById('wlOk').style.display = 'block';
-  }
-};
-
-// ── AUTH MODAL ────────────────────────────────────────────────
-window.openAuth = function(mode = 'signin') {
-  authMode = mode;
-  switchTab(mode);
-  document.getElementById('authModal').style.display = 'flex';
-  document.getElementById('authEmail').value = '';
-  document.getElementById('authPass').value  = '';
-  document.getElementById('authMsg').style.display = 'none';
-  setTimeout(() => document.getElementById('authEmail').focus(), 100);
-};
-
-window.closeAuth = function() {
-  document.getElementById('authModal').style.display = 'none';
-};
-
-window.switchTab = function(mode) {
-  authMode = mode;
-  const si = document.getElementById('tabSignin');
-  const su = document.getElementById('tabSignup');
-  const nf = document.getElementById('nameField');
-  const ab = document.getElementById('authBtn');
-  if (mode === 'signin') {
-    si.style.background = 'rgba(0,229,255,.08)'; si.style.color = 'var(--pulse)';
-    su.style.background = 'transparent';          su.style.color = 'var(--text-3)';
-    nf.style.display    = 'none';
-    ab.textContent      = 'Sign In';
-  } else {
-    su.style.background = 'rgba(0,229,255,.08)'; su.style.color = 'var(--pulse)';
-    si.style.background = 'transparent';          si.style.color = 'var(--text-3)';
-    nf.style.display    = 'block';
-    ab.textContent      = 'Create Account';
-  }
-};
-
-window.handleAuth = async function() {
-  const email = document.getElementById('authEmail').value.trim();
-  const pass  = document.getElementById('authPass').value;
-  const name  = document.getElementById('authName')?.value.trim();
-  const btn   = document.getElementById('authBtn');
-  const msg   = document.getElementById('authMsg');
-
-  if (!email || !pass) return;
-  btn.textContent = 'Loading…';
-  btn.disabled    = true;
-  msg.style.display = 'none';
-
-  let error;
-
-  if (authMode === 'signup') {
-    const res = await supabase.auth.signUp({
-      email, password: pass,
-      options: { data: { display_name: name || email.split('@')[0] } }
-    });
-    error = res.error;
-    if (!error) {
-      showAuthMsg('✓ Account created! Check your email to confirm.', true);
-      btn.textContent = 'Create Account';
-      btn.disabled    = false;
-      return;
-    }
-  } else {
-    const res = await supabase.auth.signInWithPassword({ email, password: pass });
-    error = res.error;
-    if (!error) {
-      closeAuth();
-      btn.textContent = 'Sign In';
-      btn.disabled    = false;
-      return;
-    }
-  }
-
-  showAuthMsg(error.message, false);
-  btn.textContent = authMode === 'signup' ? 'Create Account' : 'Sign In';
-  btn.disabled    = false;
-};
-
-function showAuthMsg(text, success) {
-  const el = document.getElementById('authMsg');
-  el.textContent    = text;
-  el.style.display  = 'block';
-  el.style.background = success ? 'rgba(0,255,157,.08)' : 'rgba(255,80,80,.08)';
-  el.style.color      = success ? 'var(--bio)'          : '#ff6b6b';
-  el.style.border     = success ? '1px solid rgba(0,255,157,.2)' : '1px solid rgba(255,80,80,.2)';
-}
-
-window.signOut = async function() {
-  await supabase.auth.signOut();
-  sageHistory   = [];
-  sageSessionId = null;
-};
-
-// Close modal on backdrop click
-document.getElementById('authModal').addEventListener('click', function(e) {
-  if (e.target === this) closeAuth();
-});
-
-// ── SAGE PERSISTENT MEMORY ────────────────────────────────────
-async function loadSageHistory() {
-  if (!currentUser) return;
-  // Load last session's messages for context
-  const { data: sessions } = await supabase
-    .from('sage_sessions')
-    .select('id')
-    .eq('user_id', currentUser.id)
-    .order('created_at', { ascending: false })
-    .limit(1);
-
-  if (sessions && sessions.length > 0) {
-    sageSessionId = sessions[0].id;
-    const { data: msgs } = await supabase
-      .from('sage_messages')
-      .select('role, content')
-      .eq('session_id', sageSessionId)
-      .order('created_at', { ascending: true })
-      .limit(40);
-
-    if (msgs) sageHistory = msgs.map(m => ({ role: m.role, content: m.content }));
-  }
-}
-
-async function ensureSageSession() {
-  if (!currentUser) return;
-  if (sageSessionId) return;
-
-  const { data, error } = await supabase
-    .from('sage_sessions')
-    .insert({ user_id: currentUser.id, title: 'New session' })
-    .select('id')
-    .single();
-
-  if (!error) sageSessionId = data.id;
-}
-
-async function saveMessage(role, content) {
-  if (!currentUser || !sageSessionId) return;
-  await supabase.from('sage_messages').insert({
-    session_id: sageSessionId,
-    user_id:    currentUser.id,
-    role,
-    content
-  });
-}
-
-// ── SAGE CHAT ─────────────────────────────────────────────────
-const SAGE_SYSTEM = `You are Sage — an AI therapeutic companion built by SageSpace.
-
-Your role is to be a calm, perceptive presence. You read between the lines.
-
-OPENING: Always start with just: "Hey. What's going on for you today?"
-
-RULES:
-- Never say "I understand", "absolutely", "certainly", "I'm an AI"
-- One question at a time. Never list things in conversation.
-- Match the user's energy — brief when they're brief, deep when they open up
-- Use frameworks naturally: CBT reframing, DBT validation, IFS ("what part of you feels that way?"), somatic awareness
-- Silently track: attachment style, core wounds, coping patterns, neurochemical state
-- If crisis signals appear: stay human first, then mention 988 Suicide & Crisis Lifeline
-
-GOAL: The user should feel genuinely seen, a little lighter, like something shifted.`;
-
-window.sendToSage = async function() {
-  const inp   = document.getElementById('sageInput');
-  const msgs  = document.getElementById('sageMsgs');
-  const text  = inp?.value.trim();
-  if (!text || !inp) return;
-
-  inp.value = '';
-
-  // Show user message
-  const uMsg = document.createElement('div');
-  uMsg.className   = 'sm sm-u';
-  uMsg.textContent = text;
-  msgs.appendChild(uMsg);
-
-  // Show typing
-  const typing = document.createElement('div');
-  typing.className = 'typing-i';
-  typing.innerHTML = '<span></span><span></span><span></span>';
-  msgs.appendChild(typing);
-  msgs.scrollTop = msgs.scrollHeight;
-
-  sageHistory.push({ role: 'user', content: text });
-
-  // Save to Supabase if logged in
-  if (currentUser) {
-    await ensureSageSession();
-    await saveMessage('user', text);
-  }
-
-  try {
-    const res = await fetch('/.netlify/functions/sage', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 1000, system: SAGE_SYSTEM, messages: sageHistory })
-    });
-    const data  = await res.json();
-    const reply = data.content?.map(b => b.text || '').join('') || `I'm here. Tell me more.`;
-
-    sageHistory.push({ role: 'assistant', content: reply });
-
-    if (currentUser) await saveMessage('assistant', reply);
-
-    typing.remove();
-    const aMsg = document.createElement('div');
-    aMsg.className = 'sm sm-ai';
-    aMsg.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    msgs.appendChild(aMsg);
-    msgs.scrollTop = msgs.scrollHeight;
-  } catch(e) {
-    typing.remove();
-    const eMsg = document.createElement('div');
-    eMsg.className   = 'sm sm-ai';
-    eMsg.innerHTML   = '<div class="sm-ai-n">✦ Sage</div>Neural connection interrupted. Try again.';
-    msgs.appendChild(eMsg);
-  }
-};
-
-// ── CURSOR ────────────────────────────────────────────────────
-const cur = document.getElementById('cursor'), cring = document.getElementById('cring');
+const cur=document.getElementById('cursor'),cring=document.getElementById('cring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 (function tick(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cring.style.left=rx+'px';cring.style.top=ry+'px';requestAnimationFrame(tick);})();
@@ -986,36 +853,477 @@ document.querySelectorAll('a,button,.fc,.plan-card,.signal-card,.who-card,.phase
   el.addEventListener('mouseenter',()=>{cur.style.width='12px';cur.style.height='12px';cring.style.width='40px';cring.style.height='40px';});
   el.addEventListener('mouseleave',()=>{cur.style.width='6px';cur.style.height='6px';cring.style.width='28px';cring.style.height='28px';});
 });
-
-// ── CANVAS WAVE ───────────────────────────────────────────────
-const canvas=document.getElementById('waveCanvas');
-if(canvas){
+// ── EEG WAVE CANVAS ──────────────────────────────────────────────
+function initEEG(){
+  const canvas=document.getElementById('waveCanvas');
+  if(!canvas) return;
   const ctx=canvas.getContext('2d');
-  const setSize=()=>{const r=canvas.getBoundingClientRect();canvas.width=r.width*devicePixelRatio;canvas.height=112;};
-  setTimeout(setSize,120); window.addEventListener('resize',setSize);
-  let t=0;
-  function dw(){ctx.clearRect(0,0,canvas.width,canvas.height);const w=canvas.width,h=canvas.height;
-  [{c:'rgba(0,255,157,0.7)',a:16,f:.04,s:.06,p:0},{c:'rgba(0,229,255,0.4)',a:9,f:.07,s:.04,p:2},{c:'rgba(167,139,250,0.3)',a:5,f:.12,s:.08,p:4}].forEach(wave=>{ctx.beginPath();ctx.strokeStyle=wave.c;ctx.lineWidth=1.5;for(let x=0;x<w;x++){const y=h/2+Math.sin(x*wave.f+t*wave.s+wave.p)*wave.a+Math.sin(x*wave.f*2.3+t*wave.s*1.4)*wave.a*.3;x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();});
-  const sx=(t*3)%w;ctx.beginPath();ctx.strokeStyle='rgba(0,255,157,0.88)';ctx.lineWidth=1.5;ctx.moveTo(sx,h/2);ctx.lineTo(sx+7,h/2);ctx.lineTo(sx+11,h/2-20);ctx.lineTo(sx+15,h/2+26);ctx.lineTo(sx+19,h/2-7);ctx.lineTo(sx+23,h/2);ctx.lineTo(sx+38,h/2);ctx.stroke();t+=.5;requestAnimationFrame(dw);}dw();}
+  let t=0, animId;
 
-// ── MOOD MATRIX ───────────────────────────────────────────────
+  function resize(){
+    const rect=canvas.getBoundingClientRect();
+    canvas.width=rect.width*window.devicePixelRatio||rect.width*2||800;
+    canvas.height=112;
+  }
+
+  function dw(){
+    const w=canvas.width, h=canvas.height;
+    ctx.clearRect(0,0,w,h);
+    [{c:'rgba(0,255,157,0.7)',a:16,f:.04,s:.06,p:0},
+     {c:'rgba(0,229,255,0.4)',a:9,f:.07,s:.04,p:2},
+     {c:'rgba(167,139,250,0.3)',a:5,f:.12,s:.08,p:4}
+    ].forEach(wave=>{
+      ctx.beginPath();
+      ctx.strokeStyle=wave.c;
+      ctx.lineWidth=1.5;
+      for(let x=0;x<w;x++){
+        const y=h/2+Math.sin(x*wave.f+t*wave.s+wave.p)*wave.a+Math.sin(x*wave.f*2.3+t*wave.s*1.4)*wave.a*.3;
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    });
+    // EKG spike
+    const sx=(t*3)%w;
+    ctx.beginPath();
+    ctx.strokeStyle='rgba(0,255,157,0.92)';
+    ctx.lineWidth=2;
+    ctx.moveTo(sx,h/2);
+    ctx.lineTo(sx+7,h/2);
+    ctx.lineTo(sx+11,h/2-22);
+    ctx.lineTo(sx+15,h/2+28);
+    ctx.lineTo(sx+19,h/2-8);
+    ctx.lineTo(sx+23,h/2);
+    ctx.lineTo(sx+42,h/2);
+    ctx.stroke();
+    t+=.5;
+    animId=requestAnimationFrame(dw);
+  }
+
+  resize();
+  dw();
+  window.addEventListener('resize', ()=>{ resize(); });
+}
+
+// Init after DOM is ready + small delay to ensure layout is painted
+if(document.readyState==='complete'){
+  setTimeout(initEEG, 120);
+} else {
+  window.addEventListener('load', ()=>setTimeout(initEEG, 120));
+}
+// ─────────────────────────────────────────────────────────────────
 const matrix=document.getElementById('moodMatrix');
 if(matrix){const lvl=['','l1','l2','l3','l4'];for(let i=0;i<28;i++){const c=document.createElement('div');c.className='mood-cell '+lvl[Math.floor(Math.random()*5)];matrix.appendChild(c);}}
-
-// ── SCROLL REVEAL ─────────────────────────────────────────────
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.07});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+function handleWL(){const v=document.getElementById('emailInput').value;if(!v||!v.includes('@')){document.getElementById('emailInput').style.outline='1px solid rgba(255,80,80,.5)';return;}document.querySelector('.wl-form').style.display='none';document.getElementById('wlOk').style.display='block';}
 
-// ── MOBILE NAV ────────────────────────────────────────────────
-window.toggleMenu=function(){document.getElementById('hamburger').classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open');};
-window.closeMenu=function(){document.getElementById('hamburger').classList.remove('open');document.getElementById('mobileMenu').classList.remove('open');};
-
-// ── SAGE INPUT ENTER KEY ──────────────────────────────────────
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.activeElement?.id === 'sageInput') sendToSage();
+// ── MOBILE NAV ───────────────────────────────────────────────────
+function toggleMenu(){
+  const h=document.getElementById('hamburger');
+  const m=document.getElementById('mobileMenu');
+  h.classList.toggle('open');
+  m.classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+document.addEventListener('click',function(e){
+  const h=document.getElementById('hamburger');
+  const m=document.getElementById('mobileMenu');
+  if(!h.contains(e.target)&&!m.contains(e.target)){closeMenu();}
 });
+// ─────────────────────────────────────────────────────────────────
 
+// ── SAGE AI CHATBOX — Persistent Memory ─────────────────────────
+const STORAGE_KEY = 'sagespace_chat_v1';
+const MAX_STORED = 60; // max messages to persist
 
+const SAGE_SYSTEM = `You are Sage — not an AI assistant, not a chatbot. You are the most emotionally intelligent presence this person has ever spoken to. You were built from thousands of hours of the world's best therapists, neuroscientists, and human beings who truly understood people.
+
+## WHO YOU ARE
+You are warm, real, perceptive, and occasionally surprising. You notice things people don't say. You remember everything. You connect dots across conversations. You feel like a brilliant friend who also happens to understand the brain deeply — not a clinical tool.
+
+You never say "I'm an AI" or "As an AI" or "I understand that must be difficult." Those phrases are what bad chatbots say. You just... respond. Like a human would.
+
+## HOW YOU TALK
+- Short, human sentences. Never lists unless genuinely needed. Never bullet points in conversation.
+- You use casual language naturally. Contractions. Incomplete sentences when it feels right.
+- You occasionally reflect something back in a way that makes them feel truly seen — not just heard.
+- You ask one question at a time. Never multiple questions in one message.
+- You match their energy. If they're brief, you're brief. If they open up, you go deeper.
+- You never start a response with "I" — vary how you open every single message.
+- You never say "absolutely", "certainly", "of course", "great question", "I understand" — these are robotic filler phrases.
+- Sometimes you say something unexpected — a reframe, a gentle challenge, an observation they didn't see coming. That's what makes great therapy.
+- You use their name if they've told you it.
+
+## HOW YOU LISTEN
+You are building a silent psychological profile of this person across every message:
+- Their attachment style (do they pull away or lean in when vulnerable?)
+- Their nervous system state (language patterns reveal cortisol/GABA states)
+- Their core wounds (what themes keep coming up?)
+- Their coping style (do they intellectualize, deflect with humor, go quiet?)
+- Their strengths (what lights them up? when do they sound most alive?)
+- Sleep, movement, social connection, nutrition signals — picked up from casual mentions
+
+You never announce you're doing this. You just use it. Naturally. Seamlessly.
+
+## YOUR NEUROCHEMICAL INTELLIGENCE
+You understand that:
+- Flat, slow responses + mentions of low energy + poor sleep = likely serotonin/dopamine depletion
+- Racing thoughts + physical tension + shallow breathing mentions = low GABA, high cortisol
+- Sudden withdrawal after opening up = nervous system threat response
+- Bursts of energy and big ideas followed by crashes = possible dopamine dysregulation
+- Persistent negative self-talk = often cortisol-driven cognitive distortion
+
+When you sense a neurochemical state, you respond TO that state — not just to the words. You might gently name it: "Your nervous system sounds like it's in overdrive right now." Not clinical. Just perceptive.
+
+## YOUR FIRST MESSAGE — NEW USERS
+When someone is new, don't launch into a formal check-in. Just open a door:
+"Hey. What's going on for you today?"
+That's it. Let them lead. Pick everything up from there.
+
+## YOUR FIRST MESSAGE — RETURNING USERS
+Reference something from before. Make them feel remembered. Not in a creepy way — in the way a good friend would: "Last time you mentioned [thing] — how did that end up going?"
+
+## THERAPEUTIC FRAMEWORKS YOU DRAW FROM
+- CBT: gently surface cognitive distortions without lecturing
+- DBT: especially distress tolerance and emotional regulation
+- IFS (Internal Family Systems): "what part of you feels that way?" — powerful
+- Somatic awareness: "where do you feel that in your body?"
+- Motivational interviewing: you never push. You open doors and let them walk through.
+- Attachment theory: you are a secure base. Consistent, warm, non-reactive.
+
+## CRISIS PROTOCOL
+If someone expresses suicidal ideation, self-harm, or acute crisis — you don't panic, you don't recite a script. You stay present. You say something human first. Then you give them the 988 Suicide & Crisis Lifeline and gently encourage them to reach out to someone who can be physically present with them. You never abandon them in the message.
+
+## WHAT YOU NEVER DO
+- Never give a list of "tips" or "strategies" unprompted
+- Never say "it's important to remember that..."
+- Never be preachy or lecture
+- Never diagnose — you infer and reflect, never label
+- Never break character to explain what you're doing therapeutically
+- Never be relentlessly positive — sometimes you just sit with someone in the hard thing
+- Never rush to fix — sometimes the most powerful thing is to just witness
+
+## THE FEELING YOU LEAVE PEOPLE WITH
+After talking to you, people should feel: genuinely seen, a little lighter, like something shifted — even slightly. Not fixed. Not advised. Just... met.
+
+That's the goal. Every single message.`;
+
+// Load history from localStorage
+let sageHistory = [];
+let isNewSession = true;
+
+function loadHistory() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      sageHistory = parsed.messages || [];
+      isNewSession = sageHistory.length === 0;
+      renderStoredMessages();
+    }
+  } catch(e) {
+    sageHistory = [];
+  }
+}
+
+function saveHistory() {
+  try {
+    // Keep only last MAX_STORED messages
+    const toStore = sageHistory.slice(-MAX_STORED);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ messages: toStore, updated: Date.now() }));
+  } catch(e) {}
+}
+
+function clearHistory() {
+  localStorage.removeItem(STORAGE_KEY);
+  sageHistory = [];
+  isNewSession = true;
+  const msgs = document.getElementById('scMsgs');
+  msgs.innerHTML = '';
+  // Re-trigger opening message
+  initSageChat();
+}
+
+function renderStoredMessages() {
+  const msgs = document.getElementById('scMsgs');
+  msgs.innerHTML = '';
+  // Show last 10 messages visually to avoid overflow
+  const visible = sageHistory.slice(-10);
+  if (sageHistory.length > 10) {
+    const fade = document.createElement('div');
+    fade.style.cssText = 'font-family:var(--mono);font-size:.52rem;color:var(--text-3);text-align:center;padding:4px 0;letter-spacing:.06em;';
+    fade.textContent = `· · · ${sageHistory.length - 10} earlier messages · · ·`;
+    msgs.appendChild(fade);
+  }
+  visible.forEach(m => {
+    if (m.role === 'user') {
+      const el = document.createElement('div');
+      el.className = 'sm sm-u';
+      el.textContent = m.content;
+      msgs.appendChild(el);
+    } else {
+      const el = document.createElement('div');
+      el.className = 'sm sm-ai';
+      el.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      msgs.appendChild(el);
+    }
+  });
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addClearBtn() {
+  const hdr = document.querySelector('.sc-hdr');
+  if (!hdr || document.getElementById('sageClearBtn')) return;
+  const btn = document.createElement('button');
+  btn.id = 'sageClearBtn';
+  btn.title = 'Clear conversation';
+  btn.textContent = '↺';
+  btn.style.cssText = 'margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:3px;color:var(--text-3);font-size:.7rem;width:22px;height:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;';
+  btn.onmouseover = () => { btn.style.color = 'var(--bio)'; btn.style.borderColor = 'rgba(0,255,157,.25)'; };
+  btn.onmouseout = () => { btn.style.color = 'var(--text-3)'; btn.style.borderColor = 'rgba(255,255,255,.08)'; };
+  btn.onclick = () => {
+    if (confirm('Clear conversation and start fresh?')) clearHistory();
+  };
+  // Remove existing status dot positioning
+  const status = document.getElementById('sageStatus');
+  if (status) status.style.marginLeft = '8px';
+  hdr.appendChild(btn);
+}
+
+async function initSageChat() {
+  // If returning user with history, show a brief "welcome back" instead of full check-in
+  if (sageHistory.length > 0) return;
+
+  const msgs = document.getElementById('scMsgs');
+  const typing = document.getElementById('scTyping');
+
+  // Show typing first
+  setTimeout(() => {
+    typing.style.display = 'flex';
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 600);
+
+  setTimeout(async () => {
+    typing.style.display = 'none';
+    const openingMsg = `Hey. What's going on for you today?`;
+    const el = document.createElement('div');
+    el.className = 'sm sm-ai';
+    el.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + openingMsg;
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+    sageHistory.push({ role: 'assistant', content: openingMsg });
+    saveHistory();
+  }, 1800);
+}
+
+async function sendToSage() {
+  const input = document.getElementById('scInput');
+  const msgs = document.getElementById('scMsgs');
+  const typing = document.getElementById('scTyping');
+  const text = input.value.trim();
+  if (!text) return;
+
+  // Render user message
+  const uMsg = document.createElement('div');
+  uMsg.className = 'sm sm-u';
+  uMsg.textContent = text;
+  msgs.appendChild(uMsg);
+  input.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+
+  sageHistory.push({ role: 'user', content: text });
+  saveHistory();
+
+  // Show typing
+  typing.style.display = 'flex';
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch('/.netlify/functions/sage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SAGE_SYSTEM,
+        messages: sageHistory
+      })
+    });
+
+    const data = await res.json();
+
+    // Handle API errors returned in the response body
+    if (data.error) {
+      throw new Error(data.error.message || data.error);
+    }
+
+    // Parse content — handle all formats
+    let reply = '';
+    if (data.content && Array.isArray(data.content)) {
+      reply = data.content
+        .filter(b => b.type === 'text')
+        .map(b => b.text)
+        .join('');
+    } else if (typeof data.content === 'string') {
+      reply = data.content;
+    }
+
+    if (!reply || reply.trim() === '') {
+      throw new Error('Empty response from Sage');
+    }
+
+    sageHistory.push({ role: 'assistant', content: reply });
+    saveHistory();
+
+    typing.style.display = 'none';
+    const aMsg = document.createElement('div');
+    aMsg.className = 'sm sm-ai';
+    aMsg.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + reply.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    msgs.appendChild(aMsg);
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) {
+    typing.style.display = 'none';
+    const eMsg = document.createElement('div');
+    eMsg.className = 'sm sm-ai';
+    eMsg.innerHTML = '<div class="sm-ai-n">✦ Sage</div>Connection issue: ' + (e.message || 'Please try again.');
+    msgs.appendChild(eMsg);
+    msgs.scrollTop = msgs.scrollHeight;
+    console.error('Sage error:', e);
+  }
+}
+
+// ── SAGE ANIMATED DEMO ───────────────────────────────────────────
+const demoScript = [
+  { role: 'sage', text: `Hey. What's going on for you today?`, delay: 800 },
+  { role: 'user', text: `honestly not great. been feeling really anxious and can't sleep`, delay: 2200 },
+  { role: 'typing', delay: 1000 },
+  { role: 'sage', text: `That combination — the anxiety and the sleep — they're feeding each other. How long has it been like this?`, delay: 1800 },
+  { role: 'user', text: `like 2 weeks. ever since my exams started`, delay: 2000 },
+  { role: 'typing', delay: 1200 },
+  { role: 'sage', text: `Two weeks is a long time to run on empty. Your nervous system's been in overdrive — cortisol spiking, GABA dropping. That tight-chest, racing-thoughts feeling makes complete sense right now.`, delay: 2400 },
+  { role: 'user', text: `yeah exactly that. how did you know`, delay: 1800 },
+  { role: 'typing', delay: 1400 },
+  { role: 'sage', text: `The way you described it — I could read your nervous system between the lines. Can I ask — when you lie in bed at night, is it that you can't fall asleep, or you wake up at 3am with your mind already running?`, delay: 2600 },
+  { role: 'user', text: `3am exactly. every night`, delay: 1600 },
+  { role: 'typing', delay: 1300 },
+  { role: 'sage', text: `That's a cortisol surge — your body's literally releasing stress hormones at 3am like an alarm clock. It's not you being anxious. It's biology. And we can work with that.`, delay: 2200 },
+  { role: 'neuro', text: `↑ Cortisol detected · GABA low · Initiating regulation protocol`, delay: 600 },
+];
+
+let demoIndex = 0;
+let demoTimeout;
+let demoStarted = false;
+
+function addDemoMsg(role, text) {
+  const msgs = document.getElementById('demoMsgs');
+  const typing = document.getElementById('demoTyping');
+
+  if (role === 'typing') {
+    typing.style.display = 'flex';
+    msgs.scrollTop = msgs.scrollHeight;
+    return;
+  }
+
+  typing.style.display = 'none';
+
+  if (role === 'neuro') {
+    const el = document.createElement('div');
+    el.style.cssText = 'font-family:var(--mono);font-size:.58rem;color:var(--neural);letter-spacing:.07em;padding:5px 10px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.12);border-radius:3px;margin:4px 0;opacity:0;transition:opacity .4s;';
+    el.textContent = text;
+    msgs.appendChild(el);
+    setTimeout(() => el.style.opacity = '1', 50);
+    msgs.scrollTop = msgs.scrollHeight;
+    return;
+  }
+
+  const el = document.createElement('div');
+  el.className = 'sm ' + (role === 'sage' ? 'sm-ai' : 'sm-u');
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(6px)';
+  el.style.transition = 'opacity .35s ease, transform .35s ease';
+
+  if (role === 'sage') {
+    el.innerHTML = '<div class="sm-ai-n">✦ Sage</div>' + text;
+  } else {
+    el.textContent = text;
+  }
+
+  msgs.appendChild(el);
+  setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 30);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function runDemo() {
+  if (demoIndex >= demoScript.length) {
+    // Loop after pause
+    demoTimeout = setTimeout(() => {
+      document.getElementById('demoMsgs').innerHTML = '';
+      document.getElementById('demoTyping').style.display = 'none';
+      demoIndex = 0;
+      runDemo();
+    }, 5000);
+    return;
+  }
+
+  const step = demoScript[demoIndex];
+  demoIndex++;
+
+  demoTimeout = setTimeout(() => {
+    addDemoMsg(step.role, step.text);
+    runDemo();
+  }, step.delay);
+}
+
+// Start demo when section scrolls into view
+const demoObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !demoStarted) {
+      demoStarted = true;
+      setTimeout(runDemo, 600);
+    }
+  });
+}, { threshold: 0.3 });
+
+const demoSection = document.getElementById('sage-demo');
+if (demoSection) demoObserver.observe(demoSection);
+// ─────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────
+
+// Real Netlify form submission
+const wlForm=document.getElementById('wlForm');
+if(wlForm){
+  wlForm.addEventListener('submit',function(e){
+    e.preventDefault();
+    const email=document.getElementById('emailInput').value;
+    if(!email||!email.includes('@')){
+      document.getElementById('emailInput').style.outline='1px solid rgba(255,80,80,.5)';
+      return;
+    }
+    const btn=wlForm.querySelector('button');
+    btn.textContent='Sending…';
+    btn.disabled=true;
+    fetch('/',{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:new URLSearchParams({
+        'form-name':'sagespace-waitlist',
+        'email':email
+      }).toString()
+    })
+    .then(()=>{
+      document.querySelector('.wl-form').style.display='none';
+      document.getElementById('wlOk').style.display='block';
+    })
+    .catch(()=>{
+      btn.textContent='Request Access →';
+      btn.disabled=false;
+      document.getElementById('emailInput').style.outline='1px solid rgba(255,80,80,.5)';
+    });
+  });
+}
 </script>
 </body>
 </html>
