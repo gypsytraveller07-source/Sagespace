@@ -892,6 +892,26 @@ async function sendToSage() {
 }
 window.sendToSage = sendToSage;
 
+// ── MOBILE NAV ───────────────────────────────────────────────────
+function toggleMenu(){
+  const h = document.getElementById('hamburger');
+  const m = document.getElementById('mobileMenu');
+  h.classList.toggle('open');
+  m.classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+document.addEventListener('click', function(e){
+  const h = document.getElementById('hamburger');
+  const m = document.getElementById('mobileMenu');
+  if (h && m && !h.contains(e.target) && !m.contains(e.target)) closeMenu();
+});
+window.toggleMenu = toggleMenu;
+window.closeMenu = closeMenu;
+// ────────────────────────────────────────────────────────────────
+
 window.addEventListener('load', () => setTimeout(bootSage, 300));
 // ────────────────────────────────────────────────────────────────
 
