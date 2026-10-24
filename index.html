@@ -97,6 +97,19 @@ footer{padding:36px 0;border-top:1px solid rgba(255,255,255,.7);font-size:13px;c
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 @media(max-width:860px){nav{top:8px;margin:8px 10px 0}nav ul{display:none}.stats,.g4{grid-template-columns:repeat(2,1fr)}.g3,.g2,.chat{grid-template-columns:1fr}.phase{grid-template-columns:1fr;gap:6px}section{padding:64px 0}.pane{height:520px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+.nav-r{display:flex;gap:8px;align-items:center}
+.chat{position:relative}
+.lock{position:absolute;inset:0;z-index:5;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;padding:24px;background:rgba(245,246,252,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--gb)}
+.lock h3{font-size:24px;letter-spacing:-.01em}.lock p{color:var(--mute);max-width:380px;font-size:15px}
+.modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:rgba(20,22,40,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.modal.open{display:grid}
+.mbox{width:min(420px,92vw);background:rgba(255,255,255,.8);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border:1px solid #fff;border-radius:28px;padding:32px;box-shadow:0 30px 80px rgba(60,50,160,.3);position:relative}
+.mbox h3{font-size:26px;letter-spacing:-.02em}.mbox p{color:var(--mute);font-size:14px;margin-top:6px}
+.mbox form{margin:18px 0 0;max-width:none}
+.mbox .x{position:absolute;top:14px;right:18px;border:0;background:none;font-size:22px;cursor:pointer;color:var(--mute)}
+.chk{display:flex;gap:10px;font-size:12px;color:var(--mute);align-items:flex-start}
+.chk input{width:auto;margin-top:3px}
+.mbox .fine{font-size:12px;margin-top:14px}
 </style>
 </head>
 <body>
@@ -112,7 +125,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
     <li><a href="#phases">Pipeline</a></li>
     <li><a href="#membership">Pricing</a></li>
   </ul>
-  <a href="#waitlist" class="btn sm">Request Access</a>
+  <div class="nav-r"><a href="#" id="navAuth" class="btn ghost sm">Sign in</a><a href="#waitlist" class="btn sm">Request Access</a></div>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
@@ -145,6 +158,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   <div class="center"><div class="eyebrow">Live Demo</div><h2>Talk to Sage.</h2>
   <p class="lead">A CBT + DBT-informed companion that responds to <em>you</em> — your situation, your history, your day. Every conversation is recorded daily so Sage can notice patterns over time.</p></div>
   <div class="chat">
+    <div class="lock" id="lock"><div class="sorb" style="width:56px;height:56px;margin:0" aria-hidden="true"></div><h3>Sign in to talk to Sage</h3><p>Create a free demo account so Sage can keep your daily record private to you.</p><button class="btn" id="lockBtn" type="button">Sign in / Sign up</button></div>
     <div class="pane">
       <div class="head"><span><i class="dot"></i>Sage</span><span class="live">● Demo mode</span></div>
       <div class="msgs" id="msgs"></div>
@@ -247,6 +261,17 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
 <footer><div class="wrap"><span>© 2026 SageSpace Therapeutics — Neural Mental Health AI</span><span><a href="#">Privacy</a> · <a href="#">Clinical Data</a> · <a href="sagespace-future.html">AI Future</a> · <a href="#">Contact</a></span></div></footer>
 
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="mbox">
+  <button class="x" id="mx" aria-label="Close">×</button>
+  <h3 id="mt">Welcome to SageSpace</h3><p>Enter your details to access the live demo. No password needed for this preview.</p>
+  <form id="authForm">
+    <input id="aName" required placeholder="Full name" autocomplete="name" aria-label="Full name">
+    <input id="aEmail" type="email" required placeholder="Email address" autocomplete="email" aria-label="Email">
+    <label class="chk"><input type="checkbox" required><span>I agree to SageSpace storing my name and email to provide demo access, in line with the Privacy Policy (GDPR). I can request deletion at any time.</span></label>
+    <button class="btn" type="submit">Continue</button>
+  </form>
+  <p class="fine">Demo sign-in only. Real accounts will use secure authentication.</p>
+</div></div>
 <script>
 (function(){
   /* ---------- storage (falls back to memory if blocked) ---------- */
@@ -257,7 +282,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
   /* ---------- themes & replies (replace with real API later) ---------- */
   var THEMES={
-    sleep:/sleep|tired|insomnia|awake|exhaust/i,
+    sleep:/sleep|slept|tired|insomnia|awake|exhaust/i,
     anxiety:/anxi|panic|worr|nervous|on edge|racing/i,
     mood:/sad|down|empty|hopeless|low|cry|numb/i,
     stress:/stress|overwhelm|pressure|exam|deadline|school|homework|work/i,
@@ -333,7 +358,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
   function restore(){
     var data=load(),es=data.days[today()]||[];
-    if(!es.length){bubble('s',"Hi, I'm Sage. I'm here to listen. How are you feeling today?");return}
+    if(!es.length){bubble('s',"Hi "+(user?user.name.split(' ')[0]:'there')+", I'm Sage. I'm here to listen. How are you feeling today?");return}
     es.forEach(function(e){bubble(e.r==='u'?'u':'s',e.t)});
   }
 
@@ -344,7 +369,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   }
 
   function send(text){
-    text=text.trim();if(!text)return;
+    text=text.trim();if(!text)return;if(!user){openM();return}
     bubble('u',text);inp.value='';
     var data=add('u',text,themesOf(text));
     renderLog();
@@ -363,7 +388,28 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   /* waitlist (connect to your backend / form service later) */
   $('wl').addEventListener('submit',function(e){e.preventDefault();e.target.style.display='none';$('ok').style.display='block'});
 
-  restore();renderLog();
+  /* ---------- demo sign-in (swap for real auth: Supabase / Firebase / Auth0) ---------- */
+  var SK='sagespace_user_v1',user=null,memU=null,modal=$('modal');
+  function getU(){try{return JSON.parse(localStorage.getItem(SK))||memU}catch(e){return memU}}
+  function setU(u){memU=u;try{u?localStorage.setItem(SK,JSON.stringify(u)):localStorage.removeItem(SK)}catch(e){}}
+  function apply(){
+    user=getU();KEY='sagespace_log_v1_'+(user?user.email:'guest');mem={days:{}};
+    msgs.innerHTML='';$('lock').style.display=user?'none':'flex';
+    $('navAuth').textContent=user?'Sign out':'Sign in';
+    if(user)restore();renderLog();
+  }
+  function openM(){modal.classList.add('open');$('aName').focus()}
+  function closeM(){modal.classList.remove('open')}
+  $('navAuth').addEventListener('click',function(e){e.preventDefault();if(user){setU(null);apply()}else openM()});
+  $('lockBtn').onclick=openM;$('mx').onclick=closeM;
+  modal.addEventListener('click',function(e){if(e.target===modal)closeM()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeM()});
+  $('authForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    setU({name:$('aName').value.trim(),email:$('aEmail').value.trim().toLowerCase()});
+    closeM();apply();location.hash='#chat';
+  });
+  apply();
 })();
 </script>
 </body>
